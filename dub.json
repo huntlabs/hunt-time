@@ -1,0 +1,10 @@
+{
+    "name": "hunt-time",
+    "description": "A time library for D programming language.",
+    "copyright": "Copyright (C) 2015-2018, HuntLabs",
+    "homepage": "https://www.huntlabs.net/",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "hunt": "~>1.0.0"
+    }
+}
