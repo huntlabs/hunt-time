@@ -1,5 +1,17 @@
-## Hunt Time
-    Hunt time is a time module and similar to Java8 time api.
+## About hunt-time
+hunt-time is a time module and similar to Joda-time and Java.time api.
+
+## Features
+
+ * LocalDate - date without time
+ * LocalTime - time without date
+ * Instant - an instantaneous point on the time-line
+ * DateTime - full date and time with time-zone
+ * DateTimeZone - a better time-zone
+ * Duration and Period - amounts of time
+ * Interval - the time between two instants
+ * A comprehensive and flexible formatter-parser
+
 ## LocalDate/LocalTime/LocalDateTime
 LocalDate, a date API that represents a date without time; LocalTime, a time representation without a date; and LocalDateTime, which is a combination of the previous two. All of these types represent the local date and/or time for a region, but,they contain zero information about the zone in which it is represented, only a representation of the date and time in your current timezone.
 
