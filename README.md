@@ -1,5 +1,5 @@
 ## About hunt-time
-hunt-time is a time module and similar to Joda-time and Java.time api.
+hunt-time is a time library and similar to Joda-time and Java.time api.
 
 ## Features
 
