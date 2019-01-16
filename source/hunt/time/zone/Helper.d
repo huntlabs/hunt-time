@@ -9,13 +9,13 @@
  *
  */
 
-hunt.time.zone.Helper;
+module hunt.time.zone.Helper;
 
 import hunt.time.zone.ZoneRulesProvider;
 // import hunt.time.zone.TzdbZoneRulesProvider;
 
-import hunt.container.Set;
-import hunt.container.HashSet;
+import hunt.collection.Set;
+import hunt.collection.HashSet;
 
 class ZoneRulesHelper {
     private __gshared Set!(string) ZONE_IDS;

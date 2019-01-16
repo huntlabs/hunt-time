@@ -9,14 +9,14 @@
  *
  */
 
-hunt.time.util.common;
+module hunt.time.util.Common;
 
 import std.datetime;
 import core.stdc.errno;
 public import std.traits;
 public import std.array;
 
-import hunt.datetime;
+import hunt.util.datetime;
 
 class System
 {

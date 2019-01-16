@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.util.Consumer;
+module hunt.time.util.Consumer;
 
 
 public interface Consumer(T) {

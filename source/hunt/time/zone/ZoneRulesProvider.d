@@ -9,27 +9,27 @@
  *
  */
 
-hunt.time.zone.ZoneRulesProvider;
+module hunt.time.zone.ZoneRulesProvider;
 
 // import hunt.security.AccessController;
 // import hunt.security.PrivilegedAction;
 // import hunt.time.ZoneId;
 // import hunt.time.ZonedDateTime;
-import hunt.container.ArrayList;
-import hunt.container.HashSet;
-import hunt.container.Iterator;
-import hunt.container.List;
-import hunt.container.NavigableMap;
+import hunt.collection.ArrayList;
+import hunt.collection.HashSet;
+import hunt.collection.Iterator;
+import hunt.collection.List;
+import hunt.collection.NavigableMap;
 
 // import hunt.util.ServiceConfigurationError;
 import hunt.time.util.ServiceLoader;
-import hunt.container.Set;
-import hunt.container.HashMap;
+import hunt.collection.Set;
+import hunt.collection.HashMap;
 // import hunt.concurrent.CopyOnWriteArrayList;
-import hunt.container.Collections;
+import hunt.collection.Collections;
 import hunt.time.zone.ZoneRules;
 import hunt.time.zone.ZoneRulesException;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 import hunt.time.zone.TzdbZoneRulesProvider;
 
 version (HUNT_DEBUG) import hunt.logging.ConsoleLogger;

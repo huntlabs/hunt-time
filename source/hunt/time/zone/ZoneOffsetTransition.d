@@ -9,25 +9,25 @@
  *
  */
 
-hunt.time.zone.ZoneOffsetTransition;
+module hunt.time.zone.ZoneOffsetTransition;
 
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
-import hunt.lang.exception;
+import hunt.Exceptions;
 
 //import hunt.io.ObjectInputStream;
-import hunt.io.common;
+import hunt.io.Common;
 import hunt.time.Duration;
 import hunt.time.Instant;
 import hunt.time.LocalDateTime;
 import hunt.time.ZoneOffset;
 import hunt.time.zone.Ser;
-import hunt.container.Collections;
-import hunt.container;
-import hunt.lang.common;
+import hunt.collection.Collections;
+import hunt.collection;
+import hunt.Functions;
 import hunt.util.Comparator;
-import hunt.lang;
-import hunt.string.StringBuilder;
+// import hunt.lang;
+import hunt.text.StringBuilder;
 /**
  * A transition between two offsets caused by a discontinuity _in the local time-line.
  * !(p)

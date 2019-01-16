@@ -9,17 +9,17 @@
  *
  */
 
-hunt.time.chrono.ThaiBuddhistDate;
+module hunt.time.chrono.ThaiBuddhistDate;
 
 // import hunt.time.chrono.ThaiBuddhistChronology;
 // import hunt.time.temporal.ChronoField;
 
 // import hunt.io.DataInput;
 // import hunt.io.DataOutput;
-// import hunt.lang.exception;
+// import hunt.Exceptions;
 
 // //import hunt.io.ObjectInputStream;
-// import hunt.io.common;
+// import hunt.io.Common;
 // import hunt.time.Clock;
 // import hunt.time.DateTimeException;
 // import hunt.time.LocalDate;

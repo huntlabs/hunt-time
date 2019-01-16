@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.format.DateTimeParseException;
+module hunt.time.format.DateTimeParseException;
 
 import hunt.time.DateTimeException;
 

@@ -9,11 +9,11 @@
  *
  */
 
-hunt.time.format;
+module hunt.time.format;
 
 
 import hunt.time.util.Locale;
-import hunt.container.Map;
+import hunt.collection.Map;
 
 /**
  * A helper class to map a zone name to metazone and back to the

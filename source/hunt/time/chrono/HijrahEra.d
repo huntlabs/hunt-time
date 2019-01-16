@@ -10,7 +10,7 @@
  *
  */
 
-hunt.time.chrono.HijrahEra;
+module hunt.time.chrono.HijrahEra;
 
 // import hunt.time.temporal.ChronoField;
 

@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.format.DateTimeTextProvider;
+module hunt.time.format.DateTimeTextProvider;
 
 import hunt.time.temporal.ChronoField;
 
@@ -19,21 +19,21 @@ import hunt.time.chrono.JapaneseChronology;
 import hunt.time.temporal.IsoFields;
 import hunt.time.temporal.TemporalField;
 // import hunt.util.AbstractMap.SimpleImmutableEntry;
-import hunt.container.ArrayList;
+import hunt.collection.ArrayList;
 import hunt.time.util.Calendar;
-import hunt.container.Collections;
+import hunt.collection.Collections;
 import hunt.util.Comparator;
-// import hunt.container.Iterator;
-import hunt.container.List;
+// import hunt.collection.Iterator;
+import hunt.collection.List;
 import hunt.time.util.Locale;
 // import hunt.util.Map.MapEntry;
 // import hunt.util.ResourceBundle;
-import hunt.container;
+import hunt.collection;
 import hunt.time.format.TextStyle;
-import hunt.lang;
+// import hunt.lang;
 // import hunt.concurrent.ConcurrentMap;
-import hunt.lang.exception;
-import hunt.time.util.common;
+import hunt.Exceptions;
+import hunt.time.util.Common;
 // import sun.util.locale.provider.CalendarDataUtility;
 // import sun.util.locale.provider.LocaleProviderAdapter;
 // import sun.util.locale.provider.LocaleResources;

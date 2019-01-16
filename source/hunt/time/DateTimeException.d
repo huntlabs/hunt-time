@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.DateTimeException;
+module hunt.time.DateTimeException;
 
 import std.exception;
 /**

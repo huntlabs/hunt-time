@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.format.ResolverStyle;
+module hunt.time.format.ResolverStyle;
 
 /**
  * Enumeration of different ways to resolve dates and times.

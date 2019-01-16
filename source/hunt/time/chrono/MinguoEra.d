@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.chrono.MinguoEra;
+module hunt.time.chrono.MinguoEra;
 
 import std.conv;
 import hunt.time.temporal.ChronoField;

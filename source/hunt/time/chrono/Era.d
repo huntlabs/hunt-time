@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.chrono.Era;
+module hunt.time.chrono.Era;
 
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;

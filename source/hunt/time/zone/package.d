@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.zone;
+module hunt.time.zone;
 
 public import hunt.time.zone.Ser;
 public import hunt.time.zone.TzdbZoneRulesProvider;

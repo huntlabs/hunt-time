@@ -9,14 +9,14 @@
  *
  */
 
-hunt.time.chrono.JapaneseChronology;
+module hunt.time.chrono.JapaneseChronology;
 
 // import hunt.time.temporal.ChronoField;
 // import hunt.time.temporal.ChronoUnit;
 
 
 // //import hunt.io.ObjectInputStream;
-// import hunt.io.common;
+// import hunt.io.Common;
 // import hunt.time.Clock;
 // import hunt.time.DateTimeException;
 // import hunt.time.Instant;
@@ -31,9 +31,9 @@ hunt.time.chrono.JapaneseChronology;
 // import hunt.time.temporal.UnsupportedTemporalTypeException;
 // import hunt.time.temporal.ValueRange;
 // import hunt.time.util.Calendar;
-// import hunt.container.List;
+// import hunt.collection.List;
 // import hunt.time.util.Locale;
-// import hunt.container.Map;
+// import hunt.collection.Map;
 // import hunt.time.chrono.AbstractChronology;
 // import hunt.time.util.ServiceLoader;
 // import hunt.time.chrono.JapaneseChronology;
@@ -41,7 +41,7 @@ hunt.time.chrono.JapaneseChronology;
 // import hunt.time.chrono.ChronoLocalDateTime;
 // import hunt.time.chrono.JapaneseDate;
 // import hunt.time.chrono.JapaneseEra;
-// import hunt.lang;
+// // import hunt.lang;
 // import hunt.time.chrono.chrldi
 // // import sun.util.calendar.CalendarSystem;
 // // import sun.util.calendar.LocalGregorianCalendar;

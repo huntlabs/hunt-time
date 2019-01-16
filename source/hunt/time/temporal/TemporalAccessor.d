@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.temporal.TemporalAccessor;
+module hunt.time.temporal.TemporalAccessor;
 
 import hunt.time.DateTimeException;
 import hunt.time.temporal.TemporalField;

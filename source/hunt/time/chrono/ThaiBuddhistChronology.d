@@ -9,13 +9,13 @@
  *
  */
 
-hunt.time.chrono.ThaiBuddhistChronology;
+module hunt.time.chrono.ThaiBuddhistChronology;
 
 
 // import hunt.time.temporal.ChronoField;
 
 // //import hunt.io.ObjectInputStream;
-// import hunt.io.common;
+// import hunt.io.Common;
 // import hunt.time.Clock;
 // import hunt.time.DateTimeException;
 // import hunt.time.Instant;
@@ -29,9 +29,9 @@ hunt.time.chrono.ThaiBuddhistChronology;
 // import hunt.time.util;
 // //import hunt.concurrent.ConcurrentMap;;
 
-// import hunt.container.List;
+// import hunt.collection.List;
 // import hunt.time.util.Locale;
-// import hunt.container.Map;
+// import hunt.collection.Map;
 
 // /**
 //  * The Thai Buddhist calendar system.

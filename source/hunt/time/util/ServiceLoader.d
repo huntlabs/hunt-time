@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.util.ServiceLoader;
+module hunt.time.util.ServiceLoader;
 
 alias Ctor(R) = R delegate();
 

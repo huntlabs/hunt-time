@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.format.SignStyle;
+module hunt.time.format.SignStyle;
 
 /**
  * Enumeration of ways to handle the positive/negative sign.

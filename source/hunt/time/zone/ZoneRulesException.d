@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.zone.ZoneRulesException;
+module hunt.time.zone.ZoneRulesException;
 
 import hunt.time.DateTimeException;
 

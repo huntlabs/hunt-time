@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.temporal.UnsupportedTemporalTypeException;
+module hunt.time.temporal.UnsupportedTemporalTypeException;
 
 import hunt.time.DateTimeException;
 

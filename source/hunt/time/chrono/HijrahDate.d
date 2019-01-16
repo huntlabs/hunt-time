@@ -10,16 +10,16 @@
  *
  */
 
-hunt.time.chrono.HijrahDate;
+module hunt.time.chrono.HijrahDate;
 
 // import hunt.time.temporal.ChronoField;
 
-// import hunt.lang.exception;
+// import hunt.Exceptions;
 
 // import hunt.io.ObjectInput;
 // //import hunt.io.ObjectInputStream;
 // import hunt.io.ObjectOutput;
-// import hunt.io.common;
+// import hunt.io.Common;
 // import hunt.time.Clock;
 // import hunt.time.DateTimeException;
 // import hunt.time.LocalDate;

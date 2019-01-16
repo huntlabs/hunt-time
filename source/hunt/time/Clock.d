@@ -9,16 +9,16 @@
  *
  */
 
-hunt.time.Clock;
+module hunt.time.Clock;
 
-import hunt.io.common;
-import hunt.lang;
+import hunt.io.Common;
+// import hunt.lang;
 import hunt.time.Constants;
 import hunt.time.ZoneId;
 import hunt.time.Duration;
 import hunt.time.Instant;
 import hunt.time.ZoneOffset;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 
 import core.time : convert;
 import std.conv;

@@ -9,13 +9,13 @@
  *
  */
 
-hunt.time.chrono.MinguoChronology;
+module hunt.time.chrono.MinguoChronology;
 
 
 // import hunt.time.temporal.ChronoField;
 
 // //import hunt.io.ObjectInputStream;
-// import hunt.io.common;
+// import hunt.io.Common;
 // import hunt.time.Clock;
 // import hunt.time.DateTimeException;
 // import hunt.time.Instant;
@@ -26,9 +26,9 @@ hunt.time.chrono.MinguoChronology;
 // import hunt.time.temporal.TemporalAccessor;
 // import hunt.time.temporal.TemporalField;
 // import hunt.time.temporal.ValueRange;
-// import hunt.container.List;
+// import hunt.collection.List;
 // import hunt.time.util.Locale;
-// import hunt.container.Map;
+// import hunt.collection.Map;
 // import hunt.time.chrono.AbstractChronology;
 // import hunt.time.util.ServiceLoader;
 // import hunt.time.chrono.MinguoDate;
@@ -37,7 +37,7 @@ hunt.time.chrono.MinguoChronology;
 // import hunt.time.chrono.MinguoDate;
 // import hunt.time.chrono.ChronoZonedDateTime;
 // import hunt.time.chrono.MinguoEra;
-// import hunt.lang;
+// // import hunt.lang;
 // /**
 //  * The Minguo calendar system.
 //  * !(p)

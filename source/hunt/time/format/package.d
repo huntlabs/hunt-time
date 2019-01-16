@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.format;
+module hunt.time.format;
 
 public import hunt.time.format.DateTimeFormatterBuilder;
 public import hunt.time.format.DateTimeFormatter;

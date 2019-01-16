@@ -9,21 +9,21 @@
  *
  */
 
-hunt.time.ZoneRegion;
+module hunt.time.ZoneRegion;
 
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
-import hunt.lang.exception;
+import hunt.Exceptions;
 
 //import hunt.io.ObjectInputStream;
-import hunt.io.common;
+import hunt.io.Common;
 import hunt.time.zone.ZoneRules;
 import hunt.time.zone.ZoneRulesException;
 import hunt.time.zone.ZoneRulesProvider;
 import hunt.time.ZoneId;
 import hunt.time.DateTimeException;
 import hunt.time.Ser;
-import hunt.string.common;
+import hunt.text.Common;
 /**
  * A geographical region where the same time-zone rules apply.
  * !(p)

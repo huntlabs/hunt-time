@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.chrono.IsoEra;
+module hunt.time.chrono.IsoEra;
 
 import hunt.time.DateTimeException;
 import hunt.time.chrono.Era;

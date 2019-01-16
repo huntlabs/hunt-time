@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.format.TextStyle;
+module hunt.time.format.TextStyle;
 
 import hunt.time.util.Calendar;
 

@@ -9,15 +9,15 @@
  *
  */
 
-hunt.time.format.DateTimeFormatterBuilder;
+module hunt.time.format.DateTimeFormatterBuilder;
 
 import hunt.time.temporal.ChronoField;
 import std.array;
 import std.uni;
 import hunt.math.BigDecimal;
 import hunt.math.BigInteger;
-import hunt.lang.exception;
-import hunt.string.common;
+import hunt.Exceptions;
+import hunt.text.Common;
 import hunt.time.DateTimeException;
 import hunt.time.Instant;
 import hunt.time.LocalDate;
@@ -44,27 +44,27 @@ import hunt.time.temporal.WeekFields;
 import hunt.time.zone.Helper;
 
 // import hunt.util.AbstractMap.SimpleImmutableEntry;
-import hunt.container.ArrayList;
+import hunt.collection.ArrayList;
 
 // //import hunt.concurrent.ConcurrentMap;;
-import hunt.container.Collections;
+import hunt.collection.Collections;
 import hunt.util.Comparator;
-import hunt.string.StringBuilder;
-import hunt.container.AbstractMap;
+import hunt.text.StringBuilder;
+import hunt.collection.AbstractMap;
 
-import hunt.container.HashSet;
-import hunt.container.Iterator;
-import hunt.container.LinkedHashMap;
-import hunt.container.List;
+import hunt.collection.HashSet;
+import hunt.collection.Iterator;
+import hunt.collection.LinkedHashMap;
+import hunt.collection.List;
 import hunt.time.util.Locale;
-import hunt.container.Map;
+import hunt.collection.Map;
 import hunt.time.format.FormatStyle;
 import hunt.time.format.SignStyle;
 import hunt.time.format.TextStyle;
-import hunt.container.Set;
+import hunt.collection.Set;
 import hunt.time.util.Consumer;
-import hunt.container.HashMap;
-import hunt.lang;
+import hunt.collection.HashMap;
+// import hunt.lang;
 import hunt.time.format.DateTimeFormatter;
 import hunt.time.format.DateTimePrintContext;
 import hunt.time.format.ResolverStyle;
@@ -75,7 +75,7 @@ import std.algorithm.searching;
 import hunt.time.format.DecimalStyle;
 import hunt.time.util.QueryHelper;
 import hunt.logging;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 // import sun.text.spi.JavaTimeDateTimePatternProvider;
 // import sun.util.locale.provider.CalendarDataUtility;
 // import sun.util.locale.provider.LocaleProviderAdapter;

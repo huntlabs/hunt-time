@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.format.FormatStyle;
+module hunt.time.format.FormatStyle;
 
 /**
  * Enumeration of the style of a localized date, time or date-time formatter.

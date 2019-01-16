@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time;
+module hunt.time;
 
 public import hunt.time.Init;
 public import hunt.time.chrono;

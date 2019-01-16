@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.Month;
+module hunt.time.Month;
 
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;
@@ -30,9 +30,9 @@ import hunt.time.temporal.ValueRange;
 import hunt.time.util.Locale;
 import hunt.time.DateTimeException;
 import hunt.time.LocalDate;
-import hunt.lang;
+// import hunt.lang;
 import std.conv;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 
 /**
  * A month-of-year, such as 'July'.

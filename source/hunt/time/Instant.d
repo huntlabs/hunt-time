@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.Instant;
+module hunt.time.Instant;
 
 import hunt.time.LocalTime;
 import hunt.time.temporal.ChronoField;
@@ -17,10 +17,10 @@ import hunt.time.temporal.ChronoUnit;
 import hunt.util.Comparator;
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
-import hunt.lang.exception;
-import hunt.lang;
+import hunt.Exceptions;
+// import hunt.lang;
 import hunt.time.DateTimeException;
-import hunt.io.common;
+import hunt.io.Common;
 // import hunt.time.format.DateTimeFormatter;
 import hunt.time.format.DateTimeParseException;
 import hunt.time.temporal.ChronoField;
@@ -152,12 +152,12 @@ import std.math;
  * @since 1.8
  */
 
-import hunt.lang.common;
+import hunt.Functions;
 import hunt.time.Clock;
 import hunt.time.ZoneOffset;
 import hunt.time.ZonedDateTime;
 import hunt.time.ZoneId;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 
 public final class Instant
         : Temporal, TemporalAdjuster, Comparable!(Instant), Serializable {

@@ -9,12 +9,12 @@
  *
  */
 
-hunt.time.temporal.TemporalAmount;
+module hunt.time.temporal.TemporalAmount;
 
 import hunt.time.DateTimeException;
 import hunt.time.Duration;
 import hunt.time.Period;
-import hunt.container.List;
+import hunt.collection.List;
 import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.Temporal;
 

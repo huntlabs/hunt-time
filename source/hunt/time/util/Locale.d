@@ -9,13 +9,13 @@
  *
  */
 
-hunt.time.util.Locale;
+module hunt.time.util.Locale;
 
-import hunt.io.common;
-import hunt.lang.exception;
-import hunt.lang.common;
+import hunt.io.Common;
+import hunt.Exceptions;
+import hunt.Functions;
 import hunt.logging;
-import hunt.container;
+import hunt.collection;
 import hunt.time.util.LocaleExtensions;
 // import java.text.MessageFormat;
 // import java.util.concurrent.ConcurrentHashMap;

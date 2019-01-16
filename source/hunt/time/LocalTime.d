@@ -9,15 +9,15 @@
  *
  */
 
-hunt.time.LocalTime;
+module hunt.time.LocalTime;
 
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;
 
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
-import hunt.lang.exception;
-import hunt.io.common;
+import hunt.Exceptions;
+import hunt.io.Common;
 // import hunt.time.format.DateTimeFormatter;
 import hunt.time.format.DateTimeParseException;
 import hunt.time.temporal.ChronoField;
@@ -32,7 +32,7 @@ import hunt.time.temporal.TemporalQuery;
 import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.UnsupportedTemporalTypeException;
 import hunt.time.temporal.ValueRange;
-import hunt.lang.common;
+import hunt.Functions;
 import hunt.time.ZoneId;
 import hunt.time.Clock;
 import hunt.time.Instant;
@@ -41,15 +41,15 @@ import hunt.time.LocalDate;
 import hunt.time.OffsetTime;
 import hunt.time.ZoneOffset;
 import hunt.time.DateTimeException;
-import hunt.lang;
+// import hunt.lang;
 import hunt.util.Comparator;
-import hunt.string.StringBuilder;
+import hunt.text.StringBuilder;
 import hunt.time.Ser;
 import hunt.time.Duration;
 import std.conv;
-import hunt.string.common;
+import hunt.text.Common;
 import hunt.time.util.QueryHelper;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 /**
  * A time without a time-zone _in the ISO-8601 calendar system,
  * such as {@code 10:15:30}.

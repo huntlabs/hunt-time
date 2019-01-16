@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.temporal.TemporalAdjusters;
+module hunt.time.temporal.TemporalAdjusters;
 
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;

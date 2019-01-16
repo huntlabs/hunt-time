@@ -9,31 +9,31 @@
  *
  */
 
-hunt.time.zone.ZoneRules;
+module hunt.time.zone.ZoneRules;
 
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
-import hunt.lang.exception;
+import hunt.Exceptions;
 
 //import hunt.io.ObjectInputStream;
-import hunt.io.common;
+import hunt.io.Common;
 import hunt.time.Duration;
 import hunt.time.Instant;
 import hunt.time.LocalDate;
 import hunt.time.LocalDateTime;
 import hunt.time.ZoneOffset;
 // import hunt.time.Year;
-import hunt.container.ArrayList;
+import hunt.collection.ArrayList;
 import hunt.time.zone.Ser;
-import hunt.container.Collections;
-import hunt.container.List;
-import hunt.lang;
-import hunt.container.HashMap;
+import hunt.collection.Collections;
+import hunt.collection.List;
+// import hunt.lang;
+import hunt.collection.HashMap;
 import hunt.time.zone.ZoneOffsetTransitionRule;
 import hunt.time.zone.ZoneOffsetTransition;
-import hunt.string.common;
-import hunt.util.Arrays;
-import hunt.time.util.common;
+import hunt.text.Common;
+import hunt.util.ArrayHelper;
+import hunt.time.util.Common;
 
 /**
  * The rules defining how the zone offset varies for a single time-zone.
@@ -513,7 +513,7 @@ public final class ZoneRules : Serializable
         }
 
         // using historic rules
-        import hunt.string.common;
+        import hunt.text.Common;
 
         int index = Arrays.binarySearch(savingsInstantTransitions, epochSec);
         if (index == -1)

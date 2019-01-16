@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.text.ParsePosition;
+module hunt.time.text.ParsePosition;
 
 import std.conv;
 /**

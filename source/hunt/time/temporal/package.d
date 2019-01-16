@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.temporal;
+module hunt.time.temporal;
 
 public import hunt.time.temporal.ChronoField;
 public import hunt.time.temporal.ChronoUnit;

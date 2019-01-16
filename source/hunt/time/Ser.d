@@ -9,10 +9,10 @@
  *
  */
 
-hunt.time.Ser;
+module hunt.time.Ser;
 
 import hunt.io.Externalizable;
-import hunt.lang.exception;
+import hunt.Exceptions;
 // import hunt.io.InvalidClassException;
 import hunt.io.ObjectInput;
 import hunt.io.ObjectOutput;

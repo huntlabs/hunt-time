@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.chrono;
+module hunt.time.chrono;
 
 public import hunt.time.chrono.AbstractChronology;
 public import hunt.time.chrono.ChronoLocalDate;

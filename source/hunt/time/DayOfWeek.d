@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.DayOfWeek;
+module hunt.time.DayOfWeek;
 
 import std.conv;
 import hunt.time.temporal.ChronoField;
@@ -28,7 +28,7 @@ import hunt.time.temporal.ValueRange;
 import hunt.time.temporal.WeekFields;
 import hunt.time.util.Locale;
 import hunt.time.DateTimeException;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 /**
  * A day-of-week, such as 'Tuesday'.
  * !(p)

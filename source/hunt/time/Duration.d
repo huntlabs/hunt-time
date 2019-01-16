@@ -9,16 +9,16 @@
  *
  */
 
-hunt.time.Duration;
+module hunt.time.Duration;
 
 import hunt.time.LocalTime;
 import hunt.time.Ser;
 
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
-import hunt.lang.exception;
+import hunt.Exceptions;
 // //import hunt.io.ObjectInputStream;
-import hunt.io.common;
+import hunt.io.Common;
 import hunt.math.BigDecimal;
 import hunt.math.BigInteger;
 import hunt.time.DateTimeException;
@@ -29,16 +29,16 @@ import hunt.time.temporal.Temporal;
 import hunt.time.temporal.TemporalAmount;
 import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.UnsupportedTemporalTypeException;
-import hunt.container;
-import hunt.lang.common;
-import hunt.lang;
-import hunt.string.common;
+import hunt.collection;
+import hunt.Functions;
+// import hunt.lang;
+import hunt.text.Common;
 import std.regex;
 import std.string;
 import std.conv;
-import hunt.string.StringBuilder;
+import hunt.text.StringBuilder;
 import hunt.util.Comparator;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 // import hunt.util.regex.Matcher;
 // import hunt.util.regex.Pattern;
 

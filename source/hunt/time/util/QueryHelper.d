@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.util.QueryHelper;
+module hunt.time.util.QueryHelper;
 import hunt.time.chrono;
 import hunt.time.Clock;
 import hunt.time.DateTimeException;

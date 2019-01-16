@@ -9,10 +9,10 @@
  *
  */
 
-hunt.time.util.Calendar;
+module hunt.time.util.Calendar;
 
-import hunt.lang.exception;
-// import hunt.io.common;
+import hunt.Exceptions;
+// import hunt.io.Common;
 // import java.security.AccessControlContext;
 // import java.security.AccessController;
 // import java.security.PermissionCollection;
@@ -22,9 +22,9 @@ import hunt.lang.exception;
 // import java.text.DateFormat;
 // import java.text.DateFormatSymbols;
 import hunt.time.Instant;
-import hunt.container;
+import hunt.collection;
 import hunt.time.util.Locale;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 // import java.util.concurrent.ConcurrentHashMap;
 // import java.util.concurrent.ConcurrentMap;
 // import sun.util.BuddhistCalendar;
@@ -292,8 +292,8 @@ import std.datetime;
  * @since 1.1
  */
 
-import hunt.io.common;
-import hunt.lang.common;
+import hunt.io.Common;
+import hunt.Functions;
 import std.datetime : TimeZone ;
 
 

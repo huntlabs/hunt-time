@@ -9,16 +9,16 @@
  *
  */
 
-hunt.time.zone.ZoneOffsetTransitionRule;
+module hunt.time.zone.ZoneOffsetTransitionRule;
 
 import hunt.time.temporal.TemporalAdjusters;
 
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
-import hunt.lang.exception;
+import hunt.Exceptions;
 
 import hunt.time.zone.Ser;
-import hunt.io.common;
+import hunt.io.Common;
 import hunt.time.DayOfWeek;
 import hunt.time.LocalDate;
 import hunt.time.LocalDateTime;
@@ -27,8 +27,8 @@ import hunt.time.Month;
 import hunt.time.ZoneOffset;
 import hunt.time.chrono.IsoChronology;
 import hunt.time.zone.ZoneOffsetTransition;
-import hunt.string.StringBuilder;
-import hunt.time.util.common;
+import hunt.text.StringBuilder;
+import hunt.time.util.Common;
 /**
  * A rule expressing how to create a transition.
  * !(p)

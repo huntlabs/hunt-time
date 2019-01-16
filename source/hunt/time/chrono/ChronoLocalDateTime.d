@@ -9,12 +9,12 @@
  *
  */
 
-hunt.time.chrono.ChronoLocalDateTime;
+module hunt.time.chrono.ChronoLocalDateTime;
 
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;
 
-import hunt.io.common;
+import hunt.io.Common;
 import hunt.time.DateTimeException;
 import hunt.time.Instant;
 import hunt.time.LocalDateTime;
@@ -35,7 +35,7 @@ import hunt.time.temporal.TemporalUnit;
 import hunt.time.zone.ZoneRules;
 import hunt.util.Comparator;
 import hunt.time.chrono.ChronoLocalDate;
-import hunt.lang.common;
+import hunt.Functions;
 import hunt.time.chrono.Chronology;
 import hunt.time.chrono.ChronoZonedDateTime;
 import hunt.util.Comparator;

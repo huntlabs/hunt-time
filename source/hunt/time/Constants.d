@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.Constants;
+module hunt.time.Constants;
 
 /**
 */

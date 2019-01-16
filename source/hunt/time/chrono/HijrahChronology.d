@@ -10,15 +10,15 @@
  *
  */
 
-hunt.time.chrono.HijrahChronology;
+module hunt.time.chrono.HijrahChronology;
 
 // import hunt.time.temporal.ChronoField;
 
 // // import hunt.io.FilePermission;
-// import hunt.io.common;
+// import hunt.io.Common;
 
 // //import hunt.io.ObjectInputStream;
-// import hunt.io.common;
+// import hunt.io.Common;
 // // import hunt.security.AccessController;
 // // import hunt.security.PrivilegedAction;
 // import hunt.time.Clock;
@@ -34,8 +34,8 @@ hunt.time.chrono.HijrahChronology;
 // import hunt.time.util;
 // //import hunt.concurrent.ConcurrentMap;;
 
-// import hunt.container.List;
-// import hunt.container.Map;
+// import hunt.collection.List;
+// import hunt.collection.Map;
 // // import hunt.util.Properties;
 
 // // import sun.util.logging.PlatformLogger;

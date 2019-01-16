@@ -9,18 +9,18 @@
  *
  */
 
-hunt.time.OffsetTime;
+module hunt.time.OffsetTime;
 
 import hunt.time.LocalTime;
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;
 
-import hunt.lang.exception;
+import hunt.Exceptions;
 import hunt.io.ObjectInput;
 import hunt.io.ObjectOutput;
 
 //import hunt.io.ObjectInputStream;
-import hunt.io.common;
+import hunt.io.Common;
 // import hunt.time.format.DateTimeFormatter;
 import hunt.time.format.DateTimeParseException;
 import hunt.time.temporal.ChronoField;
@@ -36,7 +36,7 @@ import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.UnsupportedTemporalTypeException;
 import hunt.time.temporal.ValueRange;
 import hunt.time.zone.ZoneRules;
-import hunt.lang.common;
+import hunt.Functions;
 import hunt.time.ZoneOffset;
 import hunt.time.Instant;
 import hunt.time.ZoneId;
@@ -45,10 +45,10 @@ import hunt.time.OffsetDateTime;
 import hunt.time.LocalDate;
 import hunt.time.DateTimeException;
 import hunt.time.Ser;
-import hunt.lang;
+// import hunt.lang;
 import hunt.util.Comparator;
 import std.conv;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 /**
  * A time with an offset from UTC/Greenwich _in the ISO-8601 calendar system,
  * such as {@code 10:15:30+01:00}.

@@ -9,16 +9,16 @@
  *
  */
 
-hunt.time.Period;
+module hunt.time.Period;
 
 import hunt.time.temporal.ChronoUnit;
 
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
-import hunt.lang.exception;
+import hunt.Exceptions;
 
 //import hunt.io.ObjectInputStream;
-import hunt.io.common;
+import hunt.io.Common;
 import hunt.time.chrono.ChronoLocalDate;
 import hunt.time.chrono.ChronoPeriod;
 import hunt.time.chrono.Chronology;
@@ -31,19 +31,19 @@ import hunt.time.temporal.TemporalAmount;
 import hunt.time.temporal.TemporalQueries;
 import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.UnsupportedTemporalTypeException;
-import hunt.container.List;
+import hunt.collection.List;
 import hunt.time.LocalDate;
 import hunt.util.Comparator;
 import hunt.time.DateTimeException;
-import hunt.lang;
-import hunt.container;
+// import hunt.lang;
+import hunt.collection;
 import hunt.time.Ser;
-import hunt.string.common;
+import hunt.text.Common;
 import std.conv;
 import std.regex;
-import hunt.string.StringBuilder;
+import hunt.text.StringBuilder;
 import hunt.time.util.QueryHelper;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 // import hunt.util.regex.Matcher;
 // import hunt.util.regex.Pattern;
 

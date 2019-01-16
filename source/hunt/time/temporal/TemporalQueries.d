@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.temporal.TemporalQueries;
+module hunt.time.temporal.TemporalQueries;
 
 import hunt.time.temporal.ChronoField;
 
@@ -22,7 +22,7 @@ import hunt.time.temporal.TemporalQuery;
 import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.TemporalAccessor;
 import hunt.time.util.QueryHelper;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 /**
  * Common implementations of {@code TemporalQuery}.
  * !(p)

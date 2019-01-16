@@ -9,17 +9,17 @@
  *
  */
 
-hunt.time.ZoneOffset;
+module hunt.time.ZoneOffset;
 
 import hunt.time.LocalTime;
 import hunt.time.temporal.ChronoField;
 
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
-import hunt.lang.exception;
+import hunt.Exceptions;
 
 //import hunt.io.ObjectInputStream;
-import hunt.io.common;
+import hunt.io.Common;
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.Temporal;
 import hunt.time.temporal.TemporalAccessor;
@@ -31,16 +31,16 @@ import hunt.time.temporal.UnsupportedTemporalTypeException;
 import hunt.time.temporal.ValueRange;
 import hunt.time.zone.ZoneRules;
 import hunt.time.ZoneId;
-import hunt.lang.common;
-import hunt.container;
-import hunt.lang;
-import hunt.string.common;
+import hunt.Functions;
+import hunt.collection;
+// import hunt.lang;
+import hunt.text.Common;
 import hunt.time.DateTimeException;
 import std.conv;
-import hunt.string.StringBuilder;
+import hunt.text.StringBuilder;
 import hunt.time.Ser;
 import hunt.time.util.QueryHelper;
-import hunt.time.util.common;
+import hunt.time.util.Common;
 // import hunt.concurrent.ConcurrentMap;
 
 /**

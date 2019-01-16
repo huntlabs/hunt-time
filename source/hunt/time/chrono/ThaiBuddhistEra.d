@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.chrono.ThaiBuddhistEra;
+module hunt.time.chrono.ThaiBuddhistEra;
 
 // import hunt.time.temporal.ChronoField;
 

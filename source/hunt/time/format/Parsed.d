@@ -9,7 +9,7 @@
  *
  */
 
-hunt.time.format.Parsed;
+module hunt.time.format.Parsed;
 
 import hunt.time.temporal.ChronoField;
 
@@ -32,13 +32,13 @@ import hunt.time.temporal.TemporalQuery;
 import hunt.time.temporal.UnsupportedTemporalTypeException;
 import hunt.time.temporal.ValueRange;
 
-import hunt.container.HashMap;
-import hunt.container.Iterator;
-import hunt.container.Map;
+import hunt.collection.HashMap;
+import hunt.collection.Iterator;
+import hunt.collection.Map;
 import std.conv;
-import hunt.string.StringBuilder;
-import hunt.container.Set;
-import hunt.lang;
+import hunt.text.StringBuilder;
+import hunt.collection.Set;
+// import hunt.lang;
 import hunt.time.format.ResolverStyle;
 
 /**
