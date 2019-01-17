@@ -32,9 +32,11 @@ import hunt.time.temporal.ValueRange;
 import hunt.time.zone.ZoneRules;
 import hunt.time.ZoneId;
 import hunt.Functions;
+import hunt.Integer;
+import hunt.math.Helper;
 import hunt.collection;
-// import hunt.lang;
 import hunt.text.Common;
+import hunt.util.Common;
 import hunt.time.DateTimeException;
 import std.conv;
 import hunt.text.StringBuilder;
@@ -392,7 +394,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
                     "Zone offset seconds not _in valid range: value "
                     ~ seconds.to!string ~ " is not _in the range -59 to 59");
         }
-        if (Math.abs(hours) == 18 && (minutes | seconds) != 0)
+        if (MathHelper.abs(hours) == 18 && (minutes | seconds) != 0)
         {
             throw new DateTimeException("Zone offset not _in valid range: -18:00 to +18:00");
         }
@@ -467,7 +469,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
         }
         else
         {
-            int absTotalSeconds = Math.abs(_totalSeconds);
+            int absTotalSeconds = MathHelper.abs(_totalSeconds);
             StringBuilder buf = new StringBuilder();
             int absHours = absTotalSeconds / LocalTime.SECONDS_PER_HOUR;
             int absMinutes = (absTotalSeconds / LocalTime.SECONDS_PER_MINUTE) % LocalTime

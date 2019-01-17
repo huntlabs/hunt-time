@@ -25,7 +25,8 @@ import hunt.time.temporal.UnsupportedTemporalTypeException;
 import hunt.time.temporal.ValueRange;
 import hunt.time.chrono.ChronoLocalDate;
 import hunt.time.chrono.Chronology;
-// import hunt.lang;
+import hunt.Long;
+import hunt.math.Helper;
 import std.conv;
 import hunt.text.StringBuilder;
 /**
@@ -165,13 +166,13 @@ abstract class ChronoLocalDateImpl(D = ChronoLocalDate) if(is(D : ChronoLocalDat
             ChronoUnit f = cast(ChronoUnit) unit;
             {
                 if( f == ChronoUnit.DAYS) return plusDays(amountToAdd);
-                if( f == ChronoUnit.WEEKS) return plusDays(Math.multiplyExact(amountToAdd, 7));
+                if( f == ChronoUnit.WEEKS) return plusDays(MathHelper.multiplyExact(amountToAdd, 7));
                 if( f == ChronoUnit.MONTHS) return plusMonths(amountToAdd);
                 if( f == ChronoUnit.YEARS) return plusYears(amountToAdd);
-                if( f == ChronoUnit.DECADES) return plusYears(Math.multiplyExact(amountToAdd, 10));
-                if( f == ChronoUnit.CENTURIES) return plusYears(Math.multiplyExact(amountToAdd, 100));
-                if( f == ChronoUnit.MILLENNIA) return plusYears(Math.multiplyExact(amountToAdd, 1000));
-                if( f == ChronoUnit.ERAS) return _with(ChronoField.ERA, Math.addExact(getLong(ChronoField.ERA), amountToAdd));
+                if( f == ChronoUnit.DECADES) return plusYears(MathHelper.multiplyExact(amountToAdd, 10));
+                if( f == ChronoUnit.CENTURIES) return plusYears(MathHelper.multiplyExact(amountToAdd, 100));
+                if( f == ChronoUnit.MILLENNIA) return plusYears(MathHelper.multiplyExact(amountToAdd, 1000));
+                if( f == ChronoUnit.ERAS) return _with(ChronoField.ERA, MathHelper.addExact(getLong(ChronoField.ERA), amountToAdd));
             }
             throw new UnsupportedTemporalTypeException("Unsupported unit: " ~ f.toString);
         }
@@ -252,7 +253,7 @@ abstract class ChronoLocalDateImpl(D = ChronoLocalDate) if(is(D : ChronoLocalDat
      * @throws DateTimeException if the result exceeds the supported date range
      */
     D plusWeeks(long weeksToAdd) {
-        return plusDays(Math.multiplyExact(weeksToAdd, 7));
+        return plusDays(MathHelper.multiplyExact(weeksToAdd, 7));
     }
 
     /**

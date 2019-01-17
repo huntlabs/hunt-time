@@ -31,7 +31,9 @@ import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.UnsupportedTemporalTypeException;
 import hunt.collection;
 import hunt.Functions;
-// import hunt.lang;
+import hunt.Long;
+import hunt.math.Helper;
+import hunt.util.Common;
 import hunt.text.Common;
 import std.regex;
 import std.string;
@@ -135,7 +137,7 @@ public final class Duration
      * @throws ArithmeticException if the input days exceeds the capacity of {@code Duration}
      */
     public static Duration ofDays(long days) {
-        return create(Math.multiplyExact(days , LocalTime.SECONDS_PER_DAY), 0);
+        return create(MathHelper.multiplyExact(days , LocalTime.SECONDS_PER_DAY), 0);
     }
 
     /**
@@ -150,7 +152,7 @@ public final class Duration
      * @throws ArithmeticException if the input hours exceeds the capacity of {@code Duration}
      */
     public static Duration ofHours(long hours) {
-        return create(Math.multiplyExact(hours, LocalTime.SECONDS_PER_HOUR), 0);
+        return create(MathHelper.multiplyExact(hours, LocalTime.SECONDS_PER_HOUR), 0);
     }
 
     /**
@@ -165,7 +167,7 @@ public final class Duration
      * @throws ArithmeticException if the input minutes exceeds the capacity of {@code Duration}
      */
     public static Duration ofMinutes(long minutes) {
-        return create(Math.multiplyExact(minutes, LocalTime.SECONDS_PER_MINUTE), 0);
+        return create(MathHelper.multiplyExact(minutes, LocalTime.SECONDS_PER_MINUTE), 0);
     }
 
     //-----------------------------------------------------------------------
@@ -201,8 +203,8 @@ public final class Duration
      * @throws ArithmeticException if the adjustment causes the seconds to exceed the capacity of {@code Duration}
      */
     public static Duration ofSeconds(long seconds, long nanoAdjustment) {
-        long secs = Math.addExact(seconds , Math.floorDiv(nanoAdjustment , LocalTime.NANOS_PER_SECOND));
-        int nos = cast(int) (Math.floorMod(nanoAdjustment, LocalTime.NANOS_PER_SECOND));
+        long secs = MathHelper.addExact(seconds , MathHelper.floorDiv(nanoAdjustment , LocalTime.NANOS_PER_SECOND));
+        int nos = cast(int) (MathHelper.floorMod(nanoAdjustment, LocalTime.NANOS_PER_SECOND));
         return create(secs, nos);
     }
 
@@ -386,7 +388,7 @@ public final class Duration
         }
         try {
             long val = to!long(data);
-            return Math.multiplyExact(val , multiplier);
+            return MathHelper.multiplyExact(val , multiplier);
         } catch (Exception ex) {
             throw new Exception("Text cannot be parsed to a Duration: " ~  ex.msg);
         }
@@ -412,7 +414,7 @@ public final class Duration
     }
 
     private static Duration create(bool negate, long daysAsSecs, long hoursAsSecs, long minsAsSecs, long secs, int nanos) {
-        long seconds = Math.addExact(daysAsSecs , Math.addExact(hoursAsSecs ,  Math.addExact(minsAsSecs , secs)));
+        long seconds = MathHelper.addExact(daysAsSecs , MathHelper.addExact(hoursAsSecs ,  MathHelper.addExact(minsAsSecs , secs)));
         if (negate) {
             return ofSeconds(seconds, nanos).negated();
         }
@@ -685,7 +687,7 @@ public final class Duration
     public Duration plus(long amountToAdd, TemporalUnit unit) {
         assert(unit, "unit");
         if (unit == ChronoUnit.DAYS) {
-            return plus(Math.multiplyExact(amountToAdd , LocalTime.SECONDS_PER_DAY), 0);
+            return plus(MathHelper.multiplyExact(amountToAdd , LocalTime.SECONDS_PER_DAY), 0);
         }
         if (unit.isDurationEstimated()) {
             throw new UnsupportedTemporalTypeException("Unit must not have an estimated duration");
@@ -700,7 +702,7 @@ public final class Duration
                 if ((cast(ChronoUnit) unit).toString == ChronoUnit.MILLIS.toString) return plusMillis(amountToAdd);
                 if ((cast(ChronoUnit) unit).toString == ChronoUnit.SECONDS.toString ) return plusSeconds(amountToAdd);
             }
-            return plusSeconds(Math.multiplyExact(unit.getDuration().seconds , amountToAdd));
+            return plusSeconds(MathHelper.multiplyExact(unit.getDuration().seconds , amountToAdd));
         }
         Duration duration = unit.getDuration().multipliedBy(amountToAdd);
         return plusSeconds(duration.getSeconds()).plusNanos(duration.getNano());
@@ -720,7 +722,7 @@ public final class Duration
      * @throws ArithmeticException if numeric overflow occurs
      */
     public Duration plusDays(long daysToAdd) {
-        return plus(Math.multiplyExact(daysToAdd  , LocalTime.SECONDS_PER_DAY), 0);
+        return plus(MathHelper.multiplyExact(daysToAdd  , LocalTime.SECONDS_PER_DAY), 0);
     }
 
     /**
@@ -733,7 +735,7 @@ public final class Duration
      * @throws ArithmeticException if numeric overflow occurs
      */
     public Duration plusHours(long hoursToAdd) {
-        return plus(Math.multiplyExact(hoursToAdd , LocalTime.SECONDS_PER_HOUR), 0);
+        return plus(MathHelper.multiplyExact(hoursToAdd , LocalTime.SECONDS_PER_HOUR), 0);
     }
 
     /**
@@ -746,7 +748,7 @@ public final class Duration
      * @throws ArithmeticException if numeric overflow occurs
      */
     public Duration plusMinutes(long minutesToAdd) {
-        return plus(Math.multiplyExact(minutesToAdd , LocalTime.SECONDS_PER_MINUTE), 0);
+        return plus(MathHelper.multiplyExact(minutesToAdd , LocalTime.SECONDS_PER_MINUTE), 0);
     }
 
     /**
@@ -802,8 +804,8 @@ public final class Duration
         if ((secondsToAdd | nanosToAdd) == 0) {
             return this;
         }
-        long epochSec = Math.addExact(seconds , secondsToAdd);
-        epochSec = Math.addExact(epochSec , nanosToAdd / LocalTime.NANOS_PER_SECOND);
+        long epochSec = MathHelper.addExact(seconds , secondsToAdd);
+        epochSec = MathHelper.addExact(epochSec , nanosToAdd / LocalTime.NANOS_PER_SECOND);
         nanosToAdd = nanosToAdd % LocalTime.NANOS_PER_SECOND;
         long nanoAdjustment = nanos + nanosToAdd;  // safe int+NANOS_PER_SECOND
         return ofSeconds(epochSec, nanoAdjustment);
@@ -1201,8 +1203,8 @@ public final class Duration
             tempSeconds = tempSeconds + 1;
             tempNanos = tempNanos - LocalTime.NANOS_PER_SECOND;
         }
-        long millis = Math.multiplyExact(tempSeconds , 1000);
-        millis = Math.addExact(millis, tempNanos / LocalTime.NANOS_PER_MILLI);
+        long millis = MathHelper.multiplyExact(tempSeconds , 1000);
+        millis = MathHelper.addExact(millis, tempNanos / LocalTime.NANOS_PER_MILLI);
         return millis;
     }
 
@@ -1224,8 +1226,8 @@ public final class Duration
             tempSeconds = tempSeconds + 1;
             tempNanos = tempNanos - LocalTime.NANOS_PER_SECOND;
         }
-        long totalNanos = Math.multiplyExact(tempSeconds , LocalTime.NANOS_PER_SECOND);
-        totalNanos = Math.addExact(totalNanos , tempNanos);
+        long totalNanos = MathHelper.multiplyExact(tempSeconds , LocalTime.NANOS_PER_SECOND);
+        totalNanos = MathHelper.addExact(totalNanos , tempNanos);
         return totalNanos;
     }
 

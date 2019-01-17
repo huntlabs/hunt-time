@@ -46,7 +46,9 @@ import hunt.time.MonthDay;
 import hunt.time.LocalDate;
 import hunt.time.YearMonth;
 import hunt.time.DateTimeException;
-// import hunt.lang;
+import hunt.Long;
+import hunt.math.Helper;
+import hunt.util.Common;
 import hunt.time.Ser;
 import std.conv;
 import hunt.time.util.Common;
@@ -711,10 +713,10 @@ public final class Year
             auto f = cast(ChronoUnit) unit;
             {
                 if( f == ChronoUnit.YEARS) return plusYears(amountToAdd);
-                if( f == ChronoUnit.DECADES) return plusYears(Math.multiplyExact(amountToAdd, 10));
-                if( f == ChronoUnit.CENTURIES) return plusYears(Math.multiplyExact(amountToAdd, 100));
-                if( f == ChronoUnit.MILLENNIA) return plusYears(Math.multiplyExact(amountToAdd, 1000));
-                if( f == ChronoUnit.ERAS) return _with(ChronoField.ERA, Math.addExact(getLong(ChronoField.ERA), amountToAdd));
+                if( f == ChronoUnit.DECADES) return plusYears(MathHelper.multiplyExact(amountToAdd, 10));
+                if( f == ChronoUnit.CENTURIES) return plusYears(MathHelper.multiplyExact(amountToAdd, 100));
+                if( f == ChronoUnit.MILLENNIA) return plusYears(MathHelper.multiplyExact(amountToAdd, 1000));
+                if( f == ChronoUnit.ERAS) return _with(ChronoField.ERA, MathHelper.addExact(getLong(ChronoField.ERA), amountToAdd));
             }
             throw new UnsupportedTemporalTypeException("Unsupported unit: " ~ f.toString);
         }

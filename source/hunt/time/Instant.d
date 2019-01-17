@@ -18,7 +18,9 @@ import hunt.util.Comparator;
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
 import hunt.Exceptions;
-// import hunt.lang;
+import hunt.Long;
+import hunt.math.Helper;
+import hunt.util.Common;
 import hunt.time.DateTimeException;
 import hunt.io.Common;
 // import hunt.time.format.DateTimeFormatter;
@@ -292,8 +294,8 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     public static Instant ofEpochSecond(long epochSecond, long nanoAdjustment) {
-        long secs = Math.addExact(epochSecond , Math.floorDiv(nanoAdjustment , LocalTime.NANOS_PER_SECOND));
-        int nos = cast(int)(Math.floorMod(nanoAdjustment , LocalTime.NANOS_PER_SECOND));
+        long secs = MathHelper.addExact(epochSecond , MathHelper.floorDiv(nanoAdjustment , LocalTime.NANOS_PER_SECOND));
+        int nos = cast(int)(MathHelper.floorMod(nanoAdjustment , LocalTime.NANOS_PER_SECOND));
         return create(secs, nos);
     }
 
@@ -308,8 +310,8 @@ public final class Instant
      * @throws DateTimeException if the instant exceeds the maximum or minimum instant
      */
     public static Instant ofEpochMilli(long epochMilli) {
-        long secs = Math.floorDiv(epochMilli , 1000);
-        int mos = Math.floorMod(epochMilli , 1000);
+        long secs = MathHelper.floorDiv(epochMilli , 1000);
+        int mos = MathHelper.floorMod(epochMilli , 1000);
         return create(secs, mos * 1000_000);
     }
 
@@ -753,7 +755,7 @@ public final class Instant
             throw new UnsupportedTemporalTypeException("Unit must divide into a standard day without remainder");
         }
         long nod = (seconds % LocalTime.SECONDS_PER_DAY) * LocalTime.NANOS_PER_SECOND + nanos;
-        long result =/*  Math.floorDiv */(nod / (dur)) * dur;
+        long result =/*  MathHelper.floorDiv */(nod / (dur)) * dur;
         return plusNanos(result - nod);
     }
 
@@ -850,10 +852,10 @@ public final class Instant
                 if(name ==  ChronoUnit.MICROS.toString) return plus(amountToAdd / 1000_000, (amountToAdd % 1000_000) * 1000);
                 if(name ==  ChronoUnit.MILLIS.toString) return plusMillis(amountToAdd);
                 if(name ==  ChronoUnit.SECONDS.toString) return plusSeconds(amountToAdd);
-                if(name ==  ChronoUnit.MINUTES.toString) return plusSeconds(Math.multiplyExact(amountToAdd , LocalTime.SECONDS_PER_MINUTE));
-                if(name ==  ChronoUnit.HOURS.toString) return plusSeconds(Math.multiplyExact(amountToAdd , LocalTime.SECONDS_PER_HOUR));
-                if(name ==  ChronoUnit.HALF_DAYS.toString) return plusSeconds(Math.multiplyExact(amountToAdd , LocalTime.SECONDS_PER_DAY / 2));
-                if(name ==  ChronoUnit.DAYS.toString) return plusSeconds(Math.multiplyExact(amountToAdd , LocalTime.SECONDS_PER_DAY));
+                if(name ==  ChronoUnit.MINUTES.toString) return plusSeconds(MathHelper.multiplyExact(amountToAdd , LocalTime.SECONDS_PER_MINUTE));
+                if(name ==  ChronoUnit.HOURS.toString) return plusSeconds(MathHelper.multiplyExact(amountToAdd , LocalTime.SECONDS_PER_HOUR));
+                if(name ==  ChronoUnit.HALF_DAYS.toString) return plusSeconds(MathHelper.multiplyExact(amountToAdd , LocalTime.SECONDS_PER_DAY / 2));
+                if(name ==  ChronoUnit.DAYS.toString) return plusSeconds(MathHelper.multiplyExact(amountToAdd , LocalTime.SECONDS_PER_DAY));
             }
             throw new UnsupportedTemporalTypeException("Unsupported unit: " ~ typeid(unit).stringof);
         }
@@ -918,8 +920,8 @@ public final class Instant
         if ((secondsToAdd | nanosToAdd) == 0) {
             return this;
         }
-        long epochSec = Math.addExact(seconds , secondsToAdd);
-        epochSec = Math.addExact(epochSec , nanosToAdd / LocalTime.NANOS_PER_SECOND);
+        long epochSec = MathHelper.addExact(seconds , secondsToAdd);
+        epochSec = MathHelper.addExact(epochSec , nanosToAdd / LocalTime.NANOS_PER_SECOND);
         nanosToAdd = nanosToAdd % LocalTime.NANOS_PER_SECOND;
         long nanoAdjustment = nanos + nanosToAdd;  // safe int+NANOS_PER_SECOND
         return ofEpochSecond(epochSec, nanoAdjustment);
@@ -1143,7 +1145,7 @@ public final class Instant
              {
                 if(name == ChronoUnit.NANOS.toString) return nanosUntil(end);
                 if(name == ChronoUnit.MICROS.toString) return nanosUntil(end) / 1000;
-                if(name == ChronoUnit.MILLIS.toString) return Math.subtractExact(end.toEpochMilli() , toEpochMilli());
+                if(name == ChronoUnit.MILLIS.toString) return MathHelper.subtractExact(end.toEpochMilli() , toEpochMilli());
                 if(name == ChronoUnit.SECONDS.toString) return secondsUntil(end);
                 if(name == ChronoUnit.MINUTES.toString) return secondsUntil(end) / LocalTime.SECONDS_PER_MINUTE;
                 if(name == ChronoUnit.HOURS.toString) return secondsUntil(end) / LocalTime.SECONDS_PER_HOUR;
@@ -1156,13 +1158,13 @@ public final class Instant
     }
 
     private long nanosUntil(Instant end) {
-        long secsDiff = Math.subtractExact(end.seconds , seconds);
-        long totalNanos = Math.multiplyExact(secsDiff , LocalTime.NANOS_PER_SECOND);
-        return Math.addExact(totalNanos , end.nanos - nanos);
+        long secsDiff = MathHelper.subtractExact(end.seconds , seconds);
+        long totalNanos = MathHelper.multiplyExact(secsDiff , LocalTime.NANOS_PER_SECOND);
+        return MathHelper.addExact(totalNanos , end.nanos - nanos);
     }
 
     private long secondsUntil(Instant end) {
-        long secsDiff = Math.subtractExact(end.seconds , seconds);
+        long secsDiff = MathHelper.subtractExact(end.seconds , seconds);
         long nanosDiff = end.nanos - nanos;
         if (secsDiff > 0 && nanosDiff < 0) {
             secsDiff--;
@@ -1226,12 +1228,12 @@ public final class Instant
      */
     public long toEpochMilli() {
         if (seconds < 0 && nanos > 0) {
-            long millis = Math.multiplyExact((seconds+1) , 1000);
+            long millis = MathHelper.multiplyExact((seconds+1) , 1000);
             long adjustment = nanos / 1000_000 - 1000;
-            return Math.addExact(millis , adjustment);
+            return MathHelper.addExact(millis , adjustment);
         } else {
-            long millis = Math.multiplyExact(seconds , 1000);
-            return Math.addExact(millis , nanos / 1000_000);
+            long millis = MathHelper.multiplyExact(seconds , 1000);
+            return MathHelper.addExact(millis , nanos / 1000_000);
         }
     }
 

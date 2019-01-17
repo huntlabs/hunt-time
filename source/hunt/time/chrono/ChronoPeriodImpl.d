@@ -33,7 +33,8 @@ import hunt.time.temporal.ValueRange;
 import hunt.collection.List;
 import hunt.time.chrono.Chronology;
 import hunt.time.chrono.ChronoPeriod;
-// import hunt.lang;
+import hunt.Integer;
+import hunt.math.Helper;
 import hunt.text.StringBuilder;
 import hunt.time.chrono.Ser;
 import hunt.time.util.QueryHelper;
@@ -151,9 +152,9 @@ final class ChronoPeriodImpl
         ChronoPeriodImpl amount = validateAmount(amountToAdd);
         return new ChronoPeriodImpl(
                 chrono,
-                Math.addExact(years, amount.years),
-                Math.addExact(months, amount.months),
-                Math.addExact(days, amount.days));
+                MathHelper.addExact(years, amount.years),
+                MathHelper.addExact(months, amount.months),
+                MathHelper.addExact(days, amount.days));
     }
 
     override
@@ -161,9 +162,9 @@ final class ChronoPeriodImpl
         ChronoPeriodImpl amount = validateAmount(amountToSubtract);
         return new ChronoPeriodImpl(
                 chrono,
-                Math.subtractExact(years, amount.years),
-                Math.subtractExact(months, amount.months),
-                Math.subtractExact(days, amount.days));
+                MathHelper.subtractExact(years, amount.years),
+                MathHelper.subtractExact(months, amount.months),
+                MathHelper.subtractExact(days, amount.days));
     }
 
     /**
@@ -192,9 +193,9 @@ final class ChronoPeriodImpl
         }
         return new ChronoPeriodImpl(
                 chrono,
-                Math.multiplyExact(years, scalar),
-                Math.multiplyExact(months, scalar),
-                Math.multiplyExact(days, scalar));
+                MathHelper.multiplyExact(years, scalar),
+                MathHelper.multiplyExact(months, scalar),
+                MathHelper.multiplyExact(days, scalar));
     }
 
     //-----------------------------------------------------------------------
@@ -208,7 +209,7 @@ final class ChronoPeriodImpl
             if (splitYears == years && splitMonths == months) {
                 return this;
             }
-            return new ChronoPeriodImpl(chrono, Math.toIntExact(splitYears), splitMonths, days);
+            return new ChronoPeriodImpl(chrono, MathHelper.toIntExact(splitYears), splitMonths, days);
 
         }
         return this;

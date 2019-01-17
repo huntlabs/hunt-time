@@ -64,7 +64,9 @@ import hunt.time.format.TextStyle;
 import hunt.collection.Set;
 import hunt.time.util.Consumer;
 import hunt.collection.HashMap;
-// import hunt.lang;
+import hunt.Integer;
+import hunt.Long;
+import hunt.math.Helper;
 import hunt.time.format.DateTimeFormatter;
 import hunt.time.format.DateTimePrintContext;
 import hunt.time.format.ResolverStyle;
@@ -3097,7 +3099,7 @@ public final class DateTimeFormatterBuilder
             long value = getValue(context, valueLong.longValue());
             DecimalStyle decimalStyle = context.getDecimalStyle();
             string str = (value == Long.MIN_VALUE ? "9223372036854775808"
-                    : to!string(Math.abs(value)));
+                    : to!string(MathHelper.abs(value)));
             if (str.length > maxWidth)
             {
                 throw new DateTimeException("Field " ~ typeid(field)
@@ -3217,14 +3219,14 @@ public final class DateTimeFormatterBuilder
             {
                 return ~position;
             }
-            int effMaxWidth = (context.isStrict() || isFixedWidth(context) ? maxWidth : 9) + Math.max(subsequentWidth,
+            int effMaxWidth = (context.isStrict() || isFixedWidth(context) ? maxWidth : 9) + MathHelper.max(subsequentWidth,
                     0);
             long total = 0;
             BigInteger totalBig = null;
             int pos = position;
             for (int pass = 0; pass < 2; pass++)
             {
-                int maxEndPos = Math.min(pos + effMaxWidth, length);
+                int maxEndPos = MathHelper.min(pos + effMaxWidth, length);
                 while (pos < maxEndPos)
                 {
                     char ch = text.charAt(pos++);
@@ -3255,7 +3257,7 @@ public final class DateTimeFormatterBuilder
                 {
                     // re-parse now we know the correct width
                     int parseLen = pos - position;
-                    effMaxWidth = Math.max(effMinWidth, parseLen - subsequentWidth);
+                    effMaxWidth = MathHelper.max(effMinWidth, parseLen - subsequentWidth);
                     pos = position;
                     total = 0;
                     totalBig = null;
@@ -3431,7 +3433,7 @@ public final class DateTimeFormatterBuilder
 
         override long getValue(DateTimePrintContext context, long value)
         {
-            long absValue = Math.abs(value);
+            long absValue = MathHelper.abs(value);
             int baseValue = this.baseValue;
             if (baseDate !is null)
             {
@@ -3671,7 +3673,7 @@ public final class DateTimeFormatterBuilder
                 }
                 else
                 {
-                    int outputScale = Math.min(Math.max(fraction.scale(), minWidth), maxWidth);
+                    int outputScale = MathHelper.min(MathHelper.max(fraction.scale(), minWidth), maxWidth);
                     fraction = fraction.setScale(outputScale, RoundingMode.FLOOR.mode());
                     string str = fraction.toPlainString().substring(2);
                     str = decimalStyle.convertNumberToI18N(str);
@@ -3709,7 +3711,7 @@ public final class DateTimeFormatterBuilder
                 {
                     return ~position; // need at least min width digits
                 }
-                int maxEndPos = Math.min(position + effectiveMax, length);
+                int maxEndPos = MathHelper.min(position + effectiveMax, length);
                 int total = 0; // can use int because we are only parsing up to 9 digits
                 int pos = position;
                 while (pos < maxEndPos)
@@ -3972,8 +3974,8 @@ public final class DateTimeFormatterBuilder
                 {
                     // current era
                     long zeroSecs = inSec - SECONDS_PER_10000_YEARS + SECONDS_0000_TO_1970;
-                    long hi = Math.floorDiv(zeroSecs, SECONDS_PER_10000_YEARS) + 1;
-                    long lo = Math.floorMod(zeroSecs, SECONDS_PER_10000_YEARS);
+                    long hi = MathHelper.floorDiv(zeroSecs, SECONDS_PER_10000_YEARS) + 1;
+                    long lo = MathHelper.floorMod(zeroSecs, SECONDS_PER_10000_YEARS);
                     LocalDateTime ldt = LocalDateTime.ofEpochSecond(lo - SECONDS_0000_TO_1970,
                             0, ZoneOffset.UTC);
                     if (hi > 0)
@@ -4012,7 +4014,7 @@ public final class DateTimeFormatterBuilder
                         }
                         else
                         {
-                            buf.insert(pos + 1, (Math.abs(hi)));
+                            buf.insert(pos + 1, (MathHelper.abs(hi)));
                         }
                     }
                 }
@@ -4083,7 +4085,7 @@ public final class DateTimeFormatterBuilder
                     LocalDateTime ldt = LocalDateTime.of(year, month, day,
                             hour, min, sec, 0).plusDays(days);
                     instantSecs = ldt.toEpochSecond(ZoneOffset.ofTotalSeconds(offset));
-                    instantSecs += Math.multiplyExact(yearParsed / 10_000L, SECONDS_PER_10000_YEARS);
+                    instantSecs += MathHelper.multiplyExact(yearParsed / 10_000L, SECONDS_PER_10000_YEARS);
                 }
                 catch (RuntimeException ex)
                 {
@@ -4172,16 +4174,16 @@ public final class DateTimeFormatterBuilder
                 {
                     return false;
                 }
-                int totalSecs = Math.toIntExact(offsetSecs.longValue());
+                int totalSecs = MathHelper.toIntExact(offsetSecs.longValue());
                 if (totalSecs == 0)
                 {
                     buf.append(noOffsetText);
                 }
                 else
                 {
-                    int absHours = Math.abs((totalSecs / 3600) % 100); // anything larger than 99 silently dropped
-                    int absMinutes = Math.abs((totalSecs / 60) % 60);
-                    int absSeconds = Math.abs(totalSecs % 60);
+                    int absHours = MathHelper.abs((totalSecs / 3600) % 100); // anything larger than 99 silently dropped
+                    int absMinutes = MathHelper.abs((totalSecs / 60) % 60);
+                    int absSeconds = MathHelper.abs(totalSecs % 60);
                     int bufPos = buf.length();
                     int output = absHours;
                     buf.append(totalSecs < 0 ? "-" : "+");
@@ -4547,12 +4549,12 @@ public final class DateTimeFormatterBuilder
                 }
                 string gmtText = "GMT"; // TODO: get localized version of 'GMT'
                 buf.append(gmtText);
-                int totalSecs = Math.toIntExact(offsetSecs.longValue());
+                int totalSecs = MathHelper.toIntExact(offsetSecs.longValue());
                 if (totalSecs != 0)
                 {
-                    int absHours = Math.abs((totalSecs / 3600) % 100); // anything larger than 99 silently dropped
-                    int absMinutes = Math.abs((totalSecs / 60) % 60);
-                    int absSeconds = Math.abs(totalSecs % 60);
+                    int absHours = MathHelper.abs((totalSecs / 3600) % 100); // anything larger than 99 silently dropped
+                    int absMinutes = MathHelper.abs((totalSecs / 60) % 60);
+                    int absSeconds = MathHelper.abs(totalSecs % 60);
                     buf.append(totalSecs < 0 ? "-" : "+");
                     if (style == TextStyle.FULL)
                     {

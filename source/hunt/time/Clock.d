@@ -12,7 +12,8 @@
 module hunt.time.Clock;
 
 import hunt.io.Common;
-// import hunt.lang;
+import hunt.Exceptions;
+import hunt.math.Helper;
 import hunt.time.Constants;
 import hunt.time.ZoneId;
 import hunt.time.Duration;
@@ -23,6 +24,7 @@ import hunt.time.util.Common;
 import core.time : convert;
 import std.conv;
 import std.math;
+
 
 // import hunt.util.TimeZone;
 // import jdk.internal.misc.VM;
@@ -628,7 +630,7 @@ public abstract class Clock {
         }
         override
         public long millis() {
-            return Math.addExact(baseClock.millis(), _offset.toMillis());
+            return MathHelper.addExact(baseClock.millis(), _offset.toMillis());
         }
         override
         public Instant instant() {
@@ -679,17 +681,17 @@ public abstract class Clock {
         override
         public long millis() {
             long millis = baseClock.millis();
-            return millis - Math.floorMod(millis, (tickNanos / 1000_000L));
+            return millis - MathHelper.floorMod(millis, (tickNanos / 1000_000L));
         }
         override
         public Instant instant() {
             if ((tickNanos % 1000_000) == 0) {
                 long millis = baseClock.millis();
-                return Instant.ofEpochMilli(millis - Math.floorMod(millis , (tickNanos / 1000_000L)));
+                return Instant.ofEpochMilli(millis - MathHelper.floorMod(millis , (tickNanos / 1000_000L)));
             }
             Instant _instant = baseClock.instant();
             long nanos = _instant.getNano();
-            long adjust = Math.floorMod(nanos , tickNanos);
+            long adjust = MathHelper.floorMod(nanos , tickNanos);
             return _instant.minusNanos(adjust);
         }
         override

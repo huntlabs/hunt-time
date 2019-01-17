@@ -17,7 +17,7 @@ import hunt.time.temporal.ChronoField;
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
 import hunt.Exceptions;
-// import hunt.lang;
+import hunt.Long;
 import std.conv;
 import hunt.io.Common;
 import hunt.time.chrono.ChronoLocalDate;
@@ -54,6 +54,7 @@ import hunt.time.Year;
 import hunt.time.DateTimeException;
 import std.algorithm.comparison;
 import hunt.text.StringBuilder;
+import hunt.math.Helper;
 import hunt.time.Ser;
 import hunt.util.Comparator;
 import hunt.time.chrono.ChronoLocalDateTime;
@@ -337,7 +338,7 @@ public  class LocalDate
         ZoneRules rules = zone.getRules();
         ZoneOffset offset = rules.getOffset(instant);
         long localSecond = instant.getEpochSecond() + offset.getTotalSeconds();
-        long localEpochDay = Math.floorDiv(localSecond , LocalTime.SECONDS_PER_DAY);
+        long localEpochDay = MathHelper.floorDiv(localSecond , LocalTime.SECONDS_PER_DAY);
         return ofEpochDay(localEpochDay);
     }
 
@@ -504,13 +505,13 @@ public  class LocalDate
     private static LocalDate resolvePreviousValid(int year, int month, int day) {
         switch (month) {
             case 2:
-                day = /* Math. */min(day, IsoChronology.INSTANCE.isLeapYear(year) ? 29 : 28);
+                day = /* MathHelper. */min(day, IsoChronology.INSTANCE.isLeapYear(year) ? 29 : 28);
                 break;
             case 4:
             case 6:
             case 9:
             case 11:
-                day = /* Math. */min(day, 30);
+                day = /* MathHelper. */min(day, 30);
                 break;
             default:break;
         }
@@ -886,7 +887,7 @@ public  class LocalDate
      * @return the day-of-week, not null
      */
     public DayOfWeek getDayOfWeek() {
-        int dow0 = Math.floorMod((toEpochDay() + 3), 7);
+        int dow0 = MathHelper.floorMod((toEpochDay() + 3), 7);
         return DayOfWeek.of(dow0 + 1);
     }
 
@@ -1323,10 +1324,10 @@ public  class LocalDate
                 if( f ==  ChronoUnit.WEEKS) return plusWeeks(amountToAdd);
                 if( f ==  ChronoUnit.MONTHS) return plusMonths(amountToAdd);
                 if( f ==  ChronoUnit.YEARS) return plusYears(amountToAdd);
-                if( f ==  ChronoUnit.DECADES) return plusYears(Math.multiplyExact(amountToAdd, 10));
-                if( f ==  ChronoUnit.CENTURIES) return plusYears(Math.multiplyExact(amountToAdd , 100));
-                if( f ==  ChronoUnit.MILLENNIA) return plusYears(Math.multiplyExact(amountToAdd , 1000));
-                if( f ==  ChronoUnit.ERAS) return _with(ChronoField.ERA, Math.addExact(getLong(ChronoField.ERA) , amountToAdd));
+                if( f ==  ChronoUnit.DECADES) return plusYears(MathHelper.multiplyExact(amountToAdd, 10));
+                if( f ==  ChronoUnit.CENTURIES) return plusYears(MathHelper.multiplyExact(amountToAdd , 100));
+                if( f ==  ChronoUnit.MILLENNIA) return plusYears(MathHelper.multiplyExact(amountToAdd , 1000));
+                if( f ==  ChronoUnit.ERAS) return _with(ChronoField.ERA, MathHelper.addExact(getLong(ChronoField.ERA) , amountToAdd));
             }
             throw new UnsupportedTemporalTypeException("Unsupported unit: " ~ f.toString);
         }
@@ -1388,8 +1389,8 @@ public  class LocalDate
         }
         long monthCount = year * 12L + (month - 1);
         long calcMonths = monthCount + monthsToAdd;  // safe overflow
-        int newYear = ChronoField.YEAR.checkValidIntValue(Math.floorDiv(calcMonths , 12));
-        int newMonth = Math.floorMod(calcMonths , 12) + 1;
+        int newYear = ChronoField.YEAR.checkValidIntValue(MathHelper.floorDiv(calcMonths , 12));
+        int newMonth = MathHelper.floorMod(calcMonths , 12) + 1;
         return resolvePreviousValid(newYear, newMonth, day);
     }
 
@@ -1409,7 +1410,7 @@ public  class LocalDate
      * @throws DateTimeException if the result exceeds the supported date range
      */
     public LocalDate plusWeeks(long weeksToAdd) {
-        return plusDays(Math.multiplyExact(weeksToAdd , 7));
+        return plusDays(MathHelper.multiplyExact(weeksToAdd , 7));
     }
 
     /**
@@ -1448,7 +1449,7 @@ public  class LocalDate
             }
         }
 
-        long mjDay = Math.addExact(toEpochDay() , daysToAdd);
+        long mjDay = MathHelper.addExact(toEpochDay() , daysToAdd);
         return LocalDate.ofEpochDay(mjDay);
     }
 
@@ -1787,7 +1788,7 @@ public  class LocalDate
         }
         long years = totalMonths / 12;  // safe
         int months = cast(int) (totalMonths % 12);  // safe
-        return Period.of(/* Math.toIntExact */cast(int)(years), months, days);
+        return Period.of(/* MathHelper.toIntExact */cast(int)(years), months, days);
     }
 
     /**
@@ -2267,7 +2268,7 @@ public  class LocalDate
         int yearValue = year;
         int monthValue = month;
         int dayValue = day;
-        int absYear = /* Math. */abs(yearValue);
+        int absYear = /* MathHelper. */abs(yearValue);
         StringBuilder buf = new StringBuilder(10);
         if (absYear < 1000) {
             if (yearValue < 0) {

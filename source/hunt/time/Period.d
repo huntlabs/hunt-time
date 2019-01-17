@@ -35,7 +35,9 @@ import hunt.collection.List;
 import hunt.time.LocalDate;
 import hunt.util.Comparator;
 import hunt.time.DateTimeException;
-// import hunt.lang;
+import hunt.Integer;
+import hunt.Long;
+import hunt.math.Helper;
 import hunt.collection;
 import hunt.time.Ser;
 import hunt.text.Common;
@@ -180,7 +182,7 @@ public final class Period
      * @return the period, with the input weeks converted to days, not null
      */
     public static Period ofWeeks(int weeks) {
-        return create(0, 0, Math.multiplyExact(weeks, 7));
+        return create(0, 0, MathHelper.multiplyExact(weeks, 7));
     }
 
     /**
@@ -247,11 +249,11 @@ public final class Period
         foreach(TemporalUnit unit ; amount.getUnits()) {
             long unitAmount = amount.get(unit);
             if (unit == ChronoUnit.YEARS) {
-                years = Math.toIntExact(unitAmount);
+                years = MathHelper.toIntExact(unitAmount);
             } else if (unit == ChronoUnit.MONTHS) {
-                months = Math.toIntExact(unitAmount);
+                months = MathHelper.toIntExact(unitAmount);
             } else if (unit == ChronoUnit.DAYS) {
-                days = Math.toIntExact(unitAmount);
+                days = MathHelper.toIntExact(unitAmount);
             } else {
                 throw new DateTimeException("Unit must be Years, Months or Days, but was " ~ typeid(unit).name);
             }
@@ -316,7 +318,7 @@ public final class Period
                     int months = parseNumber(text, monthStart, negate);
                     int weeks = parseNumber(text, weekStart, negate);
                     int days = parseNumber(text, dayStart, negate);
-                    days = Math.addExact(days, Math.multiplyExact(weeks, 7));
+                    days = MathHelper.addExact(days, MathHelper.multiplyExact(weeks, 7));
                     return create(years, months, days);
                 } catch (NumberFormatException ex) {
                     throw new DateTimeParseException("Text cannot be parsed to a Period", text, 0, ex);
@@ -337,7 +339,7 @@ public final class Period
         }
         int val = to!int(data);
         try {
-            return Math.multiplyExact(val, negate);
+            return MathHelper.multiplyExact(val, negate);
         } catch (ArithmeticException ex) {
             throw new DateTimeParseException("Text cannot be parsed to a Period", text, 0, ex);
         }
@@ -606,9 +608,9 @@ public final class Period
     public Period plus(TemporalAmount amountToAdd) {
         Period isoAmount = Period.from(amountToAdd);
         return create(
-                Math.addExact(years, isoAmount.years),
-                Math.addExact(months, isoAmount.months),
-                Math.addExact(days, isoAmount.days));
+                MathHelper.addExact(years, isoAmount.years),
+                MathHelper.addExact(months, isoAmount.months),
+                MathHelper.addExact(days, isoAmount.days));
     }
 
     /**
@@ -628,7 +630,7 @@ public final class Period
         if (yearsToAdd == 0) {
             return this;
         }
-        return create(Math.toIntExact(Math.addExact(years, yearsToAdd)), months, days);
+        return create(MathHelper.toIntExact(MathHelper.addExact(years, yearsToAdd)), months, days);
     }
 
     /**
@@ -648,7 +650,7 @@ public final class Period
         if (monthsToAdd == 0) {
             return this;
         }
-        return create(years, Math.toIntExact(Math.addExact(months, monthsToAdd)), days);
+        return create(years, MathHelper.toIntExact(MathHelper.addExact(months, monthsToAdd)), days);
     }
 
     /**
@@ -668,7 +670,7 @@ public final class Period
         if (daysToAdd == 0) {
             return this;
         }
-        return create(years, months, Math.toIntExact(Math.addExact(days, daysToAdd)));
+        return create(years, months, MathHelper.toIntExact(MathHelper.addExact(days, daysToAdd)));
     }
 
     //-----------------------------------------------------------------------
@@ -695,9 +697,9 @@ public final class Period
     public Period minus(TemporalAmount amountToSubtract) {
         Period isoAmount = Period.from(amountToSubtract);
         return create(
-                Math.subtractExact(years, isoAmount.years),
-                Math.subtractExact(months, isoAmount.months),
-                Math.subtractExact(days, isoAmount.days));
+                MathHelper.subtractExact(years, isoAmount.years),
+                MathHelper.subtractExact(months, isoAmount.months),
+                MathHelper.subtractExact(days, isoAmount.days));
     }
 
     /**
@@ -771,9 +773,9 @@ public final class Period
             return this;
         }
         return create(
-                Math.multiplyExact(years, scalar),
-                Math.multiplyExact(months, scalar),
-                Math.multiplyExact(days, scalar));
+                MathHelper.multiplyExact(years, scalar),
+                MathHelper.multiplyExact(months, scalar),
+                MathHelper.multiplyExact(days, scalar));
     }
 
     /**
@@ -818,7 +820,7 @@ public final class Period
         if (splitYears == years && splitMonths == months) {
             return this;
         }
-        return create(Math.toIntExact(splitYears), splitMonths, days);
+        return create(MathHelper.toIntExact(splitYears), splitMonths, days);
     }
 
     /**

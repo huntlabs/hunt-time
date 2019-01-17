@@ -30,7 +30,8 @@ import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.ValueRange;
 import hunt.time.temporal.Temporal;
 import hunt.time.temporal.TemporalAccessor;
-// import hunt.lang;
+import hunt.Long;
+import hunt.math.Helper;
 import hunt.time.temporal.IsoFields;
 import hunt.collection.HashMap;
 import std.conv;
@@ -768,7 +769,7 @@ public final class WeekFields : Serializable
             // Clamp the week of year to keep it _in the same year
             int yearLen = date.lengthOfYear();
             int newYearWeek = computeWeek(offset, yearLen + weekDef.getMinimalDaysInFirstWeek());
-            wowby = Math.min(wowby, newYearWeek - 1);
+            wowby = MathHelper.min(wowby, newYearWeek - 1);
 
             int days = -offset + (dow - 1) + (wowby - 1) * 7;
             return date.plus(days, ChronoUnit.DAYS);
@@ -844,13 +845,13 @@ public final class WeekFields : Serializable
         {
             int sow = weekDef.getFirstDayOfWeek().getValue();
             int isoDow = temporal.get(ChronoField.DAY_OF_WEEK);
-            return Math.floorMod(isoDow - sow, 7) + 1;
+            return MathHelper.floorMod(isoDow - sow, 7) + 1;
         }
 
         private int localizedDayOfWeek(int isoDow)
         {
             int sow = weekDef.getFirstDayOfWeek().getValue();
-            return Math.floorMod(isoDow - sow, 7) + 1;
+            return MathHelper.floorMod(isoDow - sow, 7) + 1;
         }
 
         private long localizedWeekOfMonth(TemporalAccessor temporal)
@@ -951,7 +952,7 @@ public final class WeekFields : Serializable
         private int startOfWeekOffset(int day, int dow)
         {
             // offset of first day corresponding to the day of week _in first 7 days (zero origin)
-            int weekStart = Math.floorMod(day - dow, 7);
+            int weekStart = MathHelper.floorMod(day - dow, 7);
             int offset = -weekStart;
             if (weekStart + 1 > weekDef.getMinimalDaysInFirstWeek())
             {
@@ -1006,7 +1007,7 @@ public final class WeekFields : Serializable
                 TemporalAccessor partialTemporal, ResolverStyle resolverStyle)
         {
             long value = fieldValues.get(this).longValue();
-            int newValue = Math.toIntExact(value); // broad limit makes overflow checking lighter
+            int newValue = MathHelper.toIntExact(value); // broad limit makes overflow checking lighter
             // first convert localized day-of-week to ISO day-of-week
             // doing this first handles case where both ISO and localized were parsed and might mismatch
             // day-of-week is always strict as two different day-of-week values makes lenient complex
@@ -1014,7 +1015,7 @@ public final class WeekFields : Serializable
             { // day-of-week
                 int checkedValue = _range.checkValidIntValue(value, this); // no leniency as too complex
                 int startDow = weekDef.getFirstDayOfWeek().getValue();
-                long isoDow = Math.floorMod((startDow - 1) + (checkedValue - 1), 7) + 1;
+                long isoDow = MathHelper.floorMod((startDow - 1) + (checkedValue - 1), 7) + 1;
                 fieldValues.remove(this);
                 fieldValues.put(ChronoField.DAY_OF_WEEK, new Long(isoDow));
                 return null;
@@ -1062,11 +1063,11 @@ public final class WeekFields : Serializable
             ChronoLocalDate date;
             if (resolverStyle == ResolverStyle.LENIENT)
             {
-                date = chrono.date(year, 1, 1).plus(Math.subtractExact(month,
+                date = chrono.date(year, 1, 1).plus(MathHelper.subtractExact(month,
                         1), ChronoUnit.MONTHS);
-                long weeks = Math.subtractExact(wom, localizedWeekOfMonth(date));
+                long weeks = MathHelper.subtractExact(wom, localizedWeekOfMonth(date));
                 int days = localDow - localizedDayOfWeek(date); // safe from overflow
-                date = date.plus(Math.addExact(Math.multiplyExact(weeks, 7),
+                date = date.plus(MathHelper.addExact(MathHelper.multiplyExact(weeks, 7),
                         days), ChronoUnit.DAYS);
             }
             else
@@ -1097,9 +1098,9 @@ public final class WeekFields : Serializable
             ChronoLocalDate date = chrono.date(year, 1, 1);
             if (resolverStyle == ResolverStyle.LENIENT)
             {
-                long weeks = Math.subtractExact(woy, localizedWeekOfYear(date));
+                long weeks = MathHelper.subtractExact(woy, localizedWeekOfYear(date));
                 int days = localDow - localizedDayOfWeek(date); // safe from overflow
-                date = date.plus(Math.addExact(Math.multiplyExact(weeks, 7),
+                date = date.plus(MathHelper.addExact(MathHelper.multiplyExact(weeks, 7),
                         days), ChronoUnit.DAYS);
             }
             else
@@ -1131,7 +1132,7 @@ public final class WeekFields : Serializable
             {
                 date = ofWeekBasedYear(chrono, yowby, 1, localDow);
                 long wowby = fieldValues.get(weekDef._weekOfWeekBasedYear).longValue();
-                long weeks = Math.subtractExact(wowby, 1);
+                long weeks = MathHelper.subtractExact(wowby, 1);
                 date = date.plus(weeks, ChronoUnit.WEEKS);
             }
             else

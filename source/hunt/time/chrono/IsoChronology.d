@@ -48,7 +48,8 @@ import hunt.time.chrono.ChronoLocalDateTimeImpl;
 import hunt.time.chrono.ChronoZonedDateTime;
 import hunt.time.chrono.ChronoZonedDateTimeImpl;
 import hunt.time.chrono.ChronoLocalDate;
-// import hunt.lang;
+import hunt.Long;
+import hunt.math.Helper;
 import hunt.Exceptions;
 import hunt.collection;
 import hunt.util.Comparator;
@@ -291,7 +292,7 @@ public final class IsoChronology : AbstractChronology , Serializable {
         }
         totalDays -= DAYS_0000_TO_1970;
         timeinSec = (hour * 60 + minute ) * 60 + second;
-        return Math.addExact(Math.multiplyExact(totalDays, 86400L), timeinSec - zoneOffset.getTotalSeconds());
+        return MathHelper.addExact(MathHelper.multiplyExact(totalDays, 86400L), timeinSec - zoneOffset.getTotalSeconds());
      }
 
      long epochSecond(Era era, int yearOfEra, int month, int dayOfMonth,
@@ -566,8 +567,8 @@ public final class IsoChronology : AbstractChronology , Serializable {
             if (resolverStyle != ResolverStyle.LENIENT) {
                 ChronoField.PROLEPTIC_MONTH.checkValidValue(pMonth.longValue());
             }
-            addFieldValue(fieldValues, ChronoField.MONTH_OF_YEAR, Math.floorMod(pMonth.longValue(), 12) + 1);
-            addFieldValue(fieldValues, ChronoField.YEAR, Math.floorDiv(pMonth.longValue(), 12));
+            addFieldValue(fieldValues, ChronoField.MONTH_OF_YEAR, MathHelper.floorMod(pMonth.longValue(), 12) + 1);
+            addFieldValue(fieldValues, ChronoField.YEAR, MathHelper.floorDiv(pMonth.longValue(), 12));
         }
     }
 
@@ -584,19 +585,19 @@ public final class IsoChronology : AbstractChronology , Serializable {
                 if (resolverStyle == ResolverStyle.STRICT) {
                     // do not invent era if strict, but do cross-check with year
                     if (year !is null) {
-                        addFieldValue(fieldValues, ChronoField.YEAR, (year > 0 ? yoeLong.longValue(): Math.subtractExact(1, yoeLong.longValue())));
+                        addFieldValue(fieldValues, ChronoField.YEAR, (year > 0 ? yoeLong.longValue(): MathHelper.subtractExact(1, yoeLong.longValue())));
                     } else {
                         // reinstate the field removed earlier, no cross-check issues
                         fieldValues.put(ChronoField.YEAR_OF_ERA, yoeLong);
                     }
                 } else {
                     // invent era
-                    addFieldValue(fieldValues, ChronoField.YEAR, (year is null || year > 0 ? yoeLong.longValue(): Math.subtractExact(1, yoeLong.longValue())));
+                    addFieldValue(fieldValues, ChronoField.YEAR, (year is null || year > 0 ? yoeLong.longValue(): MathHelper.subtractExact(1, yoeLong.longValue())));
                 }
             } else if (era.longValue() == 1L) {
                 addFieldValue(fieldValues, ChronoField.YEAR, yoeLong.longValue());
             } else if (era.longValue() == 0L) {
-                addFieldValue(fieldValues, ChronoField.YEAR, Math.subtractExact(1, yoeLong.longValue()));
+                addFieldValue(fieldValues, ChronoField.YEAR, MathHelper.subtractExact(1, yoeLong.longValue()));
             } else {
                 throw new DateTimeException("Invalid value for era: " ~ era.longValue().to!string);
             }
@@ -610,17 +611,17 @@ public final class IsoChronology : AbstractChronology , Serializable {
     LocalDate resolveYMD(Map !(TemporalField, Long) fieldValues, ResolverStyle resolverStyle) {
         int y = ChronoField.YEAR.checkValidIntValue(fieldValues.remove(ChronoField.YEAR).longValue());
         if (resolverStyle == ResolverStyle.LENIENT) {
-            long months = Math.subtractExact(fieldValues.remove(ChronoField.MONTH_OF_YEAR).longValue(), 1);
-            long days = Math.subtractExact(fieldValues.remove(ChronoField.DAY_OF_MONTH).longValue(), 1);
+            long months = MathHelper.subtractExact(fieldValues.remove(ChronoField.MONTH_OF_YEAR).longValue(), 1);
+            long days = MathHelper.subtractExact(fieldValues.remove(ChronoField.DAY_OF_MONTH).longValue(), 1);
             return LocalDate.of(y, 1, 1).plusMonths(months).plusDays(days);
         }
         int moy = ChronoField.MONTH_OF_YEAR.checkValidIntValue(fieldValues.remove(ChronoField.MONTH_OF_YEAR).longValue());
         int dom = ChronoField.DAY_OF_MONTH.checkValidIntValue(fieldValues.remove(ChronoField.DAY_OF_MONTH).longValue());
         if (resolverStyle == ResolverStyle.SMART) {  // previous valid
             if (moy == 4 || moy == 6 || moy == 9 || moy == 11) {
-                dom = Math.min(dom, 30);
+                dom = MathHelper.min(dom, 30);
             } else if (moy == 2) {
-                dom = Math.min(dom, Month.FEBRUARY.length(Year.isLeap(y)));
+                dom = MathHelper.min(dom, Month.FEBRUARY.length(Year.isLeap(y)));
 
             }
         }
@@ -743,8 +744,8 @@ public final class IsoChronology : AbstractChronology , Serializable {
     //     ChronoField.HOUR_OF_DAY.checkValidValue(hour);
     //     ChronoField.MINUTE_OF_HOUR.checkValidValue(minute);
     //     ChronoField.SECOND_OF_MINUTE.checkValidValue(second);
-    //     long daysInSec = Math.multiplyExact(date(prolepticYear, month, dayOfMonth).toEpochDay(), 86400);
+    //     long daysInSec = MathHelper.multiplyExact(date(prolepticYear, month, dayOfMonth).toEpochDay(), 86400);
     //     long timeinSec = (hour * 60 + minute) * 60 + second;
-    //     return Math.addExact(daysInSec, timeinSec - zoneOffset.getTotalSeconds());
+    //     return MathHelper.addExact(daysInSec, timeinSec - zoneOffset.getTotalSeconds());
     // }
 }

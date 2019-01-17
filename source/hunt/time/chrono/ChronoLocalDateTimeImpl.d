@@ -32,7 +32,8 @@ import hunt.time.chrono.ChronoLocalDateTime;
 import hunt.time.chrono.Chronology;
 import hunt.time.chrono.ChronoZonedDateTime;
 import hunt.time.chrono.ChronoLocalDateImpl;
-// import hunt.lang;
+import hunt.Long;
+import hunt.math.Helper;
 import hunt.time.chrono.ChronoZonedDateTimeImpl;
 import hunt.time.chrono.Ser;
 import hunt.time.temporal.TemporalAmount;
@@ -408,8 +409,8 @@ final class ChronoLocalDateTimeImpl(D = ChronoLocalDate) if(is(D : ChronoLocalDa
                 (hours % HOURS_PER_DAY) * NANOS_PER_HOUR;          //   max  86400000000000
         long curNoD = time.toNanoOfDay();                          //   max  86400000000000
         totNanos = totNanos + curNoD;                              // total 432000000000000
-        totDays += Math.floorDiv(totNanos, NANOS_PER_DAY);
-        long newNoD = Math.floorMod(totNanos, NANOS_PER_DAY);
+        totDays += MathHelper.floorDiv(totNanos, NANOS_PER_DAY);
+        long newNoD = MathHelper.floorMod(totNanos, NANOS_PER_DAY);
         LocalTime newTime = (newNoD == curNoD ? time : LocalTime.ofNanoOfDay(newNoD));
         return _with(newDate.plus(totDays, ChronoUnit.DAYS), newTime);
     }
@@ -431,15 +432,15 @@ final class ChronoLocalDateTimeImpl(D = ChronoLocalDate) if(is(D : ChronoLocalDa
                 long amount = end.getLong(ChronoField.EPOCH_DAY) - date.getLong(ChronoField.EPOCH_DAY);
                 auto f = cast(ChronoUnit) unit;
                 {
-                    if( f == ChronoUnit.NANOS) amount = Math.multiplyExact(amount, NANOS_PER_DAY); 
-                    if( f == ChronoUnit.MICROS) amount = Math.multiplyExact(amount, MICROS_PER_DAY); 
-                    if( f == ChronoUnit.MILLIS) amount = Math.multiplyExact(amount, MILLIS_PER_DAY); 
-                    if( f == ChronoUnit.SECONDS) amount = Math.multiplyExact(amount, SECONDS_PER_DAY); 
-                    if( f == ChronoUnit.MINUTES) amount = Math.multiplyExact(amount, MINUTES_PER_DAY); 
-                    if( f == ChronoUnit.HOURS) amount = Math.multiplyExact(amount, HOURS_PER_DAY); 
-                    if( f == ChronoUnit.HALF_DAYS) amount = Math.multiplyExact(amount, 2); 
+                    if( f == ChronoUnit.NANOS) amount = MathHelper.multiplyExact(amount, NANOS_PER_DAY); 
+                    if( f == ChronoUnit.MICROS) amount = MathHelper.multiplyExact(amount, MICROS_PER_DAY); 
+                    if( f == ChronoUnit.MILLIS) amount = MathHelper.multiplyExact(amount, MILLIS_PER_DAY); 
+                    if( f == ChronoUnit.SECONDS) amount = MathHelper.multiplyExact(amount, SECONDS_PER_DAY); 
+                    if( f == ChronoUnit.MINUTES) amount = MathHelper.multiplyExact(amount, MINUTES_PER_DAY); 
+                    if( f == ChronoUnit.HOURS) amount = MathHelper.multiplyExact(amount, HOURS_PER_DAY); 
+                    if( f == ChronoUnit.HALF_DAYS) amount = MathHelper.multiplyExact(amount, 2); 
                 }
-                return Math.addExact(amount, time.until(end.toLocalTime(), unit));
+                return MathHelper.addExact(amount, time.until(end.toLocalTime(), unit));
             }
             ChronoLocalDate endDate = end.toLocalDate();
             if (end.toLocalTime().isBefore(time)) {

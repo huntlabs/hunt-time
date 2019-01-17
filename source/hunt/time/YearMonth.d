@@ -39,13 +39,15 @@ import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.UnsupportedTemporalTypeException;
 import hunt.time.temporal.ValueRange;
 import hunt.Functions;
+import hunt.Long;
+import hunt.math.Helper;
 import hunt.time.ZoneId;
 import hunt.time.Clock;
 import hunt.time.Month;
 import hunt.time.LocalDate;
 import hunt.time.DateTimeException;
 import hunt.time.Year;
-// import hunt.lang;
+import hunt.util.Common;
 import hunt.time.Ser;
 import hunt.text.StringBuilder;
 /**
@@ -801,10 +803,10 @@ public final class YearMonth
             {
                 if( f == ChronoUnit.MONTHS) return plusMonths(amountToAdd);
                 if( f == ChronoUnit.YEARS) return plusYears(amountToAdd);
-                if( f == ChronoUnit.DECADES) return plusYears(Math.multiplyExact(amountToAdd, 10));
-                if( f == ChronoUnit.CENTURIES) return plusYears(Math.multiplyExact(amountToAdd, 100));
-                if( f == ChronoUnit.MILLENNIA) return plusYears(Math.multiplyExact(amountToAdd, 1000));
-                if( f == ChronoUnit.ERAS) return _with(ChronoField.ERA, Math.addExact(getLong(ChronoField.ERA), amountToAdd));
+                if( f == ChronoUnit.DECADES) return plusYears(MathHelper.multiplyExact(amountToAdd, 10));
+                if( f == ChronoUnit.CENTURIES) return plusYears(MathHelper.multiplyExact(amountToAdd, 100));
+                if( f == ChronoUnit.MILLENNIA) return plusYears(MathHelper.multiplyExact(amountToAdd, 1000));
+                if( f == ChronoUnit.ERAS) return _with(ChronoField.ERA, MathHelper.addExact(getLong(ChronoField.ERA), amountToAdd));
             }
             throw new UnsupportedTemporalTypeException("Unsupported unit: " ~ f.toString);
         }
@@ -843,8 +845,8 @@ public final class YearMonth
         }
         long monthCount = year * 12L + (month - 1);
         long calcMonths = monthCount + monthsToAdd;  // safe overflow
-        int newYear = ChronoField.YEAR.checkValidIntValue(Math.floorDiv(calcMonths, 12));
-        int newMonth = Math.floorMod(calcMonths, 12) + 1;
+        int newYear = ChronoField.YEAR.checkValidIntValue(MathHelper.floorDiv(calcMonths, 12));
+        int newMonth = MathHelper.floorMod(calcMonths, 12) + 1;
         return _with(newYear, newMonth);
     }
 
@@ -1200,7 +1202,7 @@ public final class YearMonth
      */
     override
     public string toString() {
-        int absYear = Math.abs(year);
+        int absYear = MathHelper.abs(year);
         StringBuilder buf = new StringBuilder(9);
         if (absYear < 1000) {
             if (year < 0) {

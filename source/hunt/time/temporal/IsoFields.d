@@ -29,7 +29,9 @@ import hunt.time.temporal.ValueRange;
 import hunt.time.temporal.TemporalAccessor;
 import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.Temporal;
-// import hunt.lang;
+import hunt.Integer;
+import hunt.Long;
+import hunt.math.Helper;
 import hunt.Assert;
 import hunt.Exceptions;
 import hunt.util.Comparator;
@@ -396,9 +398,9 @@ public final class IsoFields
         //             if (resolverStyle == ResolverStyle.LENIENT)
         //             {
         //                 date = LocalDate.of(y, 1, 1)
-        //                     .plusMonths(Math.multiplyExact(Math.subtractExact(cast(int)(qoyLong.longValue()),
+        //                     .plusMonths(MathHelper.multiplyExact(MathHelper.subtractExact(cast(int)(qoyLong.longValue()),
         //                             1), 3));
-        //                 doq = Math.subtractExact(doq, 1);
+        //                 doq = MathHelper.subtractExact(doq, 1);
         //             }
         //             else
         //             {
@@ -537,9 +539,9 @@ public final class IsoFields
                     if (resolverStyle == ResolverStyle.LENIENT)
                     {
                         date = LocalDate.of(y, 1, 1)
-                            .plusMonths(Math.multiplyExact(Math.subtractExact(cast(int)(qoyLong.longValue()),
+                            .plusMonths(MathHelper.multiplyExact(MathHelper.subtractExact(cast(int)(qoyLong.longValue()),
                                     1), 3));
-                        doq = Math.subtractExact(doq, 1);
+                        doq = MathHelper.subtractExact(doq, 1);
                     }
                     else
                     {
@@ -810,7 +812,7 @@ public final class IsoFields
             //     {
             //         // calls getFrom() to check if supported
             //         range().checkValidValue(newValue, this); // lenient range
-            //         return cast(Temporal) temporal.plus(Math.subtractExact(newValue,
+            //         return cast(Temporal) temporal.plus(MathHelper.subtractExact(newValue,
             //                 getFrom(temporal)), ChronoUnit.WEEKS);
             //     }
             //     override
@@ -838,10 +840,10 @@ public final class IsoFields
             //             }
             //             else if (dow < 1)
             //             {
-            //                 date = date.plusWeeks(Math.subtractExact(dow, 7) / 7);
+            //                 date = date.plusWeeks(MathHelper.subtractExact(dow, 7) / 7);
             //                 dow = ((dow + 6) % 7) + 1;
             //             }
-            //             date = date.plusWeeks(Math.subtractExact(wowby, 1))
+            //             date = date.plusWeeks(MathHelper.subtractExact(wowby, 1))
             //                 ._with(ChronoField.DAY_OF_WEEK, dow);
             //         }
             //         else
@@ -950,7 +952,7 @@ public final class IsoFields
                 {
                     // calls getFrom() to check if supported
                     range().checkValidValue(newValue, this); // lenient range
-                    return cast(Temporal) temporal.plus(Math.subtractExact(newValue,
+                    return cast(Temporal) temporal.plus(MathHelper.subtractExact(newValue,
                             getFrom(temporal)), ChronoUnit.WEEKS);
                 }
                 override
@@ -978,10 +980,10 @@ public final class IsoFields
                         }
                         else if (dow < 1)
                         {
-                            date = date.plusWeeks(Math.subtractExact(dow, 7) / 7);
+                            date = date.plusWeeks(MathHelper.subtractExact(dow, 7) / 7);
                             dow = ((dow + 6) % 7) + 1;
                         }
-                        date = date.plusWeeks(Math.subtractExact(wowby, 1))
+                        date = date.plusWeeks(MathHelper.subtractExact(wowby, 1))
                             ._with(ChronoField.DAY_OF_WEEK, dow);
                     }
                     else
@@ -1373,7 +1375,7 @@ public final class IsoFields
             {
             if(name ==Unit.WEEK_BASED_YEARS.toString)
                 return cast(Temporal) temporal._with(WEEK_BASED_YEAR,
-                        Math.addExact(temporal.get(WEEK_BASED_YEAR), amount));
+                        MathHelper.addExact(temporal.get(WEEK_BASED_YEAR), amount));
             if(name ==Unit.QUARTER_YEARS.toString)
                 return cast(Temporal) temporal.plus(amount / 4, ChronoUnit.YEARS)
                     .plus((amount % 4) * 3, ChronoUnit.MONTHS);
@@ -1390,7 +1392,7 @@ public final class IsoFields
             auto name = this.toString();
             {
                 if (name == WEEK_BASED_YEARS.toString)
-                    return Math.subtractExact(temporal2Exclusive.getLong(WEEK_BASED_YEAR),
+                    return MathHelper.subtractExact(temporal2Exclusive.getLong(WEEK_BASED_YEAR),
                             temporal1Inclusive.getLong(WEEK_BASED_YEAR));
                 if (name == QUARTER_YEARS.toString)
                     return temporal1Inclusive.until(temporal2Exclusive, ChronoUnit.MONTHS) / 3;

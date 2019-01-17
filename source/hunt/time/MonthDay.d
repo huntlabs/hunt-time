@@ -33,7 +33,6 @@ import hunt.time.temporal.TemporalQueries;
 import hunt.time.temporal.TemporalQuery;
 import hunt.time.temporal.UnsupportedTemporalTypeException;
 import hunt.time.temporal.ValueRange;
-import hunt.Functions;
 import hunt.time.ZoneId;
 import hunt.time.Clock;
 import hunt.time.Month;
@@ -42,10 +41,13 @@ import hunt.time.DateTimeException;
 import hunt.time.Year;
 import hunt.time.Month;
 import hunt.time.Ser;
-import hunt.text.StringBuilder;
-import std.conv;
-// import hunt.lang;
 import hunt.time.util.Common;
+import hunt.math.Helper;
+import hunt.Functions;
+import hunt.text.StringBuilder;
+import hunt.util.Common;
+
+import std.conv;
 /**
  * A month-day _in the ISO-8601 calendar system, such as {@code --12-03}.
  * !(p)
@@ -556,7 +558,7 @@ public final class MonthDay
         if (month.getValue() == this.month) {
             return this;
         }
-        int day = Math.min(this.day, month.maxLength());
+        int day = MathHelper.min(this.day, month.maxLength());
         return new MonthDay(month.getValue(), day);
     }
 
@@ -648,7 +650,7 @@ public final class MonthDay
             throw new DateTimeException("Adjustment only supported on ISO date-time");
         }
         temporal = temporal._with(ChronoField.MONTH_OF_YEAR, month);
-        return temporal._with(ChronoField.DAY_OF_MONTH, Math.min(temporal.range(ChronoField.DAY_OF_MONTH).getMaximum(), day));
+        return temporal._with(ChronoField.DAY_OF_MONTH, MathHelper.min(temporal.range(ChronoField.DAY_OF_MONTH).getMaximum(), day));
     }
 
     /**

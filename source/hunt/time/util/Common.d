@@ -16,7 +16,7 @@ import core.stdc.errno;
 public import std.traits;
 public import std.array;
 
-import hunt.util.datetime;
+import hunt.util.DateTime;
 
 class System
 {

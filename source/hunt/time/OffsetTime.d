@@ -37,6 +37,8 @@ import hunt.time.temporal.UnsupportedTemporalTypeException;
 import hunt.time.temporal.ValueRange;
 import hunt.time.zone.ZoneRules;
 import hunt.Functions;
+import hunt.Long; 
+import hunt.math.Helper;
 import hunt.time.ZoneOffset;
 import hunt.time.Instant;
 import hunt.time.ZoneId;
@@ -45,7 +47,7 @@ import hunt.time.OffsetDateTime;
 import hunt.time.LocalDate;
 import hunt.time.DateTimeException;
 import hunt.time.Ser;
-// import hunt.lang;
+import hunt.util.Common;
 import hunt.util.Comparator;
 import std.conv;
 import hunt.time.util.Common;
@@ -224,7 +226,7 @@ public final class OffsetTime
         ZoneRules rules = zone.getRules();
         ZoneOffset offset = rules.getOffset(instant);
         long localSecond = instant.getEpochSecond() + offset.getTotalSeconds();  // overflow caught later
-        int secsOfDay = Math.floorMod(localSecond, LocalTime.SECONDS_PER_DAY);
+        int secsOfDay = MathHelper.floorMod(localSecond, LocalTime.SECONDS_PER_DAY);
         LocalTime time = LocalTime.ofNanoOfDay(secsOfDay * LocalTime.NANOS_PER_SECOND + instant.getNano());
         return new OffsetTime(time, offset);
     }

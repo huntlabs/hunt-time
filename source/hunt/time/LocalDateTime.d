@@ -47,7 +47,8 @@ import hunt.time.Instant;
 import hunt.time.DayOfWeek;
 import hunt.time.OffsetDateTime;
 import hunt.time.ZonedDateTime;
-// import hunt.lang;
+import hunt.Long;
+import hunt.math.Helper;
 import hunt.time.DateTimeException;
 import hunt.time.Period;
 import hunt.time.Ser;
@@ -405,8 +406,8 @@ public final class LocalDateTime
         assert(offset, "offset");
         ChronoField.NANO_OF_SECOND.checkValidValue(nanoOfSecond);
         long localSecond = epochSecond + offset.getTotalSeconds();  // overflow caught later
-        long localEpochDay = Math.floorDiv(localSecond, LocalTime.SECONDS_PER_DAY);
-        int secsOfDay = Math.floorMod(localSecond, LocalTime.SECONDS_PER_DAY);
+        long localEpochDay = MathHelper.floorDiv(localSecond, LocalTime.SECONDS_PER_DAY);
+        int secsOfDay = MathHelper.floorMod(localSecond, LocalTime.SECONDS_PER_DAY);
         LocalDate date = LocalDate.ofEpochDay(localEpochDay);
         LocalTime time = LocalTime.ofNanoOfDay(secsOfDay * LocalTime.NANOS_PER_SECOND + nanoOfSecond);
         return new LocalDateTime(date, time);
@@ -1601,8 +1602,8 @@ public final class LocalDateTime
                 (hours % LocalTime.HOURS_PER_DAY) * LocalTime.NANOS_PER_HOUR;          //   max  86400000000000
         long curNoD = time.toNanoOfDay();                       //   max  86400000000000
         totNanos = totNanos * sign + curNoD;                    // total 432000000000000
-        totDays += Math.floorDiv(totNanos, LocalTime.NANOS_PER_DAY);
-        long newNoD = Math.floorMod(totNanos, LocalTime.NANOS_PER_DAY);
+        totDays += MathHelper.floorDiv(totNanos, LocalTime.NANOS_PER_DAY);
+        long newNoD = MathHelper.floorMod(totNanos, LocalTime.NANOS_PER_DAY);
         LocalTime newTime = (newNoD == curNoD ? time : LocalTime.ofNanoOfDay(newNoD));
         return _with(newDate.plusDays(totDays), newTime);
     }
@@ -1747,41 +1748,41 @@ public final class LocalDateTime
                 auto f = cast(ChronoUnit) unit;
                  {
                     if( f==  ChronoUnit.NANOS){
-                        amount = Math.multiplyExact(amount, LocalTime.NANOS_PER_DAY);
+                        amount = MathHelper.multiplyExact(amount, LocalTime.NANOS_PER_DAY);
                     }
                         
                     if( f==  ChronoUnit.MICROS){
-                        amount = Math.multiplyExact(amount, LocalTime.MICROS_PER_DAY);
+                        amount = MathHelper.multiplyExact(amount, LocalTime.MICROS_PER_DAY);
                         timePart = timePart / 1000;
                     }
                         
                     if( f==  ChronoUnit.MILLIS){
-                        amount = Math.multiplyExact(amount, LocalTime.MILLIS_PER_DAY);
+                        amount = MathHelper.multiplyExact(amount, LocalTime.MILLIS_PER_DAY);
                         timePart = timePart / 1_000_000;
                     }
                         
                     if( f==  ChronoUnit.SECONDS){
-                        amount = Math.multiplyExact(amount, LocalTime.SECONDS_PER_DAY);
+                        amount = MathHelper.multiplyExact(amount, LocalTime.SECONDS_PER_DAY);
                         timePart = timePart / LocalTime.NANOS_PER_SECOND;
                     }
                         
                     if( f==  ChronoUnit.MINUTES){
-                        amount = Math.multiplyExact(amount, LocalTime.MINUTES_PER_DAY);
+                        amount = MathHelper.multiplyExact(amount, LocalTime.MINUTES_PER_DAY);
                         timePart = timePart / LocalTime.NANOS_PER_MINUTE;
                     }
                         
                     if( f==  ChronoUnit.HOURS){
-                        amount = Math.multiplyExact(amount, LocalTime.HOURS_PER_DAY);
+                        amount = MathHelper.multiplyExact(amount, LocalTime.HOURS_PER_DAY);
                         timePart = timePart / LocalTime.NANOS_PER_HOUR;
                     }
                         
                     if( f==  ChronoUnit.HALF_DAYS){
-                        amount = Math.multiplyExact(amount, 2);
+                        amount = MathHelper.multiplyExact(amount, 2);
                         timePart = timePart / (LocalTime.NANOS_PER_HOUR * 12);
                     }
                         
                 }
-                return Math.addExact(amount, timePart);
+                return MathHelper.addExact(amount, timePart);
             }
             LocalDate endDate = end.date;
             if (endDate.isAfter(date) && end.time.isBefore(time)) {

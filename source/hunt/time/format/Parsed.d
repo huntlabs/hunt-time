@@ -38,7 +38,8 @@ import hunt.collection.Map;
 import std.conv;
 import hunt.text.StringBuilder;
 import hunt.collection.Set;
-// import hunt.lang;
+import hunt.Long;
+import hunt.math.Helper;
 import hunt.time.format.ResolverStyle;
 
 /**
@@ -421,7 +422,7 @@ final class Parsed : TemporalAccessor
             if (resolverStyle == ResolverStyle.LENIENT)
             {
                 updateCheckConflict(ChronoField.AMPM_OF_DAY, ChronoField.HOUR_OF_DAY,
-                        new Long(Math.addExact(Math.multiplyExact(ap, 12), hap)));
+                        new Long(MathHelper.addExact(MathHelper.multiplyExact(ap, 12), hap)));
             }
             else
             { // STRICT or SMART
@@ -622,12 +623,12 @@ final class Parsed : TemporalAccessor
     {
         if (resolverStyle == ResolverStyle.LENIENT)
         {
-            long totalNanos = Math.multiplyExact(hod, 3600_000_000_000L);
-            totalNanos = Math.addExact(totalNanos, Math.multiplyExact(moh, 60_000_000_000L));
-            totalNanos = Math.addExact(totalNanos, Math.multiplyExact(som, 1_000_000_000L));
-            totalNanos = Math.addExact(totalNanos, nos);
-            int excessDays = cast(int) Math.floorDiv(totalNanos, 86400_000_000_000L); // safe int cast
-            long nod = Math.floorMod(totalNanos, 86400_000_000_000L);
+            long totalNanos = MathHelper.multiplyExact(hod, 3600_000_000_000L);
+            totalNanos = MathHelper.addExact(totalNanos, MathHelper.multiplyExact(moh, 60_000_000_000L));
+            totalNanos = MathHelper.addExact(totalNanos, MathHelper.multiplyExact(som, 1_000_000_000L));
+            totalNanos = MathHelper.addExact(totalNanos, nos);
+            int excessDays = cast(int) MathHelper.floorDiv(totalNanos, 86400_000_000_000L); // safe int cast
+            long nod = MathHelper.floorMod(totalNanos, 86400_000_000_000L);
             updateCheckConflict(LocalTime.ofNanoOfDay(nod), Period.ofDays(excessDays));
         }
         else

@@ -27,13 +27,16 @@ import hunt.collection.ArrayList;
 import hunt.time.zone.Ser;
 import hunt.collection.Collections;
 import hunt.collection.List;
-// import hunt.lang;
+import hunt.Integer;
+import hunt.Long;
+import hunt.math.Helper;
 import hunt.collection.HashMap;
 import hunt.time.zone.ZoneOffsetTransitionRule;
 import hunt.time.zone.ZoneOffsetTransition;
 import hunt.text.Common;
 import hunt.util.ArrayHelper;
 import hunt.time.util.Common;
+import hunt.util.ArrayHelper;
 
 /**
  * The rules defining how the zone offset varies for a single time-zone.
@@ -515,7 +518,7 @@ public final class ZoneRules : Serializable
         // using historic rules
         import hunt.text.Common;
 
-        int index = Arrays.binarySearch(savingsInstantTransitions, epochSec);
+        int index = ArrayHelper.binarySearch(savingsInstantTransitions, epochSec);
         if (index == -1)
             index = -(cast(int)(savingsInstantTransitions.length)) - 1;
         if (index < 0)
@@ -681,7 +684,7 @@ public final class ZoneRules : Serializable
         }
 
         // using historic rules
-        int index = Arrays.binarySearch(savingsLocalTransitions, dt);
+        int index = ArrayHelper.binarySearch(savingsLocalTransitions, dt);
         if (index == -1)
         {
             // before first transition
@@ -811,7 +814,7 @@ public final class ZoneRules : Serializable
             return standardOffsets[0];
         }
         long epochSec = instant.getEpochSecond();
-        int index = Arrays.binarySearch(standardTransitions, epochSec);
+        int index = ArrayHelper.binarySearch(standardTransitions, epochSec);
         if (index < 0)
         {
             // switch negative insert position to start of matched range
@@ -931,7 +934,7 @@ public final class ZoneRules : Serializable
         }
 
         // using historic rules
-        int index = Arrays.binarySearch(savingsInstantTransitions, epochSec);
+        int index = ArrayHelper.binarySearch(savingsInstantTransitions, epochSec);
         if (index < 0)
         {
             index = -index - 1; // switched value is the next transition
@@ -993,7 +996,7 @@ public final class ZoneRules : Serializable
         }
 
         // using historic rules
-        int index = Arrays.binarySearch(savingsInstantTransitions, epochSec);
+        int index = ArrayHelper.binarySearch(savingsInstantTransitions, epochSec);
         if (index < 0)
         {
             index = -index - 1;
@@ -1010,7 +1013,7 @@ public final class ZoneRules : Serializable
     {
         // inline for performance
         long localSecond = epochSecond + offset.getTotalSeconds();
-        long localEpochDay = Math.floorDiv(localSecond, 86400);
+        long localEpochDay = MathHelper.floorDiv(localSecond, 86400);
         return LocalDate.ofEpochDay(localEpochDay).getYear();
     }
 
