@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/huntlabs/hunt-time.svg?branch=master)](https://travis-ci.org/huntlabs/hunt-time)
+
 ## About hunt-time
 hunt-time is a time library and similar to Joda-time and Java.time api.
 
