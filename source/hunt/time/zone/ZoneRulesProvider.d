@@ -266,7 +266,7 @@ public abstract class ZoneRulesProvider {
      */
     private static ZoneRulesProvider getProvider(string zoneId) {
         ZoneRulesProvider provider = ZONES.get(zoneId);
-        version (HUNT_DEBUG) tracef("zoneId=%s, ZONES.size=%d", zoneId, ZONES.size());
+        // version (HUNT_DEBUG) tracef("zoneId=%s, ZONES.size=%d", zoneId, ZONES.size());
         if (provider is null) {
             if (ZONES.isEmpty()) {
                 throw new ZoneRulesException("No time-zone data files registered");

@@ -48,7 +48,6 @@ import hunt.collection.ArrayList;
 
 // //import hunt.concurrent.ConcurrentMap;;
 import hunt.collection.Collections;
-import hunt.util.Comparator;
 import hunt.text.StringBuilder;
 import hunt.collection.AbstractMap;
 
@@ -78,6 +77,10 @@ import hunt.time.format.DecimalStyle;
 import hunt.time.util.QueryHelper;
 import hunt.logging;
 import hunt.time.util.Common;
+
+
+import hunt.util.Common;
+import hunt.util.Comparator;
 // import sun.text.spi.JavaTimeDateTimePatternProvider;
 // import sun.util.locale.provider.CalendarDataUtility;
 // import sun.util.locale.provider.LocaleProviderAdapter;
@@ -849,13 +852,13 @@ public final class DateTimeFormatterBuilder
                 return store.getText(value, style);
             }
 
-            override public Iterator!(MapEntry!(string, Long)) getTextIterator(Chronology chrono,
+            override public Iterable!(MapEntry!(string, Long)) getTextIterator(Chronology chrono,
                     TemporalField field, TextStyle style, Locale locale)
             {
                 return store.getTextIterator(style);
             }
 
-            override public Iterator!(MapEntry!(string, Long)) getTextIterator(TemporalField field,
+            override public Iterable!(MapEntry!(string, Long)) getTextIterator(TemporalField field,
                     TextStyle style, Locale locale)
             {
                 return store.getTextIterator(style);
@@ -3867,7 +3870,7 @@ public final class DateTimeFormatterBuilder
                 }
                 TextStyle style = (context.isStrict() ? textStyle : null);
                 Chronology chrono = context.getEffectiveChronology();
-                Iterator!(MapEntry!(string, Long)) it;
+                Iterable!(MapEntry!(string, Long)) it;
                 if (chrono is null || chrono == IsoChronology.INSTANCE)
                 {
                     it = provider.getTextIterator(field, style, context.getLocale());
@@ -3878,9 +3881,8 @@ public final class DateTimeFormatterBuilder
                 }
                 if (it !is null)
                 {
-                    while (it.hasNext())
+                    foreach(MapEntry!(string, Long) entry; it)
                     {
-                        MapEntry!(string, Long) entry = it.next();
                         string itText = entry.getKey();
                         if (context.subSequenceEquals(itText, 0, parseText,
                                 position, cast(int)(itText.length)))

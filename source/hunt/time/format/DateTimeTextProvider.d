@@ -11,33 +11,24 @@
 
 module hunt.time.format.DateTimeTextProvider;
 
-import hunt.time.temporal.ChronoField;
-
+import hunt.time.format.TextStyle;
 import hunt.time.chrono.Chronology;
 import hunt.time.chrono.IsoChronology;
 import hunt.time.chrono.JapaneseChronology;
+import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.IsoFields;
 import hunt.time.temporal.TemporalField;
-// import hunt.util.AbstractMap.SimpleImmutableEntry;
-import hunt.collection.ArrayList;
 import hunt.time.util.Calendar;
-import hunt.collection.Collections;
-import hunt.util.Comparator;
-// import hunt.collection.Iterator;
-import hunt.collection.List;
+import hunt.time.util.Common;
 import hunt.time.util.Locale;
-// import hunt.util.Map.MapEntry;
-// import hunt.util.ResourceBundle;
+
 import hunt.collection;
-import hunt.time.format.TextStyle;
 import hunt.Integer;
 import hunt.Long;
-// import hunt.concurrent.ConcurrentMap;
 import hunt.Exceptions;
-import hunt.time.util.Common;
-// import sun.util.locale.provider.CalendarDataUtility;
-// import sun.util.locale.provider.LocaleProviderAdapter;
-// import sun.util.locale.provider.LocaleResources;
+
+import hunt.util.Comparator;
+import hunt.util.Common;
 
 /**
  * A provider to obtain the textual form of a date-time field.
@@ -191,7 +182,7 @@ class DateTimeTextProvider {
      * @return the iterator of text to field pairs, _in order from longest text to shortest text,
      *  null if the field or style is not parsable
      */
-    public Iterator!(MapEntry!(string, Long)) getTextIterator(TemporalField field, TextStyle style, Locale locale) {
+    public Iterable!(MapEntry!(string, Long)) getTextIterator(TemporalField field, TextStyle style, Locale locale) {
         Object store = findStore(field, locale);
         if (cast(LocaleStore)(store) !is null) {
             return (cast(LocaleStore) store).getTextIterator(style);
@@ -216,7 +207,7 @@ class DateTimeTextProvider {
      * @return the iterator of text to field pairs, _in order from longest text to shortest text,
      *  null if the field or style is not parsable
      */
-    public Iterator!(MapEntry!(string, Long)) getTextIterator(Chronology chrono, TemporalField field,
+    public Iterable!(MapEntry!(string, Long)) getTextIterator(Chronology chrono, TemporalField field,
                                                          TextStyle style, Locale locale) {
         if (chrono == IsoChronology.INSTANCE
                 || !(cast(ChronoField)(field) !is null)) {
@@ -284,7 +275,7 @@ class DateTimeTextProvider {
         //     }
         //     break;
         // }
-        // return list.iterator();
+        // return list;
         return null;
     }
 
@@ -569,9 +560,9 @@ class DateTimeTextProvider {
          * @return the iterator of text to field pairs, _in order from longest text to shortest text,
          *  null if the style is not parsable
          */
-        Iterator!(MapEntry!(string, Long)) getTextIterator(TextStyle style) {
+        Iterable!(MapEntry!(string, Long)) getTextIterator(TextStyle style) {
             List!(MapEntry!(string, Long)) list = parsable.get(style);
-            return list !is null ? cast(Iterator!(MapEntry!(string, Long)))(list.iterator()) : null;
+            return list !is null ? list : null;
         }
     }
 }
