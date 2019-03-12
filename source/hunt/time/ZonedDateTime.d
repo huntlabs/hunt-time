@@ -302,7 +302,16 @@ public  class ZonedDateTime
      */
     public static ZonedDateTime of(
             int year, int month, int dayOfMonth,
-            int hour, int minute, int second, int nanoOfSecond, ZoneId zone) {
+            int hour, int minute, int second, 
+            int nanoOfSecond, ZoneId zone) {
+        LocalDateTime dt = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second, nanoOfSecond);
+        return ofLocal(dt, zone, null);
+    }
+
+    public static ZonedDateTime of(
+            int year, Month month, int dayOfMonth,
+            int hour, int minute, int second, 
+            int nanoOfSecond, ZoneId zone) {
         LocalDateTime dt = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second, nanoOfSecond);
         return ofLocal(dt, zone, null);
     }

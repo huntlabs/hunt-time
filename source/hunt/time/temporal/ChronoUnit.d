@@ -16,9 +16,13 @@ import hunt.time.temporal.TemporalUnit;
 import hunt.time.temporal.Temporal;
 import hunt.time.temporal.TemporalField;
 import hunt.time.temporal.ValueRange;
+
+import hunt.Exceptions;
+import hunt.Enum;
 import hunt.Long;
-import hunt.util.Comparator;
 import hunt.time.util.Common;
+import hunt.util.Comparator;
+
 /**
  * A standard set of date periods units.
  * !(p)
@@ -154,77 +158,77 @@ public class ChronoUnit : TemporalUnit
     // shared static this()
     // {
         // NANOS = new ChronoUnit("Nanos", Duration.ofNanos(1));
-        mixin(MakeGlobalVar!(ChronoUnit)("NANOS",`new ChronoUnit("Nanos", Duration.ofNanos(1))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("NANOS",`new ChronoUnit("Nanos", 0, Duration.ofNanos(1))`));
 
         // MICROS = new ChronoUnit("Micros", Duration.ofNanos(1000));
-        mixin(MakeGlobalVar!(ChronoUnit)("MICROS",`new ChronoUnit("Micros", Duration.ofNanos(1000))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("MICROS",`new ChronoUnit("Micros", 1, Duration.ofNanos(1000))`));
 
 
         // MILLIS = new ChronoUnit("Millis", Duration.ofNanos(1000_000));
-        mixin(MakeGlobalVar!(ChronoUnit)("MILLIS",`new ChronoUnit("Millis", Duration.ofNanos(1000_000))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("MILLIS",`new ChronoUnit("Millis", 2, Duration.ofNanos(1000_000))`));
 
 
         // SECONDS = new ChronoUnit("Seconds", Duration.ofSeconds(1));
-        mixin(MakeGlobalVar!(ChronoUnit)("SECONDS",`new ChronoUnit("Seconds", Duration.ofSeconds(1))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("SECONDS",`new ChronoUnit("Seconds", 3, Duration.ofSeconds(1))`));
 
 
         // MINUTES = new ChronoUnit("Minutes", Duration.ofSeconds(60));
-        mixin(MakeGlobalVar!(ChronoUnit)("MINUTES",`new ChronoUnit("Minutes", Duration.ofSeconds(60))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("MINUTES",`new ChronoUnit("Minutes", 4, Duration.ofSeconds(60))`));
 
 
         // HOURS = new ChronoUnit("Hours", Duration.ofSeconds(3600));
-        mixin(MakeGlobalVar!(ChronoUnit)("HOURS",`new ChronoUnit("Hours", Duration.ofSeconds(3600))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("HOURS",`new ChronoUnit("Hours", 5, Duration.ofSeconds(3600))`));
 
 
         // HALF_DAYS = new ChronoUnit("HalfDays", Duration.ofSeconds(43200));
-        mixin(MakeGlobalVar!(ChronoUnit)("HALF_DAYS",`new ChronoUnit("HalfDays", Duration.ofSeconds(43200))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("HALF_DAYS",`new ChronoUnit("HalfDays", 6, Duration.ofSeconds(43200))`));
 
 
         // DAYS = new ChronoUnit("Days", Duration.ofSeconds(86400));
-        mixin(MakeGlobalVar!(ChronoUnit)("DAYS",`new ChronoUnit("Days", Duration.ofSeconds(86400))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("DAYS",`new ChronoUnit("Days", 7, Duration.ofSeconds(86400))`));
 
 
         // WEEKS = new ChronoUnit("Weeks", Duration.ofSeconds(7 * 86400L));
-        mixin(MakeGlobalVar!(ChronoUnit)("WEEKS",`new ChronoUnit("Weeks", Duration.ofSeconds(7 * 86400L))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("WEEKS",`new ChronoUnit("Weeks", 8, Duration.ofSeconds(7 * 86400L))`));
 
 
         // MONTHS = new ChronoUnit("Months", Duration.ofSeconds(31556952L / 12));
-        mixin(MakeGlobalVar!(ChronoUnit)("MONTHS",`new ChronoUnit("Months", Duration.ofSeconds(31556952L / 12))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("MONTHS",`new ChronoUnit("Months", 9, Duration.ofSeconds(31556952L / 12))`));
 
 
         // YEARS = new ChronoUnit("Years", Duration.ofSeconds(31556952L));
-        mixin(MakeGlobalVar!(ChronoUnit)("YEARS",`new ChronoUnit("Years", Duration.ofSeconds(31556952L))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("YEARS",`new ChronoUnit("Years", 10, Duration.ofSeconds(31556952L))`));
 
 
         // DECADES = new ChronoUnit("Decades", Duration.ofSeconds(31556952L * 10L));
-        mixin(MakeGlobalVar!(ChronoUnit)("DECADES",`new ChronoUnit("Decades", Duration.ofSeconds(31556952L * 10L))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("DECADES",`new ChronoUnit("Decades", 11, Duration.ofSeconds(31556952L * 10L))`));
 
 
         // CENTURIES = new ChronoUnit("Centuries", Duration.ofSeconds(31556952L * 100L));
-        mixin(MakeGlobalVar!(ChronoUnit)("CENTURIES",`new ChronoUnit("Centuries", Duration.ofSeconds(31556952L * 100L))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("CENTURIES",`new ChronoUnit("Centuries", 12, Duration.ofSeconds(31556952L * 100L))`));
 
 
         // MILLENNIA = new ChronoUnit("Millennia", Duration.ofSeconds(31556952L * 1000L));
-        mixin(MakeGlobalVar!(ChronoUnit)("MILLENNIA",`new ChronoUnit("Millennia", Duration.ofSeconds(31556952L * 1000L))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("MILLENNIA",`new ChronoUnit("Millennia", 13, Duration.ofSeconds(31556952L * 1000L))`));
 
 
         // ERAS = new ChronoUnit("Eras", Duration.ofSeconds(31556952L * 1000_000_000L));
-        mixin(MakeGlobalVar!(ChronoUnit)("ERAS",`new ChronoUnit("Eras", Duration.ofSeconds(31556952L * 1000_000_000L))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("ERAS",`new ChronoUnit("Eras", 14, Duration.ofSeconds(31556952L * 1000_000_000L))`));
 
 
         // FOREVER = new ChronoUnit("Forever", Duration.ofSeconds(Long.MAX_VALUE, 999_999_999));
-        mixin(MakeGlobalVar!(ChronoUnit)("FOREVER",`new ChronoUnit("Forever", Duration.ofSeconds(Long.MAX_VALUE, 999_999_999))`));
+        mixin(MakeGlobalVar!(ChronoUnit)("FOREVER",`new ChronoUnit("Forever", 15, Duration.ofSeconds(Long.MAX_VALUE, 999_999_999))`));
 
     // }
 
-    private string name;
     private Duration duration;
 
-    this(string name, Duration estimatedDuration)
+    protected this(string name, int ordinal,  Duration estimatedDuration)
     {
-        this.name = name;
+        super(name, ordinal);
         this.duration = estimatedDuration;
     }
+
 
     //-----------------------------------------------------------------------
     /**
@@ -253,7 +257,7 @@ public class ChronoUnit : TemporalUnit
      */
     override public bool isDurationEstimated()
     {
-        return this.compareTo(DAYS) >= 0;
+        return this.opCmp(DAYS) >= 0;
     }
 
     //-----------------------------------------------------------------------
@@ -267,7 +271,7 @@ public class ChronoUnit : TemporalUnit
      */
     override public bool isDateBased()
     {
-        return this.compareTo(DAYS) >= 0 && this != FOREVER;
+        return this.opCmp(DAYS) >= 0 && this != FOREVER;
     }
 
     /**
@@ -280,7 +284,7 @@ public class ChronoUnit : TemporalUnit
      */
     override public bool isTimeBased()
     {
-        return this.compareTo(DAYS) < 0;
+        return this.opCmp(DAYS) < 0;
     }
 
     //-----------------------------------------------------------------------
@@ -302,32 +306,32 @@ public class ChronoUnit : TemporalUnit
     }
 
     //-----------------------------------------------------------------------
-    override public string toString()
-    {
-        return name;
-    }
+    // override public string toString()
+    // {
+    //     return name;
+    // }
 
-    bool opEquals(ref const ChronoUnit h) nothrow
-    {
-        return name == h.name;
-    }
+    // bool opEquals(ref const ChronoUnit h) nothrow
+    // {
+    //     return name == h.name;
+    // }
 
-    override public bool opEquals(Object obj)
-    {
-        if (this is obj)
-        {
-            return true;
-        }
-        if (cast(ChronoUnit)(obj) !is null)
-        {
-            ChronoUnit other = cast(ChronoUnit) obj;
-            return name == other.name;
-        }
-        return false;
-    }
+    // override public bool opEquals(Object obj)
+    // {
+    //     if (this is obj)
+    //     {
+    //         return true;
+    //     }
+    //     if (cast(ChronoUnit)(obj) !is null)
+    //     {
+    //         ChronoUnit other = cast(ChronoUnit) obj;
+    //         return name == other.name;
+    //     }
+    //     return false;
+    // }
 
-    int compareTo(ChronoUnit obj)
-    {
-        return compare(this.name, obj.name);
-    }
+    // int compareTo(ChronoUnit obj)
+    // {
+    //     return compare(this.name, obj.name);
+    // }
 }

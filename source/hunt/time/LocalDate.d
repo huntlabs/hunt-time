@@ -12,7 +12,6 @@
 module hunt.time.LocalDate;
 
 import hunt.time.LocalTime;
-import hunt.time.temporal.ChronoField;
 
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
@@ -406,13 +405,20 @@ public  class LocalDate
      * @throws DateTimeException if unable to convert to a {@code LocalDate}
      */
     public static LocalDate from(TemporalAccessor temporal) {
-        assert(temporal, "temporal");
-        LocalDate date = QueryHelper.query!LocalDate(temporal, TemporalQueries.localDate());
+        assert(temporal !is null, "temporal is null");
+        LocalDate date = queryFrom(temporal); // QueryHelper.query!LocalDate(temporal, TemporalQueries.localDate());
         if (date is null) {
             throw new DateTimeException("Unable to obtain LocalDate from TemporalAccessor: " ~
-                    typeid(temporal).stringof ~ " of type " ~ typeid(temporal).stringof);
+                    (cast(Object)temporal).stringof ~ " of type " ~ typeid(cast(Object)temporal).name);
         }
         return date;
+    }
+
+    private static LocalDate queryFrom(TemporalAccessor temporal) {
+        if (temporal.isSupported(ChronoField.EPOCH_DAY)) {
+                return LocalDate.ofEpochDay(temporal.getLong(ChronoField.EPOCH_DAY));
+        }
+        return null;
     }
 
     //-----------------------------------------------------------------------
@@ -1622,6 +1628,7 @@ public  class LocalDate
         }
         return /* ChronoLocalDate. */super_query(query);
     }
+
     R super_query(R)(TemporalQuery!(R) query) {
          if (query == TemporalQueries.zoneId()
                  || query == TemporalQueries.chronology()

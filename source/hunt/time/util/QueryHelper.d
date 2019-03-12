@@ -10,6 +10,7 @@
  */
 
 module hunt.time.util.QueryHelper;
+
 import hunt.time.chrono;
 import hunt.time.Clock;
 import hunt.time.DateTimeException;
@@ -35,6 +36,9 @@ import hunt.time.ZoneId;
 import hunt.time.ZoneOffset;
 import hunt.time.ZoneRegion;
 
+import hunt.Exceptions;
+import hunt.logging.ConsoleLogger;
+
 import std.stdio;
 import std.conv;
 import std.exception;
@@ -43,8 +47,9 @@ class QueryHelper
 {
     static R query(R)(TemporalAccessor t, TemporalQuery!(R) param)
     {
-        // auto typeinfo = typeid(cast(Object) t);
-        // // writeln("test : ", typeinfo);
+        auto typeinfo = typeid(cast(Object) t);
+        warningf("quering: %s", typeinfo.name);
+        implementationMissing(false);
         // if (typeinfo == typeid(DayOfWeek))
         // {
         //     return (cast(DayOfWeek) t).query!R(param);

@@ -404,12 +404,19 @@ public final class LocalTime
      */
     public static LocalTime from(TemporalAccessor temporal) {
         assert(temporal, "temporal");
-        LocalTime time = QueryHelper.query!LocalTime(temporal , TemporalQueries.localTime());
+        LocalTime time = queryFrom(temporal); // QueryHelper.query!LocalTime(temporal , TemporalQueries.localTime());
         if (time is null) {
             throw new DateTimeException("Unable to obtain LocalTime from TemporalAccessor: " ~
                     typeid(temporal).name ~ " of type " ~ typeid(temporal).stringof);
         }
         return time;
+    }
+
+    private static LocalTime queryFrom(TemporalAccessor temporal) {
+        if (temporal.isSupported(ChronoField.NANO_OF_DAY)) {
+                return LocalTime.ofNanoOfDay(temporal.getLong(ChronoField.NANO_OF_DAY));
+        }
+        return null;
     }
 
     //-----------------------------------------------------------------------

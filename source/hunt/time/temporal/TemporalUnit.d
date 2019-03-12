@@ -11,6 +11,8 @@
 
 module hunt.time.temporal.TemporalUnit;
 
+
+
 import hunt.time.DateTimeException;
 import hunt.time.Duration;
 import hunt.time.LocalTime;
@@ -20,6 +22,8 @@ import hunt.time.chrono.ChronoLocalDateTime;
 import hunt.time.chrono.ChronoZonedDateTime;
 import hunt.time.temporal.Temporal;
 import hunt.time.temporal.UnsupportedTemporalTypeException;
+
+import hunt.Enum;
 import hunt.Exceptions;
 /**
  * A unit of date-time, such as Days or Hours.
@@ -46,7 +50,11 @@ import hunt.Exceptions;
  *
  * @since 1.8
  */
-public abstract class TemporalUnit {
+public abstract class TemporalUnit : AbstractEnum!TemporalUnit {
+
+    protected this(string name, int ordinal) {
+        super(name, ordinal);
+    }
 
     /**
      * Gets the duration of this unit, which may be an estimate.

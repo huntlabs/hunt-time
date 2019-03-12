@@ -1731,68 +1731,58 @@ public final class LocalDateTime
     override
     public long until(Temporal endExclusive, TemporalUnit unit) {
         LocalDateTime end = LocalDateTime.from(endExclusive);
-        if (cast(ChronoUnit)(unit) !is null) {
-            if (unit.isTimeBased()) {
-                long amount = date.daysUntil(end.date);
-                if (amount == 0) {
-                    return time.until(end.time, unit);
-                }
-                long timePart = end.time.toNanoOfDay() - time.toNanoOfDay();
-                if (amount > 0) {
-                    amount--;  // safe
-                    timePart += LocalTime.NANOS_PER_DAY;  // safe
-                } else {
-                    amount++;  // safe
-                    timePart -= LocalTime.NANOS_PER_DAY;  // safe
-                }
-                auto f = cast(ChronoUnit) unit;
-                 {
-                    if( f==  ChronoUnit.NANOS){
-                        amount = MathHelper.multiplyExact(amount, LocalTime.NANOS_PER_DAY);
-                    }
-                        
-                    if( f==  ChronoUnit.MICROS){
-                        amount = MathHelper.multiplyExact(amount, LocalTime.MICROS_PER_DAY);
-                        timePart = timePart / 1000;
-                    }
-                        
-                    if( f==  ChronoUnit.MILLIS){
-                        amount = MathHelper.multiplyExact(amount, LocalTime.MILLIS_PER_DAY);
-                        timePart = timePart / 1_000_000;
-                    }
-                        
-                    if( f==  ChronoUnit.SECONDS){
-                        amount = MathHelper.multiplyExact(amount, LocalTime.SECONDS_PER_DAY);
-                        timePart = timePart / LocalTime.NANOS_PER_SECOND;
-                    }
-                        
-                    if( f==  ChronoUnit.MINUTES){
-                        amount = MathHelper.multiplyExact(amount, LocalTime.MINUTES_PER_DAY);
-                        timePart = timePart / LocalTime.NANOS_PER_MINUTE;
-                    }
-                        
-                    if( f==  ChronoUnit.HOURS){
-                        amount = MathHelper.multiplyExact(amount, LocalTime.HOURS_PER_DAY);
-                        timePart = timePart / LocalTime.NANOS_PER_HOUR;
-                    }
-                        
-                    if( f==  ChronoUnit.HALF_DAYS){
-                        amount = MathHelper.multiplyExact(amount, 2);
-                        timePart = timePart / (LocalTime.NANOS_PER_HOUR * 12);
-                    }
-                        
-                }
-                return MathHelper.addExact(amount, timePart);
+        ChronoUnit f = cast(ChronoUnit) unit;
+
+        if (f is null)
+            return unit.between(this, end);
+
+        if (unit.isTimeBased()) {
+            
+            long amount = date.daysUntil(end.date);
+            if (amount == 0) {
+                return time.until(end.time, unit);
             }
-            LocalDate endDate = end.date;
-            if (endDate.isAfter(date) && end.time.isBefore(time)) {
-                endDate = endDate.minusDays(1);
-            } else if (endDate.isBefore(date) && end.time.isAfter(time)) {
-                endDate = endDate.plusDays(1);
+            long timePart = end.time.toNanoOfDay() - time.toNanoOfDay();
+            if (amount > 0) {
+                amount--; // safe
+                timePart += LocalTime.NANOS_PER_DAY; // safe
+            } else {
+                amount++; // safe
+                timePart -= LocalTime.NANOS_PER_DAY; // safe
             }
-            return date.until(endDate, unit);
+
+            if (f == ChronoUnit.NANOS) {
+                amount = MathHelper.multiplyExact(amount, LocalTime.NANOS_PER_DAY);
+            } else if (f == ChronoUnit.MICROS) {
+                amount = MathHelper.multiplyExact(amount, LocalTime.MICROS_PER_DAY);
+                timePart = timePart / 1000;
+            } else if (f == ChronoUnit.MILLIS) {
+                amount = MathHelper.multiplyExact(amount, LocalTime.MILLIS_PER_DAY);
+                timePart = timePart / 1_000_000;
+            } else if (f == ChronoUnit.SECONDS) {
+                amount = MathHelper.multiplyExact(amount, LocalTime.SECONDS_PER_DAY);
+                timePart = timePart / LocalTime.NANOS_PER_SECOND;
+            } else if (f == ChronoUnit.MINUTES) {
+                amount = MathHelper.multiplyExact(amount, LocalTime.MINUTES_PER_DAY);
+                timePart = timePart / LocalTime.NANOS_PER_MINUTE;
+            } else if (f == ChronoUnit.HOURS) {
+                amount = MathHelper.multiplyExact(amount, LocalTime.HOURS_PER_DAY);
+                timePart = timePart / LocalTime.NANOS_PER_HOUR;
+            } else if (f == ChronoUnit.HALF_DAYS) {
+                amount = MathHelper.multiplyExact(amount, 2);
+                timePart = timePart / (LocalTime.NANOS_PER_HOUR * 12);
+            }
+
+            return MathHelper.addExact(amount, timePart);
         }
-        return unit.between(this, end);
+        
+        LocalDate endDate = end.date;
+        if (endDate.isAfter(date) && end.time.isBefore(time)) {
+            endDate = endDate.minusDays(1);
+        } else if (endDate.isBefore(date) && end.time.isAfter(time)) {
+            endDate = endDate.plusDays(1);
+        }
+        return date.until(endDate, unit);
     }
 
     /**

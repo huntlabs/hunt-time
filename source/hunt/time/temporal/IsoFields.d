@@ -1328,18 +1328,18 @@ public final class IsoFields
         // shared static this()
         // {
             // WEEK_BASED_YEARS = new Unit("WeekBasedYears", Duration.ofSeconds(31556952L));
-            mixin(MakeGlobalVar!(Unit)("WEEK_BASED_YEARS",`new Unit("WeekBasedYears", Duration.ofSeconds(31556952L))`));
+            mixin(MakeGlobalVar!(Unit)("WEEK_BASED_YEARS",`new Unit("WeekBasedYears", 0, Duration.ofSeconds(31556952L))`));
             // QUARTER_YEARS = new Unit("QuarterYears", Duration.ofSeconds(31556952L / 4));
-            mixin(MakeGlobalVar!(Unit)("QUARTER_YEARS",`new Unit("QuarterYears", Duration.ofSeconds(31556952L / 4))`));
+            mixin(MakeGlobalVar!(Unit)("QUARTER_YEARS",`new Unit("QuarterYears", 1, Duration.ofSeconds(31556952L / 4))`));
 
         // }
 
-        private string name;
+        // private string name;
         private Duration duration;
 
-        this(string name, Duration estimatedDuration)
+        protected this(string name, int ordinal, Duration estimatedDuration)
         {
-            this.name = name;
+            super(name, ordinal);
             this.duration = estimatedDuration;
         }
 
@@ -1401,10 +1401,10 @@ public final class IsoFields
             }
         }
 
-        override public string toString()
-        {
-            return name;
-        }
+        // override public string toString()
+        // {
+        //     return name;
+        // }
 
     }
 

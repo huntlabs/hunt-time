@@ -405,7 +405,7 @@ public final class Instant
      * @param epochSecond  the number of seconds from 1970-01-01T00:00:00Z
      * @param nanos  the nanoseconds within the second, must be positive
      */
-    this(long epochSecond, int nanos) {
+    this(long epochSecond, int nanos = 0) {
         // super();
         this.seconds = epochSecond;
         this.nanos = nanos;
