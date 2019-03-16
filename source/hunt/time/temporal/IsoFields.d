@@ -15,7 +15,7 @@ import hunt.time.DayOfWeek;
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.Duration;
 import hunt.time.LocalDate;
 import hunt.time.chrono.ChronoLocalDate;

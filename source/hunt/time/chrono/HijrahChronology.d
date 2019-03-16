@@ -22,7 +22,7 @@ module hunt.time.chrono.HijrahChronology;
 // // import hunt.security.AccessController;
 // // import hunt.security.PrivilegedAction;
 // import hunt.time.Clock;
-// import hunt.time.DateTimeException;
+// import hunt.time.Exceptions;
 // import hunt.time.Instant;
 // import hunt.time.LocalDate;
 // import hunt.time.ZoneId;

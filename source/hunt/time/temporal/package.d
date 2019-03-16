@@ -24,6 +24,5 @@ public import hunt.time.temporal.TemporalField;
 public import hunt.time.temporal.TemporalQueries;
 public import hunt.time.temporal.TemporalQuery;
 public import hunt.time.temporal.TemporalUnit;
-public import hunt.time.temporal.UnsupportedTemporalTypeException;
 public import hunt.time.temporal.ValueRange;
 public import hunt.time.temporal.WeekFields;

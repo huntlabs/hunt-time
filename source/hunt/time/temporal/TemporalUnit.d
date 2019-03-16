@@ -13,7 +13,7 @@ module hunt.time.temporal.TemporalUnit;
 
 
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.Duration;
 import hunt.time.LocalTime;
 import hunt.time.Period;
@@ -21,7 +21,7 @@ import hunt.time.chrono.ChronoLocalDate;
 import hunt.time.chrono.ChronoLocalDateTime;
 import hunt.time.chrono.ChronoZonedDateTime;
 import hunt.time.temporal.Temporal;
-import hunt.time.temporal.UnsupportedTemporalTypeException;
+import hunt.time.Exceptions;
 
 import hunt.Enum;
 import hunt.Exceptions;

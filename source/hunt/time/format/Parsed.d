@@ -13,7 +13,7 @@ module hunt.time.format.Parsed;
 
 import hunt.time.temporal.ChronoField;
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.Instant;
 import hunt.time.LocalDate;
 import hunt.time.LocalTime;
@@ -29,7 +29,7 @@ import hunt.time.temporal.TemporalAccessor;
 import hunt.time.temporal.TemporalField;
 import hunt.time.temporal.TemporalQueries;
 import hunt.time.temporal.TemporalQuery;
-import hunt.time.temporal.UnsupportedTemporalTypeException;
+import hunt.time.Exceptions;
 import hunt.time.temporal.ValueRange;
 
 import hunt.collection.HashMap;

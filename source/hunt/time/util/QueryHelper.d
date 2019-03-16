@@ -13,7 +13,7 @@ module hunt.time.util.QueryHelper;
 
 import hunt.time.chrono;
 import hunt.time.Clock;
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.DayOfWeek;
 import hunt.time.Duration;
 // import hunt.time.format;

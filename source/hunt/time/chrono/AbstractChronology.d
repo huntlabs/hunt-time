@@ -22,7 +22,7 @@ import hunt.Exceptions;
 //import hunt.io.ObjectInputStream;
 // import hunt.io.ObjectStreamException;
 import hunt.io.Common;
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.DayOfWeek;
 import hunt.time.format.ResolverStyle;
 import hunt.time.temporal.ChronoField;
@@ -160,7 +160,7 @@ public abstract class AbstractChronology : Chronology {
      *
      * @param locale  the locale to use to obtain the calendar system, not null
      * @return the calendar system associated with the locale, not null
-     * @throws hunt.time.DateTimeException if the locale-specified calendar cannot be found
+     * @throws hunt.time.Exceptions if the locale-specified calendar cannot be found
      */
     static Chronology ofLocale(Locale locale) {
         assert(locale, "locale");
@@ -199,7 +199,7 @@ public abstract class AbstractChronology : Chronology {
      *
      * @param id  the chronology ID or calendar system type, not null
      * @return the chronology with the identifier requested, not null
-     * @throws hunt.time.DateTimeException if the chronology cannot be found
+     * @throws hunt.time.Exceptions if the chronology cannot be found
      */
     static Chronology of(string id) {
         assert(id, "id");
@@ -364,7 +364,7 @@ public abstract class AbstractChronology : Chronology {
      * @param fieldValues  the map of fields to values, which can be updated, not null
      * @param resolverStyle  the requested type of resolve, not null
      * @return the resolved date, null if insufficient information to create a date
-     * @throws hunt.time.DateTimeException if the date cannot be resolved, typically
+     * @throws hunt.time.Exceptions if the date cannot be resolved, typically
      *  because of a conflict _in the input data
      */
     override
@@ -586,7 +586,7 @@ public abstract class AbstractChronology : Chronology {
      *
      * @param field  the field to add, not null
      * @param value  the value to add, not null
-     * @throws hunt.time.DateTimeException if the field is already present with a different value
+     * @throws hunt.time.Exceptions if the field is already present with a different value
      */
     void addFieldValue(Map!(TemporalField, Long) fieldValues, ChronoField field, long value) {
         Long old = fieldValues.get(field);  // check first for better error message

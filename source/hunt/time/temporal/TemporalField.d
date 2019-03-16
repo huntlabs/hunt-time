@@ -11,7 +11,7 @@
 
 module hunt.time.temporal.TemporalField;
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.chrono.Chronology;
 import hunt.time.format.ResolverStyle;
 import hunt.time.util.Locale;

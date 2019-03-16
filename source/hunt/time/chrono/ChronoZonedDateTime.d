@@ -15,7 +15,7 @@ import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;
 
 import hunt.io.Common;
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.Instant;
 import hunt.time.LocalTime;
 import hunt.time.ZoneId;
@@ -32,7 +32,7 @@ import hunt.time.temporal.TemporalField;
 import hunt.time.temporal.TemporalQueries;
 import hunt.time.temporal.TemporalQuery;
 import hunt.time.temporal.TemporalUnit;
-import hunt.time.temporal.UnsupportedTemporalTypeException;
+import hunt.time.Exceptions;
 import hunt.time.temporal.ValueRange;
 import hunt.util.Common;
 import hunt.util.Comparator;

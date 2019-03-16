@@ -21,7 +21,7 @@ module hunt.time.chrono.ThaiBuddhistDate;
 // //import hunt.io.ObjectInputStream;
 // import hunt.io.Common;
 // import hunt.time.Clock;
-// import hunt.time.DateTimeException;
+// import hunt.time.Exceptions;
 // import hunt.time.LocalDate;
 // import hunt.time.LocalTime;
 // import hunt.time.Period;
@@ -33,7 +33,7 @@ module hunt.time.chrono.ThaiBuddhistDate;
 // import hunt.time.temporal.TemporalField;
 // import hunt.time.temporal.TemporalQuery;
 // import hunt.time.temporal.TemporalUnit;
-// import hunt.time.temporal.UnsupportedTemporalTypeException;
+// import hunt.time.Exceptions;
 // import hunt.time.temporal.ValueRange;
 
 

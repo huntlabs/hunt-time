@@ -42,8 +42,8 @@ import hunt.time.chrono.Ser;
 import hunt.time.temporal.ValueRange;
 import hunt.time.temporal.TemporalAmount;
 import std.conv;
-import hunt.time.temporal.UnsupportedTemporalTypeException;
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
+import hunt.time.Exceptions;
 // import hunt.time.format.DateTimeFormatter;
 import hunt.time.LocalTime;
 /**

@@ -11,7 +11,7 @@
 
 module hunt.time.temporal.TemporalAdjuster;
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.temporal.Temporal;
 
 

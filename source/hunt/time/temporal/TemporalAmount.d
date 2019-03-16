@@ -11,7 +11,7 @@
 
 module hunt.time.temporal.TemporalAmount;
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.Duration;
 import hunt.time.Period;
 import hunt.collection.List;

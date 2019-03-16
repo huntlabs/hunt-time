@@ -21,7 +21,7 @@ module hunt.time.chrono.HijrahDate;
 // import hunt.io.ObjectOutput;
 // import hunt.io.Common;
 // import hunt.time.Clock;
-// import hunt.time.DateTimeException;
+// import hunt.time.Exceptions;
 // import hunt.time.LocalDate;
 // import hunt.time.LocalTime;
 // import hunt.time.ZoneId;
@@ -32,7 +32,7 @@ module hunt.time.chrono.HijrahDate;
 // import hunt.time.temporal.TemporalField;
 // import hunt.time.temporal.TemporalQuery;
 // import hunt.time.temporal.TemporalUnit;
-// import hunt.time.temporal.UnsupportedTemporalTypeException;
+// import hunt.time.Exceptions;
 // import hunt.time.temporal.ValueRange;
 
 // /**

@@ -11,7 +11,7 @@
 
 module hunt.time.format.DateTimeParseException;
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 
 /**
  * An exception thrown when an error occurs during parsing.

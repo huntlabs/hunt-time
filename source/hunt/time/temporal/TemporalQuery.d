@@ -11,7 +11,7 @@
 
 module hunt.time.temporal.TemporalQuery;
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.temporal.TemporalAccessor;
 /**
  * Strategy for querying a temporal object.

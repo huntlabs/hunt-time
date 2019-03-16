@@ -11,12 +11,12 @@
 
 module hunt.time.chrono.ChronoPeriod;
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.temporal.ChronoUnit;
 import hunt.time.temporal.Temporal;
 import hunt.time.temporal.TemporalAmount;
 import hunt.time.temporal.TemporalUnit;
-import hunt.time.temporal.UnsupportedTemporalTypeException;
+import hunt.time.Exceptions;
 import hunt.collection.List;
 import hunt.time.chrono.ChronoLocalDate;
 import hunt.time.chrono.Chronology;

@@ -11,7 +11,7 @@
 
 module hunt.time.temporal.TemporalAccessor;
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.temporal.TemporalField;
 import hunt.time.temporal.ValueRange;
 import hunt.time.temporal.TemporalQuery;

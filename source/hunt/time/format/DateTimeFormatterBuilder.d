@@ -18,7 +18,7 @@ import hunt.math.BigDecimal;
 import hunt.math.BigInteger;
 import hunt.Exceptions;
 import hunt.text.Common;
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 import hunt.time.Instant;
 import hunt.time.LocalDate;
 import hunt.time.LocalDateTime;

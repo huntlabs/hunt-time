@@ -11,7 +11,7 @@
 
 module hunt.time.zone.ZoneRulesException;
 
-import hunt.time.DateTimeException;
+import hunt.time.Exceptions;
 
 /**
  * Thrown to indicate a problem with time-zone configuration.

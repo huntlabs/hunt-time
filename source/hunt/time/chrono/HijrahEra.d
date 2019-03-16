@@ -14,12 +14,12 @@ module hunt.time.chrono.HijrahEra;
 
 // import hunt.time.temporal.ChronoField;
 
-// import hunt.time.DateTimeException;
+// import hunt.time.Exceptions;
 // import hunt.time.format.DateTimeFormatterBuilder;
 // import hunt.time.format.TextStyle;
 // import hunt.time.temporal.ChronoField;
 // import hunt.time.temporal.TemporalField;
-// import hunt.time.temporal.UnsupportedTemporalTypeException;
+// import hunt.time.Exceptions;
 // import hunt.time.temporal.ValueRange;
 // import hunt.time.util.Locale;
 
