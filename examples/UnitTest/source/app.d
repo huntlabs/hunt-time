@@ -5,6 +5,7 @@ import hunt.util.UnitTest;
 import std.string;
 import core.thread;
 
+import test.DayOfWeekTest;
 import test.TestLocalDateTime;
 import test.TestLocalTime;
 import test.TestLocalDate;
@@ -14,13 +15,15 @@ import test.TestInstant;
 
 void main()
 {
-	trace("Test Time.");
+	// trace("Test Time.");
 
-	new Thread({ Thread.sleep(1.seconds); TestLocalTime.test(); }).start();
-	new Thread({ Thread.sleep(1.seconds); TestLocalDate.test(); }).start();
-	new Thread({ Thread.sleep(2.seconds); TestLocalDateTime.test(); }).start();
-	new Thread({ Thread.sleep(3.seconds); testUnits!(TestMonthDay); }).start();
+	// new Thread({ Thread.sleep(1.seconds); TestLocalTime.test(); }).start();
+	// new Thread({ Thread.sleep(1.seconds); TestLocalDate.test(); }).start();
+	// new Thread({ Thread.sleep(2.seconds); TestLocalDateTime.test(); }).start();
+	// new Thread({ Thread.sleep(3.seconds); testUnits!(TestMonthDay); }).start();
 
-	TestTimeZone.test();
-	TestInstant.test();
+	// TestTimeZone.test();
+	// TestInstant.test();
+
+	testUnits!DayOfWeekTest();
 }
