@@ -474,9 +474,9 @@ public abstract class ZoneId : Serializable {
      * Constructor only accessible within the package.
      */
     this() {
-        if (typeid(this).stringof != ZoneOffset.stringof && typeof(this).stringof != ZoneRegion.stringof) {
+        // if (typeid(this).stringof != ZoneOffset.stringof && typeof(this).stringof != ZoneRegion.stringof) {
             // throw new AssertionError("Invalid subclass");
-        }
+        // }
     }
 
     //-----------------------------------------------------------------------

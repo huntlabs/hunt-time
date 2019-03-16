@@ -455,7 +455,7 @@ import hunt.util.Common;
  * @author Mark Davis
  * @since 1.1
  */
-final class Locale : Cloneable, Serializable
+final class Locale : Cloneable
 {
 
     // private static final  Cache LOCALECACHE = new Cache();

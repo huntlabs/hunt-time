@@ -1,6 +1,7 @@
 module test.DayOfWeekTest;
 
 import hunt.time.DayOfWeek;
+import hunt.time.format.TextStyle;
 import hunt.time.LocalDate;
 
 import hunt.time.util.Locale;
@@ -9,6 +10,7 @@ import std.conv;
 import std.stdio;
 
 class DayOfWeekTest {
+
     void testBasic() {
         // Get DayOfWeek enums value
         DayOfWeek[] dayOfWeeks = DayOfWeek.values();
@@ -42,7 +44,7 @@ class DayOfWeekTest {
         // writeln("ID = " ~ indonesian);
 
         // string germany = dow.getDisplayName(TextStyle.FULL, Locale.GERMANY);
-        // writeln("DE = " ~ germany);
+        // writeln("DE = " ~ germany);/
 
         // Adding number of days to DayOfWeek enum.
         writeln("DayOfWeek.MONDAY.plus(4) = " ~ DayOfWeek.MONDAY.plus(4).toString());
