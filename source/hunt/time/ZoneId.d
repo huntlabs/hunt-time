@@ -425,7 +425,7 @@ public abstract class ZoneId : Serializable {
         if (zoneId.length == prefixLength) {
             return ofOffset(prefix, ZoneOffset.UTC);
         }
-        if (zoneId.charAt(prefixLength) != '+' && zoneId.charAt(prefixLength) != '-') {
+        if (zoneId[prefixLength] != '+' && zoneId[prefixLength] != '-') {
             return ZoneRegion.ofId(zoneId, checkAvailable);  // drop through to ZoneRulesProvider
         }
         try {

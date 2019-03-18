@@ -1869,11 +1869,11 @@ final class Locale : Cloneable
     //     int tableLength = table.length();
     //     int index = tableLength;
     //     if (codeLength == 2) {
-    //         char c1 = iso2Code.charAt(0);
-    //         char c2 = iso2Code.charAt(1);
+    //         char c1 = iso2Code[0];
+    //         char c2 = iso2Code[1];
     //         for (index = 0; index < tableLength; index += 5) {
-    //             if (table.charAt(index) == c1
-    //                 && table.charAt(index + 1) == c2) {
+    //             if (table[index] == c1
+    //                 && table[index + 1] == c2) {
     //                 break;
     //             }
     //         }

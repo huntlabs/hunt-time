@@ -954,7 +954,7 @@ module hunt.time.chrono.HijrahChronology;
 //         // yyyy-MM-dd
 //         string = string.trim();
 //         try {
-//             if (string.charAt(4) != '-' || string.charAt(7) != '-') {
+//             if (string[4] != '-' || string[7] != '-') {
 //                 throw new IllegalArgumentException("date must be yyyy-MM-dd");
 //             }
 //             int[] ymd = new int[3];

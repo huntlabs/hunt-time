@@ -95,7 +95,7 @@ final class ZoneRegion : ZoneId , Serializable {
            throw new DateTimeException("Invalid ID for region-based ZoneId, invalid format: " ~ zoneId);
         }
         for (int i = 0; i < n; i++) {
-            char c = zoneId.charAt(i);
+            char c = zoneId[i];
             if (c >= 'a' && c <= 'z') continue;
             if (c >= 'A' && c <= 'Z') continue;
             if (c == '/' && i != 0) continue;

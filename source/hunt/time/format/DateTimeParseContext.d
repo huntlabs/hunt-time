@@ -20,13 +20,16 @@ import hunt.collection.ArrayList;
 import hunt.time.util.Locale;
 import hunt.text.Common;
 import hunt.collection.Set;
-import hunt.time.util.Consumer;
 import hunt.time.format.DateTimeFormatter;
 import hunt.time.format.Parsed;
 import hunt.time.format.DecimalStyle;
 import hunt.time.format.ResolverStyle;
+
+import hunt.Functions;
 import hunt.Long;
+
 import std.ascii;
+
 /**
  * Context object used during date and time parsing.
  * !(p)
@@ -172,16 +175,16 @@ final class DateTimeParseContext {
         }
         if (isCaseSensitive()) {
             for (int i = 0; i < length; i++) {
-                char ch1 = cs1.charAt(offset1 + i);
-                char ch2 = cs2.charAt(offset2 + i);
+                char ch1 = cs1[offset1 + i];
+                char ch2 = cs2[offset2 + i];
                 if (ch1 != ch2) {
                     return false;
                 }
             }
         } else {
             for (int i = 0; i < length; i++) {
-                char ch1 = cs1.charAt(offset1 + i);
-                char ch2 = cs2.charAt(offset2 + i);
+                char ch1 = cs1[offset1 + i];
+                char ch2 = cs2[offset2 + i];
                 if (ch1 != ch2 && toUpper(ch1) != toUpper(ch2) &&
                         toLower(ch1) != toLower(ch2)) {
                     return false;
@@ -351,7 +354,7 @@ final class DateTimeParseContext {
             // Consumer!(Chronology)[] listeners = chronoListeners.toArray(tmp);
             chronoListeners.clear();
             foreach(Consumer!(Chronology) l ; listeners) {
-                l.accept(chrono);
+                l(chrono);
             }
         }
     }

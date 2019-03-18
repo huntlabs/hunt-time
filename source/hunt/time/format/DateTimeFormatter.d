@@ -462,14 +462,14 @@ import std.conv;
 import hunt.time.format.DecimalStyle;
 import hunt.time.format.ResolverStyle;
 import hunt.time.format.FormatStyle;
-import hunt.time.format.DateTimeFormatterBuilder;
+import hunt.time.format.CompositePrinterParser;
 
 public final class DateTimeFormatter {
 
     /**
      * The printer and/or parser to use, not null.
      */
-    private  DateTimeFormatterBuilder.CompositePrinterParser printerParser;
+    private  CompositePrinterParser printerParser;
     /**
      * The locale to use for formatting, not null.
      */
@@ -1327,7 +1327,7 @@ public final class DateTimeFormatter {
      * @param chrono  the chronology to use, null for no override
      * @param zone  the zone to use, null for no override
      */
-    this(DateTimeFormatterBuilder.CompositePrinterParser printerParser,
+    this(CompositePrinterParser printerParser,
             Locale locale, DecimalStyle decimalStyle,
             ResolverStyle resolverStyle, Set!(TemporalField) resolverFields,
             Chronology chrono, ZoneId zone) {
@@ -2041,7 +2041,7 @@ public final class DateTimeFormatter {
      * @param optional  whether the printer/parser should be optional
      * @return the printer/parser, not null
      */
-    DateTimeFormatterBuilder.CompositePrinterParser toPrinterParser(bool optional) {
+    CompositePrinterParser toPrinterParser(bool optional) {
         return printerParser.withOptional(optional);
     }
 

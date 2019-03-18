@@ -190,7 +190,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
         switch (offsetId.length)
         {
         case 2:
-            offsetId = offsetId.charAt(0) ~ "0" ~ offsetId.charAt(1); // fallthru
+            offsetId = offsetId[0] ~ "0" ~ offsetId[1]; // fallthru
             goto case 3;
         case 3:
             hours = parseNumber(offsetId, 1, false);
@@ -220,7 +220,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
         default:
             throw new DateTimeException("Invalid ID for ZoneOffset, invalid format: " ~ offsetId);
         }
-        char first = offsetId.charAt(0);
+        char first = offsetId[0];
         if (first != '+' && first != '-')
         {
             throw new DateTimeException(
@@ -246,13 +246,13 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      */
     private static int parseNumber(string offsetId, int pos, bool precededByColon)
     {
-        if (precededByColon && offsetId.charAt(pos - 1) != ':')
+        if (precededByColon && offsetId[pos - 1] != ':')
         {
             throw new DateTimeException(
                     "Invalid ID for ZoneOffset, colon not found when expected: " ~ offsetId);
         }
-        char ch1 = offsetId.charAt(pos);
-        char ch2 = offsetId.charAt(pos + 1);
+        char ch1 = offsetId[pos];
+        char ch2 = offsetId[pos + 1];
         if (ch1 < '0' || ch1 > '9' || ch2 < '0' || ch2 > '9')
         {
             throw new DateTimeException(
