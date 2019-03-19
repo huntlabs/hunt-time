@@ -11,19 +11,27 @@
 
 module hunt.time.ZoneRegion;
 
+import hunt.collection.HashMap;
+import hunt.collection.Map;
+import hunt.Exceptions;
+import hunt.io.Common;
 import hunt.io.DataInput;
 import hunt.io.DataOutput;
-import hunt.Exceptions;
 
-//import hunt.io.ObjectInputStream;
-import hunt.io.Common;
+import hunt.text.Common;
+
+import hunt.time.Exceptions;
 import hunt.time.zone.ZoneRules;
 import hunt.time.zone.ZoneRulesException;
 import hunt.time.zone.ZoneRulesProvider;
 import hunt.time.ZoneId;
-import hunt.time.Exceptions;
+import hunt.time.ZoneOffset;
 import hunt.time.Ser;
-import hunt.text.Common;
+import hunt.time.util.Common;
+
+
+import std.string;
+
 /**
  * A geographical region where the same time-zone rules apply.
  * !(p)
@@ -49,7 +57,7 @@ final class ZoneRegion : ZoneId , Serializable {
     /**
      * Serialization version.
      */
-    private enum  long serialVersionUID = 8386373296231747096L;
+    // private enum  long serialVersionUID = 8386373296231747096L;
     /**
      * The time-zone ID, not null.
      */
@@ -58,30 +66,6 @@ final class ZoneRegion : ZoneId , Serializable {
      * The time-zone rules, null if zone ID was loaded leniently.
      */
     private  /*transient*/ ZoneRules rules;
-
-    /**
-     * Obtains an instance of {@code ZoneId} from an identifier.
-     *
-     * @param zoneId  the time-zone ID, not null
-     * @param checkAvailable  whether to check if the zone ID is available
-     * @return the zone ID, not null
-     * @throws DateTimeException if the ID format is invalid
-     * @throws ZoneRulesException if checking availability and the ID cannot be found
-     */
-    static ZoneRegion ofId(string zoneId, bool checkAvailable) {
-        assert(zoneId, "zoneId");
-        checkName(zoneId);
-        ZoneRules rules = null;
-        try {
-            // always attempt load for better behavior after deserialization
-            rules = ZoneRulesProvider.getRules(zoneId, true);
-        } catch (ZoneRulesException ex) {
-            if (checkAvailable) {
-                throw ex;
-            }
-        }
-        return new ZoneRegion(zoneId, rules);
-    }
 
     /**
      * Checks that the given string is a legal ZondId name.
@@ -176,4 +160,193 @@ final class ZoneRegion : ZoneId , Serializable {
     //     return ZoneId.of(id, false);
     // }
 
+    
+    /**
+     * Gets the system default time-zone.
+     * !(p)
+     * This queries {@link TimeZone#getDefault()} to find the default time-zone
+     * and converts it to a {@code ZoneId}. If the system default time-zone is changed,
+     * then the result of this method will also change.
+     *
+     * @return the zone ID, not null
+     * @throws DateTimeException if the converted zone ID has an invalid format
+     * @throws ZoneRulesException if the converted zone region ID cannot be found
+     */
+    public static ZoneId systemDefault() {
+        // return TimeZone.getDefault().toZoneId();
+        ///@gxc
+        return ZoneRegion.of(System.getSystemTimeZone(),true);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Obtains an instance of {@code ZoneId} using its ID using a map
+     * of aliases to supplement the standard zone IDs.
+     * !(p)
+     * Many users of time-zones use short abbreviations, such as PST for
+     * 'Pacific Standard Time' and PDT for 'Pacific Daylight Time'.
+     * These abbreviations are not unique, and so cannot be used as IDs.
+     * This method allows a map of string to time-zone to be setup and reused
+     * within an application.
+     *
+     * @param zoneId  the time-zone ID, not null
+     * @param aliasMap  a map of alias zone IDs (typically abbreviations) to real zone IDs, not null
+     * @return the zone ID, not null
+     * @throws DateTimeException if the zone ID has an invalid format
+     * @throws ZoneRulesException if the zone ID is a region ID that cannot be found
+     */
+    public static ZoneId of(string zoneId, Map!(string, string) aliasMap) {
+        assert(zoneId, "zoneId");
+        assert(aliasMap, "aliasMap");
+        string id = aliasMap.get(zoneId) is null ? aliasMap.get(zoneId) : zoneId;
+        return of(id);
+    }
+
+    /**
+     * Obtains an instance of {@code ZoneId} from an ID ensuring that the
+     * ID is valid and available for use.
+     * !(p)
+     * This method parses the ID producing a {@code ZoneId} or {@code ZoneOffset}.
+     * A {@code ZoneOffset} is returned if the ID is 'Z', or starts with '+' or '-'.
+     * The result will always be a valid ID for which {@link ZoneRules} can be obtained.
+     * !(p)
+     * Parsing matches the zone ID step by step as follows.
+     * !(ul)
+     * !(li)If the zone ID equals 'Z', the result is {@code ZoneOffset.UTC}.
+     * !(li)If the zone ID consists of a single letter, the zone ID is invalid
+     *  and {@code DateTimeException} is thrown.
+     * !(li)If the zone ID starts with '+' or '-', the ID is parsed as a
+     *  {@code ZoneOffset} using {@link ZoneOffset#of(string)}.
+     * !(li)If the zone ID equals 'GMT', 'UTC' or 'UT' then the result is a {@code ZoneId}
+     *  with the same ID and rules equivalent to {@code ZoneOffset.UTC}.
+     * !(li)If the zone ID starts with 'UTC+', 'UTC-', 'GMT+', 'GMT-', 'UT+' or 'UT-'
+     *  then the ID is a prefixed offset-based ID. The ID is split _in two, with
+     *  a two or three letter prefix and a suffix starting with the sign.
+     *  The suffix is parsed as a {@link ZoneOffset#of(string) ZoneOffset}.
+     *  The result will be a {@code ZoneId} with the specified UTC/GMT/UT prefix
+     *  and the normalized offset ID as per {@link ZoneOffset#getId()}.
+     *  The rules of the returned {@code ZoneId} will be equivalent to the
+     *  parsed {@code ZoneOffset}.
+     * !(li)All other IDs are parsed as region-based zone IDs. Region IDs must
+     *  match the regular expression !(code)[A-Za-z][A-Za-z0-9~/._+-]+</code>
+     *  otherwise a {@code DateTimeException} is thrown. If the zone ID is not
+     *  _in the configured set of IDs, {@code ZoneRulesException} is thrown.
+     *  The detailed format of the region ID depends on the group supplying the data.
+     *  The default set of data is supplied by the IANA Time Zone Database (TZDB).
+     *  This has region IDs of the form '{area}/{city}', such as 'Europe/Paris' or 'America/New_York'.
+     *  This is compatible with most IDs from {@link java.util.TimeZone}.
+     * </ul>
+     *
+     * @param zoneId  the time-zone ID, not null
+     * @return the zone ID, not null
+     * @throws DateTimeException if the zone ID has an invalid format
+     * @throws ZoneRulesException if the zone ID is a region ID that cannot be found
+     */
+    public static ZoneId of(string zoneId) {
+        return of(zoneId, true);
+    }
+
+    /**
+     * Parses the ID, taking a flag to indicate whether {@code ZoneRulesException}
+     * should be thrown or not, used _in deserialization.
+     *
+     * @param zoneId  the time-zone ID, not null
+     * @param checkAvailable  whether to check if the zone ID is available
+     * @return the zone ID, not null
+     * @throws DateTimeException if the ID format is invalid
+     * @throws ZoneRulesException if checking availability and the ID cannot be found
+     */
+    static ZoneId of(string zoneId, bool checkAvailable) {
+        assert(zoneId, "zoneId");
+        if (zoneId.length <= 1 || zoneId.startsWith("+") || zoneId.startsWith("-")) {
+            return ZoneOffset.of(zoneId);
+        } else if (zoneId.startsWith("UTC") || zoneId.startsWith("GMT")) {
+            return ofWithPrefix(zoneId, 3, checkAvailable);
+        } else if (zoneId.startsWith("UT")) {
+            return ofWithPrefix(zoneId, 2, checkAvailable);
+        }
+        return ZoneRegion.ofId(zoneId, checkAvailable);
+    }
+
+    /**
+     * Obtains an instance of {@code ZoneId} from an identifier.
+     *
+     * @param zoneId  the time-zone ID, not null
+     * @param checkAvailable  whether to check if the zone ID is available
+     * @return the zone ID, not null
+     * @throws DateTimeException if the ID format is invalid
+     * @throws ZoneRulesException if checking availability and the ID cannot be found
+     */
+    static ZoneRegion ofId(string zoneId, bool checkAvailable) {
+        assert(zoneId, "zoneId");
+        checkName(zoneId);
+        ZoneRules rules = null;
+        try {
+            // always attempt load for better behavior after deserialization
+            rules = ZoneRulesProvider.getRules(zoneId, true);
+        } catch (ZoneRulesException ex) {
+            if (checkAvailable) {
+                throw ex;
+            }
+        }
+        return new ZoneRegion(zoneId, rules);
+    }
+
+    /**
+     * Obtains an instance of {@code ZoneId} wrapping an offset.
+     * !(p)
+     * If the prefix is "GMT", "UTC", or "UT" a {@code ZoneId}
+     * with the prefix and the non-zero offset is returned.
+     * If the prefix is empty {@code ""} the {@code ZoneOffset} is returned.
+     *
+     * @param prefix  the time-zone ID, not null
+     * @param offset  the offset, not null
+     * @return the zone ID, not null
+     * @throws IllegalArgumentException if the prefix is not one of
+     *     "GMT", "UTC", or "UT", or ""
+     */
+    public static ZoneId ofOffset(string prefix, ZoneOffset offset) {
+        assert(prefix, "prefix");
+        assert(offset, "offset");
+        if (prefix.length == 0) {
+            return offset;
+        }
+
+        if (!(prefix == "GMT") && !(prefix == "UTC") && !(prefix == "UT")) {
+             throw new IllegalArgumentException("prefix should be GMT, UTC or UT, is: " ~ prefix);
+        }
+
+        if (offset.getTotalSeconds() != 0) {
+            prefix = prefix ~ (offset.getId());
+        }
+        return new ZoneRegion(prefix, offset.getRules());
+    }
+
+    
+    /**
+     * Parse once a prefix is established.
+     *
+     * @param zoneId  the time-zone ID, not null
+     * @param prefixLength  the length of the prefix, 2 or 3
+     * @return the zone ID, not null
+     * @throws DateTimeException if the zone ID has an invalid format
+     */
+    private static ZoneId ofWithPrefix(string zoneId, int prefixLength, bool checkAvailable) {
+        string prefix = zoneId.substring(0, prefixLength);
+        if (zoneId.length == prefixLength) {
+            return ofOffset(prefix, ZoneOffset.UTC);
+        }
+        if (zoneId[prefixLength] != '+' && zoneId[prefixLength] != '-') {
+            return ZoneRegion.ofId(zoneId, checkAvailable);  // drop through to ZoneRulesProvider
+        }
+        try {
+            ZoneOffset offset = ZoneOffset.of(zoneId.substring(prefixLength));
+            if (offset == ZoneOffset.UTC) {
+                return ofOffset(prefix, offset);
+            }
+            return ofOffset(prefix, offset);
+        } catch (DateTimeException ex) {
+            throw new DateTimeException("Invalid ID for offset-based ZoneId: " ~ zoneId, ex);
+        }
+    }
 }

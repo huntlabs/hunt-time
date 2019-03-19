@@ -13,7 +13,7 @@ module hunt.time.DayOfWeek;
 
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;
-// import hunt.time.format.DateTimeFormatterBuilder;
+import hunt.time.format.DateTimeFormatterBuilder;
 import hunt.time.format.TextStyle;
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.Temporal;
@@ -220,9 +220,9 @@ final class DayOfWeek : AbstractEnum!DayOfWeek, TemporalAccessor, TemporalAdjust
      * @param locale  the locale to use, not null
      * @return the text value of the day-of-week, not null
      */
-    // string getDisplayName(TextStyle style, Locale locale) {
-    //     return new DateTimeFormatterBuilder().appendText(ChronoField.DAY_OF_WEEK, style).toFormatter(locale).format(this);
-    // }
+    string getDisplayName(TextStyle style, Locale locale) {
+        return new DateTimeFormatterBuilder().appendText(ChronoField.DAY_OF_WEEK, style).toFormatter(locale).format(this);
+    }
 
     //-----------------------------------------------------------------------
     /**

@@ -16,6 +16,7 @@ import hunt.Exceptions;
 import hunt.math.Helper;
 import hunt.time.Constants;
 import hunt.time.ZoneId;
+import hunt.time.ZoneRegion;
 import hunt.time.Duration;
 import hunt.time.Instant;
 import hunt.time.ZoneOffset;
@@ -139,7 +140,7 @@ public abstract class Clock {
      * @see ZoneId#systemDefault()
      */
     public static Clock systemDefaultZone() {
-        return new SystemClock(ZoneId.systemDefault());
+        return new SystemClock(ZoneRegion.systemDefault());
     }
 
     /**

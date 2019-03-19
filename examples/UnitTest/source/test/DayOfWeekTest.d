@@ -39,12 +39,12 @@ class DayOfWeekTest {
         
 
         // Get DayOfWeek display name in different locale.
-        // Locale locale = new Locale("id", "ID");
-        // string indonesian = dow.getDisplayName(TextStyle.SHORT, locale);
-        // writeln("ID = " ~ indonesian);
+        Locale locale = new Locale("id", "ID");
+        string indonesian = dow.getDisplayName(TextStyle.SHORT, locale);
+        writeln("ID = " ~ indonesian);
 
-        // string germany = dow.getDisplayName(TextStyle.FULL, Locale.GERMANY);
-        // writeln("DE = " ~ germany);/
+        string germany = dow.getDisplayName(TextStyle.FULL, Locale.GERMANY);
+        writeln("DE = " ~ germany);
 
         // Adding number of days to DayOfWeek enum.
         writeln("DayOfWeek.MONDAY.plus(4) = " ~ DayOfWeek.MONDAY.plus(4).toString());

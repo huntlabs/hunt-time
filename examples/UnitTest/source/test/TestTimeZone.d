@@ -19,9 +19,9 @@ class TestTimeZone {
     {
         mixin(DO_TEST);
 
-        ZoneId id = ZoneId.of("Asia/Shanghai");
+        ZoneId id = ZoneRegion.of("Asia/Shanghai");
         ZonedDateTime zoned = ZonedDateTime.of(LocalDateTime.now(), id);
-        trace("ZoneId.of(\"Asia/Shanghai\") : ",ZoneId.of("Asia/Shanghai"));
+        trace("ZoneRegion.of(\"Asia/Shanghai\") : ", ZoneRegion.of("Asia/Shanghai"));
         trace("ZonedDateTime.of(LocalDateTime.now(), id) : ",ZonedDateTime.of(LocalDateTime.now(), id));
     }
 

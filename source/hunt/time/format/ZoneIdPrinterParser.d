@@ -14,6 +14,7 @@ import hunt.time.text.ParsePosition;
 import hunt.time.util.Common;
 import hunt.time.ZoneId;
 import hunt.time.ZoneOffset;
+import hunt.time.ZoneRegion;
 import hunt.time.zone.Helper;
 import hunt.text.StringBuilder;
 
@@ -133,7 +134,7 @@ static class ZoneIdPrinterParser : DateTimePrinterParser
                 if (length >= position + 4
                         && context.charEquals(text[position + 3], '0'))
                 {
-                    context.setParsed(ZoneId.of("GMT0"));
+                    context.setParsed(ZoneRegion.of("GMT0"));
                     return position + 4;
                 }
                 return parseOffsetBased(context, text, position,
@@ -154,7 +155,7 @@ static class ZoneIdPrinterParser : DateTimePrinterParser
             }
             return ~position;
         }
-        context.setParsed(ZoneId.of(parsedZoneId));
+        context.setParsed(ZoneRegion.of(parsedZoneId));
         return ppos.getIndex();
     }
 
@@ -176,14 +177,14 @@ static class ZoneIdPrinterParser : DateTimePrinterParser
         string prefix = toUpper(cast(string)(text[prefixPos .. position]));
         if (position >= text.length)
         {
-            context.setParsed(ZoneId.of(prefix));
+            context.setParsed(ZoneRegion.of(prefix));
             return position;
         }
 
         // '0' or 'Z' after prefix is not part of a valid ZoneId; use bare prefix
         if (text[position] == '0' || context.charEquals(text[position], 'Z'))
         {
-            context.setParsed(ZoneId.of(prefix));
+            context.setParsed(ZoneRegion.of(prefix));
             return position;
         }
 
@@ -197,13 +198,13 @@ static class ZoneIdPrinterParser : DateTimePrinterParser
                 {
                     return ~prefixPos;
                 }
-                context.setParsed(ZoneId.of(prefix));
+                context.setParsed(ZoneRegion.of(prefix));
                 return position;
             }
             int offset = cast(int) newContext.getParsed(ChronoField.OFFSET_SECONDS)
                 .longValue();
             ZoneOffset zoneOffset = ZoneOffset.ofTotalSeconds(offset);
-            context.setParsed(ZoneId.ofOffset(prefix, zoneOffset));
+            context.setParsed(ZoneRegion.ofOffset(prefix, zoneOffset));
             return endPos;
         }
         catch (DateTimeException dte)
