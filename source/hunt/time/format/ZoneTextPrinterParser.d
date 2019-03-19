@@ -19,7 +19,7 @@ import hunt.time.util.Locale;
 import hunt.time.util.Common;
 import hunt.time.ZoneId;
 import hunt.time.ZoneOffset;
-import hunt.time.zone.Helper;
+import hunt.time.zone.ZoneRulesProvider;
 import hunt.text.StringBuilder;
 
 import hunt.Exceptions;
@@ -176,7 +176,7 @@ static final class ZoneTextPrinterParser : ZoneIdPrinterParser
         }
         Locale locale = context.getLocale();
         bool isCaseSensitive = context.isCaseSensitive();
-        Set!(string) regionIds = ZoneRulesHelper.getAvailableZoneIds();
+        Set!(string) regionIds = ZoneRulesProvider.getAvailableZoneIds();
         int regionIdsSize = regionIds.size();
 
         Map!(Locale, MapEntry!(Integer, PrefixTree)) cached = isCaseSensitive ? cachedTree

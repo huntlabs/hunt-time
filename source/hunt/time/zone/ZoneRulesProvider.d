@@ -20,25 +20,25 @@ import hunt.collection.HashSet;
 import hunt.collection.Iterator;
 import hunt.collection.List;
 import hunt.collection.NavigableMap;
-
-// import hunt.util.ServiceConfigurationError;
-import hunt.time.util.ServiceLoader;
 import hunt.collection.Set;
 import hunt.collection.HashMap;
-// import hunt.concurrent.CopyOnWriteArrayList;
 import hunt.collection.Collections;
+
 import hunt.time.zone.ZoneRules;
 import hunt.time.zone.ZoneRulesException;
 import hunt.time.util.Common;
+import hunt.time.util.ServiceLoader;
 import hunt.time.zone.TzdbZoneRulesProvider;
 
 version (HUNT_DEBUG) import hunt.logging.ConsoleLogger;
+
+import std.concurrency : initOnce;
 
 /**
  * Provider of time-zone rules to the system.
  * !(p)
  * This class manages the configuration of time-zone rules.
- * The static methods provide the public API that can be used to manage the providers.
+ * The static methods provide the API that can be used to manage the providers.
  * The abstract methods provide the SPI that allows rules to be provided.
  * !(p)
  * ZoneRulesProvider may be installed _in an instance of the Java Platform as
@@ -82,112 +82,36 @@ version (HUNT_DEBUG) import hunt.logging.ConsoleLogger;
  *
  * @since 1.8
  */
-public abstract class ZoneRulesProvider {
+abstract class ZoneRulesProvider {
 
     /**
      * The set of loaded providers.
      */
-    __gshared ArrayList!(ZoneRulesProvider) PROVIDERS;
+    static ArrayList!(ZoneRulesProvider) PROVIDERS() {
+        __gshared ArrayList!(ZoneRulesProvider) _PROVIDERS;
+        return initOnce!(_PROVIDERS)(new ArrayList!(ZoneRulesProvider)());
+    }
+
     /**
      * The lookup from zone ID to provider.
      */
-    // // __gshared ConcurrentMap!(string, ZoneRulesProvider) ZONES;
-    __gshared HashMap!(string, ZoneRulesProvider) ZONES;
+    static HashMap!(string, ZoneRulesProvider) ZONES() {
+        __gshared HashMap!(string, ZoneRulesProvider) _ZONES;
+        return initOnce!(_ZONES)(new HashMap!(string, ZoneRulesProvider)(512, 0.75f/* , 2 */));
+    }
+    
+    // __gshared ConcurrentMap!(string, ZoneRulesProvider) ZONES;
 
     /**
      * The zone ID data
      */
-    // __gshared Set!(string) ZONE_IDS;
-    // shared static this()
-    // {
-    //     ZoneRulesProvider.registerProvider(new TzdbZoneRulesProvider());
-    // }
-    shared static this()
-    {
-        PROVIDERS = new ArrayList!(ZoneRulesProvider)();
-        ZONES = new HashMap!(string, ZoneRulesProvider)(512, 0.75f/* , 2 */);
-        registerProvider(new TzdbZoneRulesProvider());
-        // mixin(MakeGlobalVar!(ArrayList!(ZoneRulesProvider))("PROVIDERS",`new ArrayList!(ZoneRulesProvider)()`));
-        // mixin(MakeGlobalVar!(HashMap!(string, ZoneRulesProvider))("ZONES",`new HashMap!(string, ZoneRulesProvider)(512, 0.75f/* , 2 */)`));
+    private __gshared Set!(string) ZONE_IDS;
 
+    shared static this() {
+        registerProvider(new TzdbZoneRulesProvider());
     }
 
-    // static this(){
-        ///@gxc register Zone Provider
-        // if the property hunt.time.zone.DefaultZoneRulesProvider is
-        // set then its value is the class name of the default provider
-        // final List!(ZoneRulesProvider) loaded = new ArrayList!()();
-        // AccessController.doPrivileged(new class PrivilegedAction!() {
-        //     public Object run() {
-        //         string prop = System.getProperty("hunt.time.zone.DefaultZoneRulesProvider");
-        //         if (prop !is null) {
-        //             try {
-        //                 Class!(Object) c = Class.forName(prop, true, ClassLoader.getSystemClassLoader());
-        //                 // @SuppressWarnings("deprecation")
-        //                 ZoneRulesProvider provider = ZoneRulesProvider.class.cast(c.newInstance());
-        //                 registerProvider(provider);
-        //                 loaded.add(provider);
-        //             } catch (Exception x) {
-        //                 throw new Error(x);
-        //             }
-        //         } else {
-        //             registerProvider(new TzdbZoneRulesProvider());
-        //         }
-        //         return null;
-        //     }
-        // });
-
-        // ServiceLoader!(ZoneRulesProvider) sl = ServiceLoader.load(ZoneRulesProvider.class, ClassLoader.getSystemClassLoader());
-        // Iterator!(ZoneRulesProvider) it = sl.iterator();
-        // while (it.hasNext()) {
-        //     ZoneRulesProvider provider;
-        //     try {
-        //         provider = it.next();
-        //     } catch (ServiceConfigurationError ex) {
-        //         if (ex.getCause(cast(SecurityException)()) !is null) {
-        //             continue;  // ignore the security exception, try the next provider
-        //         }
-        //         throw ex;
-        //     }
-        //     bool found = false;
-        //     foreach(ZoneRulesProvider p ; loaded) {
-        //         if (typeid(p) == typeid(provider)) {
-        //             found = true;
-        //         }
-        //     }
-        //     if (!found) {
-        //         registerProvider0(provider);
-        //         loaded.add(provider);
-        //     }
-        // }
-        // List!(ZoneRulesProvider) loaded = new ArrayList!(ZoneRulesProvider)();
-        // ServiceLoader!(ZoneRulesProvider) sl;
-        // foreach( obj ; sl.objs)
-        // {
-        //     ZoneRulesProvider provider = obj.ctor();
-        //     // try {
-        //     //     provider = it.next();
-        //     // } catch (ServiceConfigurationError ex) {
-        //     //     if (ex.getCause(cast(SecurityException)()) !is null) {
-        //     //         continue;  // ignore the security exception, try the next provider
-        //     //     }
-        //     //     throw ex;
-        //     // }
-        //     bool found = false;
-        //     foreach(ZoneRulesProvider p ; loaded) {
-        //         if (typeid(p) == typeid(provider)) {
-        //             found = true;
-        //         }
-        //     }
-        //     if (!found) {
-        //         registerProvider0(provider);
-        //         loaded.add(provider);
-        //     }
-        // }
-        // // CopyOnWriteList could be slow if lots of providers and each added individually
-        // PROVIDERS.addAll(loaded);
-    // }
-
+    
     //-------------------------------------------------------------------------
     /**
      * Gets the set of available zone IDs.
@@ -196,9 +120,10 @@ public abstract class ZoneRulesProvider {
      *
      * @return the unmodifiable set of zone IDs, not null
      */
-    // public static Set!(string) getAvailableZoneIds() {
-    //     return ZONE_IDS;
-    // }
+    static Set!(string) getAvailableZoneIds() {
+        return ZONE_IDS;
+    }
+
 
     /**
      * Gets the rules for the zone ID.
@@ -223,7 +148,7 @@ public abstract class ZoneRulesProvider {
      * otherwise not null
      * @throws ZoneRulesException if rules cannot be obtained for the zone ID
      */
-    public static ZoneRules getRules(string zoneId, bool forCaching) {
+    static ZoneRules getRules(string zoneId, bool forCaching) {
         assert(zoneId, "zoneId");
         return getProvider(zoneId).provideRules(zoneId, forCaching);
     }
@@ -252,7 +177,7 @@ public abstract class ZoneRulesProvider {
      *  from oldest to newest, not null
      * @throws ZoneRulesException if history cannot be obtained for the zone ID
      */
-    public static NavigableMap!(string, ZoneRules) getVersions(string zoneId) {
+    static NavigableMap!(string, ZoneRules) getVersions(string zoneId) {
         assert(zoneId, "zoneId");
         return getProvider(zoneId).provideVersions(zoneId);
     }
@@ -292,10 +217,12 @@ public abstract class ZoneRulesProvider {
      * @param provider  the provider to register, not null
      * @throws ZoneRulesException if a zone ID is already registered
      */
-    public static void registerProvider(ZoneRulesProvider provider) {
-        assert(provider, "provider");
-        registerProvider0(provider);
-        PROVIDERS.add(provider);
+    static void registerProvider(ZoneRulesProvider provider) {
+        assert(provider !is null, "provider");
+        synchronized {
+            registerProvider0(provider);
+            PROVIDERS.add(provider);
+        }
     }
 
     /**
@@ -304,7 +231,7 @@ public abstract class ZoneRulesProvider {
      * @param provider  the provider to register, not null
      * @throws ZoneRulesException if unable to complete the registration
      */
-     static /* synchronized */ void registerProvider0(ZoneRulesProvider provider) {
+    private static void registerProvider0(ZoneRulesProvider provider) {
         foreach(string zoneId ; provider.provideZoneIds()) {
             assert(zoneId, "zoneId");
             ZoneRulesProvider old = ZONES.putIfAbsent(zoneId, provider);
@@ -321,6 +248,10 @@ public abstract class ZoneRulesProvider {
         // import std.stdio;
         // writeln("zone set : ",combinedSet);
         // ZONE_IDS = /* Collections.unmodifiableSet */(combinedSet);
+        ZONE_IDS = new HashSet!(string)();
+        foreach(data; ZoneRulesProvider.ZONES.keySet()) {
+            ZONE_IDS.add(data);
+        }
     }
 
     /**
@@ -346,7 +277,7 @@ public abstract class ZoneRulesProvider {
      * @return true if the rules were updated
      * @throws ZoneRulesException if an error occurs during the refresh
      */
-    public static bool refresh() {
+    static bool refresh() {
         bool changed = false;
         foreach(ZoneRulesProvider provider ; PROVIDERS) {
             changed |= provider.provideRefresh();

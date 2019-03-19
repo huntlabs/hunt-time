@@ -15,7 +15,7 @@ import hunt.time.util.Common;
 import hunt.time.ZoneId;
 import hunt.time.ZoneOffset;
 import hunt.time.ZoneRegion;
-import hunt.time.zone.Helper;
+import hunt.time.zone.ZoneRulesProvider;
 import hunt.text.StringBuilder;
 
 import hunt.Exceptions;
@@ -62,7 +62,7 @@ static class ZoneIdPrinterParser : DateTimePrinterParser
     protected PrefixTree getTree(DateTimeParseContext context)
     {
         // prepare parse tree
-        Set!(string) regionIds = ZoneRulesHelper.getAvailableZoneIds();
+        Set!(string) regionIds = ZoneRulesProvider.getAvailableZoneIds();
         int regionIdsSize = regionIds.size();
         MapEntry!(Integer, PrefixTree) cached = context.isCaseSensitive()
             ? cachedPrefixTree : cachedPrefixTreeCI;
@@ -160,17 +160,17 @@ static class ZoneIdPrinterParser : DateTimePrinterParser
     }
 
     /**
- * Parse an offset following a prefix and set the ZoneId if it is valid.
- * To matching the parsing of ZoneId.of the values are not normalized
- * to ZoneOffsets.
- *
- * @param context the parse context
- * @param text the input text
- * @param prefixPos start of the prefix
- * @param position start of text after the prefix
- * @param parser parser for the value after the prefix
- * @return the position after the parse
- */
+     * Parse an offset following a prefix and set the ZoneId if it is valid.
+     * To matching the parsing of ZoneId.of the values are not normalized
+     * to ZoneOffsets.
+     *
+     * @param context the parse context
+     * @param text the input text
+     * @param prefixPos start of the prefix
+     * @param position start of text after the prefix
+     * @param parser parser for the value after the prefix
+     * @return the position after the parse
+     */
     private int parseOffsetBased(DateTimeParseContext context, string text,
             int prefixPos, int position, OffsetIdPrinterParser parser)
     {
