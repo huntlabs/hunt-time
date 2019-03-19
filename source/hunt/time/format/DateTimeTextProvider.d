@@ -30,6 +30,21 @@ import hunt.Exceptions;
 import hunt.util.Comparator;
 import hunt.util.Common;
 
+import std.concurrency : initOnce;
+
+
+/**
+ * Helper method to create an immutable entry.
+ *
+ * @param text  the text, not null
+ * @param field  the field, not null
+ * @return the entry, not null
+ */
+private static  MapEntry!(A, B) createEntry(A, B)(A text, B field) {
+    return new SimpleImmutableEntry!(A, B)(text, field);
+}
+
+
 /**
  * A provider to obtain the textual form of a date-time field.
  *
@@ -40,42 +55,22 @@ import hunt.util.Common;
  * @since 1.8
  */
 class DateTimeTextProvider {
-
+// TODO: Tasks pending completion -@zxp at 3/19/2019, 8:16:45 PM
+// 
     /** Cache. */
+    // static Map!(MapEntry!(TemporalField, Locale), Object) CACHE() {
+    //     __gshared Map!(MapEntry!(TemporalField, Locale), Object) d ;
+    //     return initOnce!(d)(new HashMap!(MapEntry!(TemporalField, Locale), Object)(16, 0.75f));
+    // }    
     // private static final ConcurrentMap!(MapEntry!(TemporalField, Locale), Object) CACHE = new ConcurrentHashMap!()(16, 0.75f, 2);
-    //__gshared Map!(MapEntry!(TemporalField, Locale), Object) CACHE;
 
-    /** Comparator. */
-    //__gshared Comparator!(MapEntry!(string, Long)) COMPARATOR;
 
     // Singleton instance
-    //__gshared DateTimeTextProvider INSTANCE;
+    static DateTimeTextProvider INSTANCE() {
+        __gshared DateTimeTextProvider d ;
+        return initOnce!(d)(new DateTimeTextProvider());
+    }    
 
-    // shared static this()
-    // {
-        // CACHE = new HashMap!(MapEntry!(TemporalField, Locale), Object)(16, 0.75f/* , 2 */);
-        // COMPARATOR = new class Comparator!(MapEntry!(string, Long)){
-        // override
-        // public int compare(MapEntry!(string, Long) obj1, MapEntry!(string, Long) obj2) {
-        //     return cast(int)(obj2.getKey().length - obj1.getKey().length);  // longest to shortest
-        // }
-        // };
-
-        mixin(MakeGlobalVar!(Comparator!(MapEntry!(string, Long)))("COMPARATOR",
-        `new class Comparator!(MapEntry!(string, Long)) {
-        override
-        int compare(MapEntry!(string, Long) obj1, MapEntry!(string, Long) obj2) nothrow {
-            try {
-                return cast(int)(obj2.getKey().length - obj1.getKey().length);  // longest to shortest
-            } catch(Exception) {
-                return 0;
-            }
-        }
-        }`));
-
-        // INSTANCE = new DateTimeTextProvider();
-        mixin(MakeGlobalVar!(DateTimeTextProvider)("INSTANCE",`new DateTimeTextProvider()`));
-    // }
 
     this() {}
 
@@ -102,10 +97,11 @@ class DateTimeTextProvider {
      * @param locale  the locale to get text for, not null
      * @return the text for the field value, null if no text found
      */
-    public string getText(TemporalField field, long value, TextStyle style, Locale locale) {
+    string getText(TemporalField field, long value, TextStyle style, Locale locale) {
         Object store = findStore(field, locale);
-        if (cast(LocaleStore)(store) !is null) {
-            return (cast(LocaleStore) store).getText(value, style);
+        LocaleStore ls = cast(LocaleStore)(store);
+        if (ls !is null) {
+            return ls.getText(value, style);
         }
         return null;
     }
@@ -125,7 +121,7 @@ class DateTimeTextProvider {
      * @param locale  the locale to get text for, not null
      * @return the text for the field value, null if no text found
      */
-    public string getText(Chronology chrono, TemporalField field, long value,
+    string getText(Chronology chrono, TemporalField field, long value,
                                     TextStyle style, Locale locale) {
         if (chrono == IsoChronology.INSTANCE
                 || !(cast(ChronoField)(field) !is null)) {
@@ -136,7 +132,8 @@ class DateTimeTextProvider {
         int fieldValue;
         if (field == ChronoField.ERA) {
             fieldIndex = Calendar.ERA;
-            ///@gxc
+            // TODO: Tasks pending completion -@zxp at 3/19/2019, 8:17:55 PM
+            // 
             /* if (chrono == JapaneseChronology.INSTANCE) {
                 if (value == -999) {
                     fieldValue = 0;
@@ -182,7 +179,7 @@ class DateTimeTextProvider {
      * @return the iterator of text to field pairs, _in order from longest text to shortest text,
      *  null if the field or style is not parsable
      */
-    public Iterable!(MapEntry!(string, Long)) getTextIterator(TemporalField field, TextStyle style, Locale locale) {
+    Iterable!(MapEntry!(string, Long)) getTextIterator(TemporalField field, TextStyle style, Locale locale) {
         Object store = findStore(field, locale);
         if (cast(LocaleStore)(store) !is null) {
             return (cast(LocaleStore) store).getTextIterator(style);
@@ -207,7 +204,7 @@ class DateTimeTextProvider {
      * @return the iterator of text to field pairs, _in order from longest text to shortest text,
      *  null if the field or style is not parsable
      */
-    public Iterable!(MapEntry!(string, Long)) getTextIterator(Chronology chrono, TemporalField field,
+    Iterable!(MapEntry!(string, Long)) getTextIterator(Chronology chrono, TemporalField field,
                                                          TextStyle style, Locale locale) {
         if (chrono == IsoChronology.INSTANCE
                 || !(cast(ChronoField)(field) !is null)) {
@@ -280,7 +277,7 @@ class DateTimeTextProvider {
     }
 
     private Object findStore(TemporalField field, Locale locale) {
-        // MapEntry!(TemporalField, Locale) key = createEntry(field, locale);
+        MapEntry!(TemporalField, Locale) key = createEntry(field, locale);
         // Object store = CACHE.get(key);
         // if (store is null) {
         //     store = createStore(field, locale);
@@ -460,17 +457,6 @@ class DateTimeTextProvider {
     }
 
     /**
-     * Helper method to create an immutable entry.
-     *
-     * @param text  the text, not null
-     * @param field  the field, not null
-     * @return the entry, not null
-     */
-    private static  MapEntry!(A, B) createEntry(A,B)(A text, B field) {
-        return new SimpleImmutableEntry!()(text, field);
-    }
-
-    /**
      * Returns the localized resource of the given key and locale, or null
      * if no localized resource is available.
      *
@@ -491,78 +477,102 @@ class DateTimeTextProvider {
         return T.init;        
     }
 
+}
+
+
+
+/**
+ * Stores the text for a single locale.
+ * !(p)
+ * Some fields have a textual representation, such as day-of-week or month-of-year.
+ * These textual representations can be captured _in this class for printing
+ * and parsing.
+ * !(p)
+ * This class is immutable and thread-safe.
+ */
+final class LocaleStore {
+
+    /** Comparator. */
+    private static Comparator!(MapEntry!(string, Long)) COMPARATOR() {
+        __gshared Comparator!(MapEntry!(string, Long)) c;
+        return initOnce!(c)(createComparator());
+    }
+
+    private static Comparator!(MapEntry!(string, Long)) createComparator() {
+        return new class Comparator!(MapEntry!(string, Long)) {
+            override
+            int compare(MapEntry!(string, Long) obj1, MapEntry!(string, Long) obj2) nothrow {
+                try {
+                    return cast(int)(obj2.getKey().length - obj1.getKey().length);  // longest to shortest
+                } catch(Exception) {
+                    return 0;
+                }
+            }
+        };
+    }
+    
     /**
-     * Stores the text for a single locale.
-     * !(p)
-     * Some fields have a textual representation, such as day-of-week or month-of-year.
-     * These textual representations can be captured _in this class for printing
-     * and parsing.
-     * !(p)
-     * This class is immutable and thread-safe.
+     * Map of value to text.
      */
-    static final class LocaleStore {
-        /**
-         * Map of value to text.
-         */
-        private  Map!(TextStyle, Map!(Long, string)) valueTextMap;
-        /**
-         * Parsable data.
-         */
-        private  Map!(TextStyle, List!(MapEntry!(string, Long))) parsable;
+    private  Map!(TextStyle, Map!(Long, string)) valueTextMap;
+    /**
+     * Parsable data.
+     */
+    private  Map!(TextStyle, List!(MapEntry!(string, Long))) parsable;
 
-        /**
-         * Constructor.
-         *
-         * @param valueTextMap  the map of values to text to store, assigned and not altered, not null
-         */
-        this(Map!(TextStyle, Map!(Long, string)) valueTextMap) {
-            ////@gxc
-            // this.valueTextMap = valueTextMap;
-            // Map!(TextStyle, List!(MapEntry!(string, Long))) map = new HashMap!(TextStyle, List!(MapEntry!(string, Long)))();
-            // List!(MapEntry!(string, Long)) allList = new ArrayList!(MapEntry!(string, Long))();
-            // foreach(TextStyle k , Map!(Long, string) vtmEntry ; valueTextMap) {
-            //     Map!(string, MapEntry!(string, Long)) reverse = new HashMap!(string, MapEntry!(string, Long))();
-            //     foreach(Long k2 , string v2 ; vtmEntry.getValue()) {
-            //         if (reverse.put(v2, createEntry(v2, k2)) !is null) {
-            //             // TODO: BUG: this has no effect
-            //             continue;  // not parsable, try next style
-            //         }
-            //     }
-            //     List!(MapEntry!(string, Long)) list = new ArrayList!(MapEntry!(string, Long))(reverse.values());
-            //     Collections.sort(list, COMPARATOR);
-            //     map.put(vtmEntry.getKey(), list);
-            //     allList.addAll(list);
-            //     map.put(null, allList);
-            // }
-            // Collections.sort(allList, COMPARATOR);
-            // this.parsable = map;
-        }
 
-        /**
-         * Gets the text for the specified field value, locale and style
-         * for the purpose of printing.
-         *
-         * @param value  the value to get text for, not null
-         * @param style  the style to get text for, not null
-         * @return the text for the field value, null if no text found
-         */
-        string getText(long value, TextStyle style) {
-            Map!(Long, string) map = valueTextMap.get(style);
-            return map !is null ? map.get(new Long(value)) : null;
-        }
+    /**
+     * Constructor.
+     *
+     * @param valueTextMap  the map of values to text to store, assigned and not altered, not null
+     */
+    this(Map!(TextStyle, Map!(Long, string)) valueTextMap) {
+        this.valueTextMap = valueTextMap;
+        Map!(TextStyle, List!(MapEntry!(string, Long))) map = new HashMap!(TextStyle, List!(MapEntry!(string, Long)))();
+        List!(MapEntry!(string, Long)) allList = new ArrayList!(MapEntry!(string, Long))();
 
-        /**
-         * Gets an iterator of text to field for the specified style for the purpose of parsing.
-         * !(p)
-         * The iterator must be returned _in order from the longest text to the shortest.
-         *
-         * @param style  the style to get text for, null for all parsable text
-         * @return the iterator of text to field pairs, _in order from longest text to shortest text,
-         *  null if the style is not parsable
-         */
-        Iterable!(MapEntry!(string, Long)) getTextIterator(TextStyle style) {
-            List!(MapEntry!(string, Long)) list = parsable.get(style);
-            return list !is null ? list : null;
+        foreach(TextStyle k , Map!(Long, string) vtmValue ; valueTextMap) {
+            Map!(string, MapEntry!(string, Long)) reverse = new HashMap!(string, MapEntry!(string, Long))();
+            foreach(Long k2 , string v2 ; vtmValue) {
+                if (reverse.put(v2, createEntry(v2, k2)) !is null) {
+                    // TODO: BUG: this has no effect
+                    continue;  // not parsable, try next style
+                }
+            }
+            List!(MapEntry!(string, Long)) list = new ArrayList!(MapEntry!(string, Long))(reverse.values());
+            list.sort(COMPARATOR());
+            map.put(k, list);
+            allList.addAll(list);
+            map.put(null, allList);
         }
+        allList.sort(COMPARATOR());
+        this.parsable = map;
+    }
+
+    /**
+     * Gets the text for the specified field value, locale and style
+     * for the purpose of printing.
+     *
+     * @param value  the value to get text for, not null
+     * @param style  the style to get text for, not null
+     * @return the text for the field value, null if no text found
+     */
+    string getText(long value, TextStyle style) {
+        Map!(Long, string) map = valueTextMap.get(style);
+        return map !is null ? map.get(new Long(value)) : null;
+    }
+
+    /**
+     * Gets an iterator of text to field for the specified style for the purpose of parsing.
+     * !(p)
+     * The iterator must be returned _in order from the longest text to the shortest.
+     *
+     * @param style  the style to get text for, null for all parsable text
+     * @return the iterator of text to field pairs, _in order from longest text to shortest text,
+     *  null if the style is not parsable
+     */
+    Iterable!(MapEntry!(string, Long)) getTextIterator(TextStyle style) {
+        List!(MapEntry!(string, Long)) list = parsable.get(style);
+        return list !is null ? list : null;
     }
 }

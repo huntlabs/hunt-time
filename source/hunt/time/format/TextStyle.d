@@ -13,7 +13,7 @@ module hunt.time.format.TextStyle;
 
 import hunt.time.util.Calendar;
 import hunt.Enum;
-import std.concurrency;
+import std.concurrency : initOnce;
 
 /**
  * Enumeration of the style of text formatting and parsing.

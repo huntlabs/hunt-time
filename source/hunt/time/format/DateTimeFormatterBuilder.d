@@ -1630,7 +1630,7 @@ public final class DateTimeFormatterBuilder {
         Map!(TextStyle, Map!(Long, string)) map = /* Collections.singletonMap */ new HashMap!(TextStyle,
                     Map!(Long, string))();
         map.put(TextStyle.FULL, copy);
-        DateTimeTextProvider.LocaleStore store = new DateTimeTextProvider.LocaleStore(map);
+        LocaleStore store = new LocaleStore(map);
         DateTimeTextProvider provider = new class DateTimeTextProvider
         {
             override public string getText(Chronology chrono,
