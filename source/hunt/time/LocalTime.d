@@ -52,6 +52,9 @@ import std.conv;
 import hunt.text.Common;
 import hunt.time.util.QueryHelper;
 import hunt.time.util.Common;
+
+import std.concurrency : initOnce;
+
 /**
  * A time without a time-zone _in the ISO-8601 calendar system,
  * such as {@code 10:15:30}.
@@ -89,51 +92,45 @@ public final class LocalTime
      * The minimum supported {@code LocalTime}, '00:00'.
      * This is the time of midnight at the start of the day.
      */
-    //public __gshared LocalTime MIN;
+    static LocalTime MIN() {
+        return HOURS[0];
+    }
+
     /**
      * The maximum supported {@code LocalTime}, '23:59:59.999999999'.
      * This is the time just before midnight at the end of the day.
      */
-    //public __gshared LocalTime MAX;
+    static LocalTime MAX() {
+        __gshared LocalTime _MAX;
+        return initOnce!(_MAX)(new LocalTime(23, 59, 59, 999_999_999));
+    }
+
     /**
      * The time of midnight at the start of the day, '00:00'.
      */
-    //public __gshared LocalTime MIDNIGHT;
+    static LocalTime MIDNIGHT() {
+        return HOURS[0];
+    }
+
     /**
      * The time of noon _in the middle of the day, '12:00'.
      */
-    //public __gshared LocalTime NOON;
+    static LocalTime NOON() {
+        return HOURS[12];
+    }
     /**
      * Constants for the local time of each hour.
      */
-    __gshared LocalTime[] _HOURS;
-    public static LocalTime[] HOURS()
-    {
-        if(_HOURS.length != 24)
-        {
-            _HOURS = new LocalTime[24];
-            for(int i = 0; i < HOURS.length; i++) {
-                HOURS[i] = new LocalTime(i, 0, 0, 0);
-            }   
-        }
-        return _HOURS;
+    static LocalTime[] HOURS() {
+        __gshared LocalTime[] _HOURS;
+        return initOnce!(_HOURS)({
+            LocalTime[] hs = new LocalTime[24];
+            for(int i = 0; i < hs.length; i++) {
+                hs[i] = new LocalTime(i, 0, 0, 0);
+            }
+            return hs;
+        }());
     }
-    // shared static this(){
-        // for(int i = 0; i < HOURS.length; i++) {
-        //     HOURS[i] = new LocalTime(i, 0, 0, 0);
-        // }
-        // MIDNIGHT = HOURS[0];
-        mixin(MakeGlobalVar!(LocalTime)("MIDNIGHT",`HOURS[0]`));
-        // NOON = HOURS[12];
-        mixin(MakeGlobalVar!(LocalTime)("NOON",`HOURS[12]`));
-
-        // MIN = HOURS[0];
-        mixin(MakeGlobalVar!(LocalTime)("MIN",`HOURS[0]`));
-
-        // MAX = new LocalTime(23, 59, 59, 999_999_999);
-        mixin(MakeGlobalVar!(LocalTime)("MAX",`new LocalTime(23, 59, 59, 999_999_999)`));
-
-    // }
 
     /**
      * Hours per day.

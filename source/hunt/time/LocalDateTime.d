@@ -53,6 +53,9 @@ import hunt.time.Exceptions;
 import hunt.time.Period;
 import hunt.time.Ser;
 import std.conv;
+
+import std.concurrency : initOnce;
+
 // import hunt.time.util.Common;
 /**
  * A date-time without a time-zone _in the ISO-8601 calendar system,
@@ -99,16 +102,9 @@ public final class LocalDateTime
      * This combines {@link LocalDate#MIN} and {@link LocalTime#MIN}.
      * This could be used by an application as a "far past" date-time.
      */
-    // public __gshared LocalDateTime MIN;
-    private __gshared LocalDateTime _MIN;
     static LocalDateTime MIN() {
-        if(_MIN is null) {
-            synchronized {
-                if(_MIN is null)
-                    _MIN= LocalDateTime.of(LocalDate.MIN, LocalTime.MIN);
-            }
-        }
-        return _MIN;
+        __gshared LocalDateTime _MIN;
+        return initOnce!(_MIN)(LocalDateTime.of(LocalDate.MIN, LocalTime.MIN));
     }    
     /**
      * The maximum supported {@code LocalDateTime}, '+999999999-12-31T23:59:59.999999999'.
@@ -116,16 +112,9 @@ public final class LocalDateTime
      * This combines {@link LocalDate#MAX} and {@link LocalTime#MAX}.
      * This could be used by an application as a "far future" date-time.
      */
-    // public __gshared LocalDateTime MAX;
-    private __gshared LocalDateTime _MAX;
     static LocalDateTime MAX() {
-        if(_MAX is null) {
-            synchronized {
-                if(_MAX is null)
-                    _MAX= LocalDateTime.of(LocalDate.MAX, LocalTime.MAX);
-            }
-        }
-        return _MAX;
+        __gshared LocalDateTime _MAX;
+        return initOnce!(_MAX)(LocalDateTime.of(LocalDate.MAX, LocalTime.MAX));
     }    
 
     /**
@@ -141,15 +130,6 @@ public final class LocalDateTime
      * The time part.
      */
     private  LocalTime time;
-
-    // shared static this()
-    // {
-        // MIN = LocalDateTime.of(LocalDate.MIN, LocalTime.MIN);
-        // mixin(MakeGlobalVar!(LocalDateTime)("MIN",`LocalDateTime.of(LocalDate.MIN, LocalTime.MIN)`));
-        // MAX = LocalDateTime.of(LocalDate.MAX, LocalTime.MAX);
-        // mixin(MakeGlobalVar!(LocalDateTime)("MAX",`LocalDateTime.of(LocalDate.MAX, LocalTime.MAX)`));
-
-    // }
 
     //-----------------------------------------------------------------------
     /**
@@ -2117,13 +2097,12 @@ public final class LocalDateTime
     Chronology getChronology() {
         return toLocalDate().getChronology();
     }
-    override 
-     Instant toInstant(ZoneOffset offset) {
+
+    override Instant toInstant(ZoneOffset offset) {
         return Instant.ofEpochSecond(toEpochSecond(offset), toLocalTime().getNano());
     }
 
-    override
-    long toEpochSecond(ZoneOffset offset) {
+    override long toEpochSecond(ZoneOffset offset) {
         assert(offset, "offset");
         long epochDay = toLocalDate().toEpochDay();
         long secs = epochDay * 86400 + toLocalTime().toSecondOfDay();

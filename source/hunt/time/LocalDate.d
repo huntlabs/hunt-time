@@ -17,7 +17,6 @@ import hunt.io.DataInput;
 import hunt.io.DataOutput;
 import hunt.Exceptions;
 import hunt.Long;
-import std.conv;
 import hunt.io.Common;
 import hunt.time.chrono.ChronoLocalDate;
 import hunt.time.chrono.IsoEra;
@@ -51,7 +50,6 @@ import hunt.time.ZonedDateTime;
 import hunt.time.ZoneOffset;
 import hunt.time.Year;
 import hunt.time.Exceptions;
-import std.algorithm.comparison;
 import hunt.text.StringBuilder;
 import hunt.math.Helper;
 import hunt.time.Ser;
@@ -64,6 +62,11 @@ import hunt.logging;
 
 // import hunt.util.stream.LongStream;
 // import hunt.util.stream.Stream;
+
+
+import std.algorithm.comparison;
+import std.conv;
+import std.concurrency : initOnce;
 
 /**
  * A date without a time-zone _in the ISO-8601 calendar system,
@@ -107,49 +110,26 @@ public  class LocalDate
      * The minimum supported {@code LocalDate}, '-999999999-01-01'.
      * This could be used by an application as a "far past" date.
      */
-    // public __gshared LocalDate MIN ;
-    private __gshared LocalDate _MIN;
     static LocalDate MIN() {
-        if(_MIN is null) {
-            synchronized {
-                if(_MIN is null)
-                    _MIN= LocalDate.of(Year.MIN_VALUE, 1, 1);
-            }
-        }
-        return _MIN;
+        __gshared LocalDate _MIN;
+        return initOnce!(_MIN)(LocalDate.of(Year.MIN_VALUE, 1, 1));
     }
 
     /**
      * The maximum supported {@code LocalDate}, '+999999999-12-31'.
      * This could be used by an application as a "far future" date.
      */
-    // public __gshared LocalDate MAX ;
-    
-    private __gshared LocalDate _MAX;
     static LocalDate MAX() {
-        if(_MAX is null) {
-            synchronized {
-                if(_MAX is null)
-                    _MAX= LocalDate.of(Year.MAX_VALUE, 1, 1);
-            }
-        }
-        return _MAX;
+        __gshared LocalDate _MAX;
+        return initOnce!(_MAX)(LocalDate.of(Year.MAX_VALUE, 1, 1));
     }
     
     /**
      * The epoch year {@code LocalDate}, '1970-01-01'.
      */
-    // public __gshared LocalDate EPOCH ;
-
-    private __gshared LocalDate _EPOCH;
     static LocalDate EPOCH() {
-        if(_EPOCH is null) {
-            synchronized {
-                if(_EPOCH is null)
-                    _EPOCH= LocalDate.of(1970, 1, 1);
-            }
-        }
-        return _EPOCH;
+        __gshared LocalDate _EPOCH;
+        return initOnce!(_EPOCH)(LocalDate.of(1970, 1, 1));
     }
 
     /**
@@ -179,20 +159,6 @@ public  class LocalDate
      * The day-of-month.
      */
     private  short day;
-
-    // shared static this()
-    // {
-    //     MIN = LocalDate.of(Year.MIN_VALUE, 1, 1);
-        // enum sss = MakeGlobalVar!(LocalDate)("MIN",`LocalDate.of(Year.MIN_VALUE, 1, 1)`);
-        // pragma(msg, sss);
-        // mixin(MakeGlobalVar!(LocalDate)("MIN",`LocalDate.of(Year.MIN_VALUE, 1, 1)`));
-    //     MAX = LocalDate.of(Year.MAX_VALUE, 12, 31);
-        // mixin(MakeGlobalVar!(LocalDate)("MAX",`LocalDate.of(Year.MAX_VALUE, 12, 31)`));
-
-    //     EPOCH = LocalDate.of(1970, 1, 1);
-        // mixin(MakeGlobalVar!(LocalDate)("EPOCH",`LocalDate.of(1970, 1, 1)`));
-
-    // }
 
     //-----------------------------------------------------------------------
     /**
