@@ -161,21 +161,29 @@ import hunt.time.ZonedDateTime;
 import hunt.time.ZoneId;
 import hunt.time.util.Common;
 
+import std.concurrency : initOnce;
+
 public final class Instant
         : Temporal, TemporalAdjuster, Comparable!(Instant), Serializable {
 
     /**
-     * Constant for the 1970-01-01T00:00:00Z epoch instant.
-     */
-    //public __gshared Instant EPOCH;
-    /**
      * The minimum supported epoch second.
      */
      enum long MIN_SECOND = -31557014167219200L;
+
     /**
      * The maximum supported epoch second.
      */
      enum long MAX_SECOND = 31556889864403199L;
+
+    /**
+     * Constant for the 1970-01-01T00:00:00Z epoch instant.
+     */
+    static Instant EPOCH() {
+        __gshared Instant _EPOCH;
+        return initOnce!(_EPOCH)(new Instant(0, 0));
+    }
+
     /**
      * The minimum supported {@code Instant}, '-1000000000-01-01T00:00Z'.
      * This could be used by an application as a "far past" instant.
@@ -186,7 +194,11 @@ public final class Instant
      * The value is also chosen such that the value of the year fits _in
      * an {@code int}.
      */
-    //public __gshared Instant MIN;
+    static Instant MIN() {
+        __gshared Instant _MIN;
+        return initOnce!(_MIN)(Instant.ofEpochSecond(MIN_SECOND, 0));
+    }    
+    
     /**
      * The maximum supported {@code Instant}, '1000000000-12-31T23:59:59.999999999Z'.
      * This could be used by an application as a "far future" instant.
@@ -197,12 +209,10 @@ public final class Instant
      * The value is also chosen such that the value of the year fits _in
      * an {@code int}.
      */
-    //public __gshared Instant MAX;
-
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = -665713676816604388L;
+    static Instant MAX() {
+        __gshared Instant _MAX;
+        return initOnce!(_MAX)(Instant.ofEpochSecond(MAX_SECOND, 999_999_999));
+    }    
 
     /**
      * The number of seconds from the epoch of 1970-01-01T00:00:00Z.
@@ -214,17 +224,6 @@ public final class Instant
      */
     private  int nanos;
 
-    // shared static this()
-    // {
-        // EPOCH = new Instant(0, 0);
-        mixin(MakeGlobalVar!(Instant)("EPOCH",`new Instant(0, 0)`));
-        // MIN = Instant.ofEpochSecond(MIN_SECOND, 0);
-        mixin(MakeGlobalVar!(Instant)("MIN",`Instant.ofEpochSecond(MIN_SECOND, 0)`));
-
-        // MAX = Instant.ofEpochSecond(MAX_SECOND, 999_999_999);
-        mixin(MakeGlobalVar!(Instant)("MAX",`Instant.ofEpochSecond(MAX_SECOND, 999_999_999)`));
-
-    // }
 
     //-----------------------------------------------------------------------
     /**
