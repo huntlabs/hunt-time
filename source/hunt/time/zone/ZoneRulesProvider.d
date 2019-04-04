@@ -88,16 +88,16 @@ abstract class ZoneRulesProvider {
      * The set of loaded providers.
      */
     static ArrayList!(ZoneRulesProvider) PROVIDERS() {
-        __gshared ArrayList!(ZoneRulesProvider) _PROVIDERS;
-        return initOnce!(_PROVIDERS)(new ArrayList!(ZoneRulesProvider)());
+        initializeGlobals();
+        return _PROVIDERS;
     }
 
     /**
      * The lookup from zone ID to provider.
      */
     static HashMap!(string, ZoneRulesProvider) ZONES() {
-        __gshared HashMap!(string, ZoneRulesProvider) _ZONES;
-        return initOnce!(_ZONES)(new HashMap!(string, ZoneRulesProvider)(512, 0.75f/* , 2 */));
+        initializeGlobals();
+        return _ZONES;
     }
     
     // __gshared ConcurrentMap!(string, ZoneRulesProvider) ZONES;
@@ -106,10 +106,22 @@ abstract class ZoneRulesProvider {
      * The zone ID data
      */
     private __gshared Set!(string) ZONE_IDS;
+    private __gshared ArrayList!(ZoneRulesProvider) _PROVIDERS;
+    private __gshared HashMap!(string, ZoneRulesProvider) _ZONES;
 
-    shared static this() {
-        registerProvider(new TzdbZoneRulesProvider());
+    private static void initializeGlobals() {
+        __gshared bool isInitialized = false;
+        initOnce!(isInitialized)({
+            _PROVIDERS = new ArrayList!(ZoneRulesProvider)();
+            _ZONES = new HashMap!(string, ZoneRulesProvider)(512, 0.75f/* , 2 */);
+            registerProvider(new TzdbZoneRulesProvider());
+            return true;
+        }());
     }
+
+    // shared static this() {
+    //     registerProvider(new TzdbZoneRulesProvider());
+    // }
 
     
     //-------------------------------------------------------------------------
@@ -121,6 +133,7 @@ abstract class ZoneRulesProvider {
      * @return the unmodifiable set of zone IDs, not null
      */
     static Set!(string) getAvailableZoneIds() {
+        initializeGlobals();
         return ZONE_IDS;
     }
 
@@ -249,7 +262,7 @@ abstract class ZoneRulesProvider {
         // writeln("zone set : ",combinedSet);
         // ZONE_IDS = /* Collections.unmodifiableSet */(combinedSet);
         ZONE_IDS = new HashSet!(string)();
-        foreach(data; ZoneRulesProvider.ZONES.keySet()) {
+        foreach(data; ZONES.keySet()) {
             ZONE_IDS.add(data);
         }
     }

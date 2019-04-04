@@ -38,7 +38,7 @@ import hunt.time.temporal.TemporalUnit;
 import hunt.time.Exceptions;
 import hunt.time.temporal.ValueRange;
 import hunt.time.OffsetDateTime;
-import hunt.time.Duration;
+// import hunt.time.Duration;
 import hunt.time.Ser;
 import hunt.time.Year;
 import hunt.time.Exceptions;
@@ -163,7 +163,7 @@ import hunt.time.util.Common;
 
 import std.concurrency : initOnce;
 
-public final class Instant
+final class Instant
         : Temporal, TemporalAdjuster, Comparable!(Instant), Serializable {
 
     /**
@@ -237,7 +237,7 @@ public final class Instant
      *
      * @return the current instant using the system clock, not null
      */
-    public static Instant now() {
+    static Instant now() {
         return Clock.systemUTC().instant();
     }
 
@@ -252,7 +252,7 @@ public final class Instant
      * @param clock  the clock to use, not null
      * @return the current instant, not null
      */
-    public static Instant now(Clock clock) {
+    static Instant now(Clock clock) {
         assert(clock, "clock");
         return clock.instant();
     }
@@ -268,7 +268,7 @@ public final class Instant
      * @return an instant, not null
      * @throws DateTimeException if the instant exceeds the maximum or minimum instant
      */
-    public static Instant ofEpochSecond(long epochSecond) {
+    static Instant ofEpochSecond(long epochSecond) {
         return create(epochSecond, 0);
     }
 
@@ -292,7 +292,7 @@ public final class Instant
      * @throws DateTimeException if the instant exceeds the maximum or minimum instant
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public static Instant ofEpochSecond(long epochSecond, long nanoAdjustment) {
+    static Instant ofEpochSecond(long epochSecond, long nanoAdjustment) {
         long secs = MathHelper.addExact(epochSecond , MathHelper.floorDiv(nanoAdjustment , LocalTime.NANOS_PER_SECOND));
         int nos = cast(int)(MathHelper.floorMod(nanoAdjustment , LocalTime.NANOS_PER_SECOND));
         return create(secs, nos);
@@ -308,7 +308,7 @@ public final class Instant
      * @return an instant, not null
      * @throws DateTimeException if the instant exceeds the maximum or minimum instant
      */
-    public static Instant ofEpochMilli(long epochMilli) {
+    static Instant ofEpochMilli(long epochMilli) {
         long secs = MathHelper.floorDiv(epochMilli , 1000);
         int mos = MathHelper.floorMod(epochMilli , 1000);
         return create(secs, mos * 1000_000);
@@ -332,7 +332,7 @@ public final class Instant
      * @return the instant, not null
      * @throws DateTimeException if unable to convert to an {@code Instant}
      */
-    public static Instant from(TemporalAccessor temporal) {
+    static Instant from(TemporalAccessor temporal) {
         if (cast(Instant)(temporal) !is null) {
             return cast(Instant) temporal;
         }
@@ -359,7 +359,7 @@ public final class Instant
      * @return the parsed instant, not null
      * @throws DateTimeParseException if the text cannot be parsed
      */
-    // public static Instant parse(const string text) {
+    // static Instant parse(const string text) {
     //     return DateTimeFormatter.ISO_INSTANT.parse!Instant(text, new class TemporalQuery!Instant{
     //          Instant queryFrom(TemporalAccessor temporal)
     //          {
@@ -438,7 +438,7 @@ public final class Instant
      * @return true if the field is supported on this instant, false if not
      */
     override
-    public bool isSupported(TemporalField field) {
+    bool isSupported(TemporalField field) {
         if (cast(ChronoField)(field) !is null) {
             return field == ChronoField.INSTANT_SECONDS || field == ChronoField.NANO_OF_SECOND || field == ChronoField.MICRO_OF_SECOND || field == ChronoField.MILLI_OF_SECOND;
         }
@@ -475,7 +475,7 @@ public final class Instant
      * @return true if the unit can be added/subtracted, false if not
      */
     override
-    public bool isSupported(TemporalUnit unit) {
+    bool isSupported(TemporalUnit unit) {
         if (cast(ChronoUnit)(unit) !is null) {
             return unit.isTimeBased() || unit == ChronoUnit.DAYS;
         }
@@ -507,7 +507,7 @@ public final class Instant
      * @throws UnsupportedTemporalTypeException if the field is not supported
      */
     override  // override for Javadoc
-    public ValueRange range(TemporalField field) {
+    ValueRange range(TemporalField field) {
         return /* Temporal. super.*/super_range(field);
     }
 
@@ -549,7 +549,7 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     override  // override for Javadoc and performance
-    public int get(TemporalField field) {
+    int get(TemporalField field) {
         if (cast(ChronoField)(field) !is null) {
             auto name = (cast(ChronoField) field).toString;
              {
@@ -586,7 +586,7 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public long getLong(TemporalField field) {
+    long getLong(TemporalField field) {
         if (cast(ChronoField)(field) !is null) {
             auto name = (cast(ChronoField) field).toString;
             {
@@ -610,7 +610,7 @@ public final class Instant
      *
      * @return the seconds from the epoch of 1970-01-01T00:00:00Z
      */
-    public long getEpochSecond() {
+    long getEpochSecond() {
         return seconds;
     }
 
@@ -623,7 +623,7 @@ public final class Instant
      *
      * @return the nanoseconds within the second, always positive, never exceeds 999,999,999
      */
-    public int getNano() {
+    int getNano() {
         return nanos;
     }
 
@@ -647,7 +647,7 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Instant _with(TemporalAdjuster adjuster) {
+    Instant _with(TemporalAdjuster adjuster) {
         return cast(Instant) adjuster.adjustInto(this);
     }
 
@@ -696,7 +696,7 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Instant _with(TemporalField field, long newValue) {
+    Instant _with(TemporalField field, long newValue) {
         if (cast(ChronoField)(field) !is null) {
             ChronoField f = cast(ChronoField) field;
             f.checkValidValue(newValue);
@@ -741,22 +741,22 @@ public final class Instant
      * @throws DateTimeException if the unit is invalid for truncation
      * @throws UnsupportedTemporalTypeException if the unit is not supported
      */
-    public Instant truncatedTo(TemporalUnit unit) {
-        if (unit == ChronoUnit.NANOS) {
-            return this;
-        }
-        Duration unitDur = unit.getDuration();
-        if (unitDur.getSeconds() > LocalTime.SECONDS_PER_DAY) {
-            throw new UnsupportedTemporalTypeException("Unit is too large to be used for truncation");
-        }
-        long dur = unitDur.toNanos();
-        if ((LocalTime.NANOS_PER_DAY % dur) != 0) {
-            throw new UnsupportedTemporalTypeException("Unit must divide into a standard day without remainder");
-        }
-        long nod = (seconds % LocalTime.SECONDS_PER_DAY) * LocalTime.NANOS_PER_SECOND + nanos;
-        long result =/*  MathHelper.floorDiv */(nod / (dur)) * dur;
-        return plusNanos(result - nod);
-    }
+    // Instant truncatedTo(TemporalUnit unit) {
+    //     if (unit == ChronoUnit.NANOS) {
+    //         return this;
+    //     }
+    //     Duration unitDur = unit.getDuration();
+    //     if (unitDur.getSeconds() > LocalTime.SECONDS_PER_DAY) {
+    //         throw new UnsupportedTemporalTypeException("Unit is too large to be used for truncation");
+    //     }
+    //     long dur = unitDur.toNanos();
+    //     if ((LocalTime.NANOS_PER_DAY % dur) != 0) {
+    //         throw new UnsupportedTemporalTypeException("Unit must divide into a standard day without remainder");
+    //     }
+    //     long nod = (seconds % LocalTime.SECONDS_PER_DAY) * LocalTime.NANOS_PER_SECOND + nanos;
+    //     long result =/*  MathHelper.floorDiv */(nod / (dur)) * dur;
+    //     return plusNanos(result - nod);
+    // }
 
     //-----------------------------------------------------------------------
     /**
@@ -780,7 +780,7 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Instant plus(TemporalAmount amountToAdd) {
+    Instant plus(TemporalAmount amountToAdd) {
         return cast(Instant) amountToAdd.addTo(this);
     }
 
@@ -843,7 +843,7 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Instant plus(long amountToAdd, TemporalUnit unit) {
+    Instant plus(long amountToAdd, TemporalUnit unit) {
         if (cast(ChronoUnit)(unit) !is null) {
             auto name = (cast(ChronoUnit) unit).toString;
              {
@@ -872,7 +872,7 @@ public final class Instant
      * @throws DateTimeException if the result exceeds the maximum or minimum instant
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Instant plusSeconds(long secondsToAdd) {
+    Instant plusSeconds(long secondsToAdd) {
         return plus(secondsToAdd, 0);
     }
 
@@ -886,7 +886,7 @@ public final class Instant
      * @throws DateTimeException if the result exceeds the maximum or minimum instant
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Instant plusMillis(long millisToAdd) {
+    Instant plusMillis(long millisToAdd) {
         return plus(millisToAdd / 1000, (millisToAdd % 1000) * 1000_000);
     }
 
@@ -900,7 +900,7 @@ public final class Instant
      * @throws DateTimeException if the result exceeds the maximum or minimum instant
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Instant plusNanos(long nanosToAdd) {
+    Instant plusNanos(long nanosToAdd) {
         return plus(0, nanosToAdd);
     }
 
@@ -948,7 +948,7 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Instant minus(TemporalAmount amountToSubtract) {
+    Instant minus(TemporalAmount amountToSubtract) {
         return cast(Instant) amountToSubtract.subtractFrom(this);
     }
 
@@ -972,7 +972,7 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Instant minus(long amountToSubtract, TemporalUnit unit) {
+    Instant minus(long amountToSubtract, TemporalUnit unit) {
         return (amountToSubtract == Long.MIN_VALUE ? plus(Long.MAX_VALUE, unit).plus(1, unit) : plus(-amountToSubtract, unit));
     }
 
@@ -987,7 +987,7 @@ public final class Instant
      * @throws DateTimeException if the result exceeds the maximum or minimum instant
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Instant minusSeconds(long secondsToSubtract) {
+    Instant minusSeconds(long secondsToSubtract) {
         if (secondsToSubtract == Long.MIN_VALUE) {
             return plusSeconds(Long.MAX_VALUE).plusSeconds(1);
         }
@@ -1004,7 +1004,7 @@ public final class Instant
      * @throws DateTimeException if the result exceeds the maximum or minimum instant
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Instant minusMillis(long millisToSubtract) {
+    Instant minusMillis(long millisToSubtract) {
         if (millisToSubtract == Long.MIN_VALUE) {
             return plusMillis(Long.MAX_VALUE).plusMillis(1);
         }
@@ -1021,7 +1021,7 @@ public final class Instant
      * @throws DateTimeException if the result exceeds the maximum or minimum instant
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Instant minusNanos(long nanosToSubtract) {
+    Instant minusNanos(long nanosToSubtract) {
         if (nanosToSubtract == Long.MIN_VALUE) {
             return plusNanos(Long.MAX_VALUE).plusNanos(1);
         }
@@ -1049,7 +1049,7 @@ public final class Instant
      */
     /*@SuppressWarnings("unchecked")*/
     // override
-    public R query(R)(TemporalQuery!(R) query) {
+    R query(R)(TemporalQuery!(R) query) {
         if (query == TemporalQueries.precision()) {
             return cast(R) (ChronoUnit.NANOS);
         }
@@ -1088,7 +1088,7 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Temporal adjustInto(Temporal temporal) {
+    Temporal adjustInto(Temporal temporal) {
         return temporal._with(ChronoField.INSTANT_SECONDS, seconds)._with(ChronoField.NANO_OF_SECOND, nanos);
     }
 
@@ -1137,7 +1137,7 @@ public final class Instant
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public long until(Temporal endExclusive, TemporalUnit unit) {
+    long until(Temporal endExclusive, TemporalUnit unit) {
         Instant end = Instant.from(endExclusive);
         if (cast(ChronoUnit)(unit) !is null) {
             auto name = (cast(ChronoUnit) unit).toString;
@@ -1188,7 +1188,7 @@ public final class Instant
      * @return the offset date-time formed from this instant and the specified offset, not null
      * @throws DateTimeException if the result exceeds the supported range
      */
-    public OffsetDateTime atOffset(ZoneOffset offset) {
+    OffsetDateTime atOffset(ZoneOffset offset) {
         return OffsetDateTime.ofInstant(this, offset);
     }
 
@@ -1206,7 +1206,7 @@ public final class Instant
      * @return the zoned date-time formed from this instant and the specified zone, not null
      * @throws DateTimeException if the result exceeds the supported range
      */
-    public ZonedDateTime atZone(ZoneId zone) {
+    ZonedDateTime atZone(ZoneId zone) {
         return ZonedDateTime.ofInstant(this, zone);
     }
 
@@ -1225,7 +1225,7 @@ public final class Instant
      * @return the number of milliseconds since the epoch of 1970-01-01T00:00:00Z
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public long toEpochMilli() {
+    long toEpochMilli() {
         if (seconds < 0 && nanos > 0) {
             long millis = MathHelper.multiplyExact((seconds+1) , 1000);
             long adjustment = nanos / 1000_000 - 1000;
@@ -1248,7 +1248,7 @@ public final class Instant
      * @throws NullPointerException if otherInstant is null
      */
     // override
-    public int compareTo(Instant otherInstant) {
+    int compareTo(Instant otherInstant) {
         int cmp = compare(seconds, otherInstant.seconds);
         if (cmp != 0) {
             return cmp;
@@ -1265,7 +1265,7 @@ public final class Instant
      * @return true if this instant is after the specified instant
      * @throws NullPointerException if otherInstant is null
      */
-    public bool isAfter(Instant otherInstant) {
+    bool isAfter(Instant otherInstant) {
         return compareTo(otherInstant) > 0;
     }
 
@@ -1278,7 +1278,7 @@ public final class Instant
      * @return true if this instant is before the specified instant
      * @throws NullPointerException if otherInstant is null
      */
-    public bool isBefore(Instant otherInstant) {
+    bool isBefore(Instant otherInstant) {
         return compareTo(otherInstant) < 0;
     }
 
@@ -1292,7 +1292,7 @@ public final class Instant
      * @return true if the other instant is equal to this one
      */
     override
-    public bool opEquals(Object otherInstant) {
+    bool opEquals(Object otherInstant) {
         if (this == otherInstant) {
             return true;
         }
@@ -1310,7 +1310,7 @@ public final class Instant
      * @return a suitable hash code
      */
     override
-    public size_t toHash() @trusted nothrow {
+    size_t toHash() @trusted nothrow {
         return (cast(int) (seconds ^ (seconds >>> 32))) + 51 * nanos;
     }
 
@@ -1323,7 +1323,7 @@ public final class Instant
      * @return an ISO-8601 representation of this instant, not null
      */
     override
-    public string toString() {
+    string toString() {
         // TODO: Tasks pending completion -@zxp at 12/27/2018, 8:05:39 PM
         // 
         return "TODO";

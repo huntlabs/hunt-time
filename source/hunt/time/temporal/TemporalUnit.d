@@ -15,7 +15,7 @@ module hunt.time.temporal.TemporalUnit;
 
 import hunt.time.Exceptions;
 import hunt.time.Duration;
-import hunt.time.LocalTime;
+// import hunt.time.LocalTime;
 import hunt.time.Period;
 import hunt.time.chrono.ChronoLocalDate;
 import hunt.time.chrono.ChronoLocalDateTime;
@@ -48,9 +48,8 @@ import hunt.Exceptions;
  * All implementations that can be instantiated must be final, immutable and thread-safe.
  * It is recommended to use an enum where possible.
  *
- * @since 1.8
  */
-public abstract class TemporalUnit : AbstractEnum!TemporalUnit {
+abstract class TemporalUnit : AbstractEnum!TemporalUnit {
 
     protected this(string name, int ordinal) {
         super(name, ordinal);
@@ -126,13 +125,16 @@ public abstract class TemporalUnit : AbstractEnum!TemporalUnit {
      * @return true if the unit is supported
      */
      bool isSupportedBy(Temporal temporal) {
-        if (cast(LocalTime)(temporal) !is null) {
-            return isTimeBased();
-        }
+        //  TODO: Tasks pending completion -@zhangxueping at 4/4/2019, 2:35:59 PM
+        // 
+        // if (cast(LocalTime)(temporal) !is null) {
+        //     return isTimeBased();
+        // }
         if (cast(ChronoLocalDate)(temporal) !is null) {
             return isDateBased();
         }
-        if (cast(ChronoLocalDateTime!ChronoLocalDate)(temporal) !is null || cast(ChronoZonedDateTime!ChronoLocalDate)(temporal) !is null) {
+        if (cast(ChronoLocalDateTime!ChronoLocalDate)(temporal) !is null || 
+            cast(ChronoZonedDateTime!ChronoLocalDate)(temporal) !is null) {
             return true;
         }
         try {

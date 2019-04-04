@@ -17,7 +17,7 @@ import hunt.Exceptions;
 
 //import hunt.io.ObjectInputStream;
 import hunt.io.Common;
-import hunt.time.Duration;
+// import hunt.time.Duration;
 import hunt.time.Instant;
 import hunt.time.LocalDate;
 import hunt.time.LocalDateTime;
@@ -37,6 +37,9 @@ import hunt.text.Common;
 import hunt.util.ArrayHelper;
 import hunt.time.util.Common;
 import hunt.util.ArrayHelper;
+
+import std.algorithm.searching;
+import std.concurrency : initOnce;
 
 /**
  * The rules defining how the zone offset varies for a single time-zone.
@@ -61,11 +64,7 @@ import hunt.util.ArrayHelper;
  * @implSpec
  * This class is immutable and thread-safe.
  *
- * @since 1.8
  */
-
-import std.algorithm.searching;
-
 public final class ZoneRules : Serializable
 {
 
@@ -107,35 +106,25 @@ public final class ZoneRules : Serializable
     /**
      * The map of recent transitions.
      */
-    // private  /*transient*/ ConcurrentMap!(Integer, ZoneOffsetTransition[]) lastRulesCache =
+    // private  ConcurrentMap!(Integer, ZoneOffsetTransition[]) lastRulesCache =
     //             new ConcurrentHashMap!(Integer, ZoneOffsetTransition[])();
-    private  /*transient*/ HashMap!(Integer, ZoneOffsetTransition[]) lastRulesCache = new HashMap!(Integer,
-            ZoneOffsetTransition[])();
+    private  HashMap!(Integer, ZoneOffsetTransition[]) lastRulesCache;
+    
     /**
      * The zero-length long array.
      */
-    //__gshared long[] EMPTY_LONG_ARRAY;
+    __gshared long[] EMPTY_LONG_ARRAY;
+
     /**
      * The zero-length lastrules array.
      */
-    //__gshared ZoneOffsetTransitionRule[] EMPTY_LASTRULES;
+    __gshared ZoneOffsetTransitionRule[] EMPTY_LASTRULES;
+
     /**
      * The zero-length ldt array.
      */
-    //__gshared LocalDateTime[] EMPTY_LDT_ARRAY;
+    __gshared LocalDateTime[] EMPTY_LDT_ARRAY;
 
-    // shared static this()
-    // {
-        // EMPTY_LONG_ARRAY = new long[0];
-        mixin(MakeGlobalVar!(long[])("EMPTY_LONG_ARRAY",`new long[0]`));
-        // EMPTY_LASTRULES =
-        // new ZoneOffsetTransitionRule[0];
-        mixin(MakeGlobalVar!(ZoneOffsetTransitionRule[])("EMPTY_LASTRULES",`new ZoneOffsetTransitionRule[0]`));
-
-        // EMPTY_LDT_ARRAY = new LocalDateTime[0];
-        mixin(MakeGlobalVar!(LocalDateTime[])("EMPTY_LDT_ARRAY",`new LocalDateTime[0]`));
-
-    // }
 
     /**
      * Obtains an instance of a ZoneRules.
@@ -187,6 +176,7 @@ public final class ZoneRules : Serializable
             List!(ZoneOffsetTransition) transitionList, List!(ZoneOffsetTransitionRule) lastRules)
     {
         // super();
+        lastRulesCache = new HashMap!(Integer, ZoneOffsetTransition[])();
 
         // convert standard transitions
 
@@ -262,6 +252,7 @@ public final class ZoneRules : Serializable
     {
         // super();
 
+        lastRulesCache = new HashMap!(Integer, ZoneOffsetTransition[])();
         this.standardTransitions = standardTransitions;
         this.standardOffsets = standardOffsets;
         this.savingsInstantTransitions = savingsInstantTransitions;
@@ -308,6 +299,7 @@ public final class ZoneRules : Serializable
      */
     private this(ZoneOffset offset)
     {
+        lastRulesCache = new HashMap!(Integer, ZoneOffsetTransition[])();
         this.standardOffsets = new ZoneOffset[1];
         this.standardOffsets[0] = offset;
         this.standardTransitions = EMPTY_LONG_ARRAY;
@@ -840,16 +832,16 @@ public final class ZoneRules : Serializable
      *  may be ignored if the rules have a single offset for all instants
      * @return the difference between the standard and actual offset, not null
      */
-    public Duration getDaylightSavings(Instant instant)
-    {
-        if (savingsInstantTransitions.length == 0)
-        {
-            return Duration.ZERO;
-        }
-        ZoneOffset standardOffset = getStandardOffset(instant);
-        ZoneOffset actualOffset = getOffset(instant);
-        return Duration.ofSeconds(actualOffset.getTotalSeconds() - standardOffset.getTotalSeconds());
-    }
+    // public Duration getDaylightSavings(Instant instant)
+    // {
+    //     if (savingsInstantTransitions.length == 0)
+    //     {
+    //         return Duration.ZERO;
+    //     }
+    //     ZoneOffset standardOffset = getStandardOffset(instant);
+    //     ZoneOffset actualOffset = getOffset(instant);
+    //     return Duration.ofSeconds(actualOffset.getTotalSeconds() - standardOffset.getTotalSeconds());
+    // }
 
     /**
      * Checks if the specified instant is _in daylight savings.
