@@ -92,7 +92,7 @@ import std.conv;
  * @since 1.8
  */
 public final class OffsetDateTime
-        : Temporal, TemporalAdjuster, Comparable!(OffsetDateTime), Serializable {
+        : Temporal, TemporalAdjuster, Comparable!(OffsetDateTime) { // , Serializable
 
     /**
      * The minimum supported {@code OffsetDateTime}, '-999999999-01-01T00:00:00+18:00'.

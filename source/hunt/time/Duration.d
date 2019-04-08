@@ -82,7 +82,7 @@ import std.string;
  * @since 1.8
  */
 public final class Duration
-        : TemporalAmount, Comparable!(Duration), Serializable {
+        : TemporalAmount, Comparable!(Duration) { // , Serializable
 
     /**
      * Constant for a duration of zero.

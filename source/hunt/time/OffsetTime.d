@@ -75,7 +75,7 @@ import hunt.time.util.Common;
  * @since 1.8
  */
 public final class OffsetTime
-        : Temporal, TemporalAdjuster, Comparable!(OffsetTime), Serializable {
+        : Temporal, TemporalAdjuster, Comparable!(OffsetTime) { // , Serializable
 
     /**
      * The minimum supported {@code OffsetTime}, '00:00:00+18:00'.

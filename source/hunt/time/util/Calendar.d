@@ -300,7 +300,7 @@ import std.datetime : TimeZone ;
 
 alias HuntCalendar = Calendar;
 
-abstract class Calendar : Serializable, Cloneable, Comparable!(Calendar) {
+abstract class Calendar : Cloneable, Comparable!(Calendar) { // Serializable, 
 
     // Data flow in Calendar
     // ---------------------

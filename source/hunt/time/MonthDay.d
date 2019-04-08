@@ -86,13 +86,9 @@ import std.conv;
  *
  * @since 1.8
  */
-public final class MonthDay
-        : TemporalAccessor, TemporalAdjuster, Comparable!(MonthDay), Serializable {
+final class MonthDay
+        : TemporalAccessor, TemporalAdjuster, Comparable!(MonthDay) { // , Serializable
 
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = -939150713474957432L;
     /**
      * Parser.
      */
@@ -107,7 +103,7 @@ public final class MonthDay
      */
     private  int day;
 
-    // public static ref DateTimeFormatter PARSER()
+    // static ref DateTimeFormatter PARSER()
     // {
     //     if(_PARSER is null)
     //     {
@@ -149,7 +145,7 @@ public final class MonthDay
      *
      * @return the current month-day using the system clock and default time-zone, not null
      */
-    public static MonthDay now() {
+    static MonthDay now() {
         return now(Clock.systemDefaultZone());
     }
 
@@ -165,7 +161,7 @@ public final class MonthDay
      * @param zone  the zone ID to use, not null
      * @return the current month-day using the system clock, not null
      */
-    public static MonthDay now(ZoneId zone) {
+    static MonthDay now(ZoneId zone) {
         return now(Clock.system(zone));
     }
 
@@ -179,7 +175,7 @@ public final class MonthDay
      * @param clock  the clock to use, not null
      * @return the current month-day, not null
      */
-    public static MonthDay now(Clock clock) {
+    static MonthDay now(Clock clock) {
         LocalDate now = LocalDate.now(clock);  // called once
         return MonthDay.of(now.getMonth(), now.getDayOfMonth());
     }
@@ -201,7 +197,7 @@ public final class MonthDay
      * @throws DateTimeException if the value of any field is _out of range,
      *  or if the day-of-month is invalid for the month
      */
-    public static MonthDay of(Month month, int dayOfMonth) {
+    static MonthDay of(Month month, int dayOfMonth) {
         assert(month, "month");
         ChronoField.DAY_OF_MONTH.checkValidValue(dayOfMonth);
         if (dayOfMonth > month.maxLength()) {
@@ -227,7 +223,7 @@ public final class MonthDay
      * @throws DateTimeException if the value of any field is _out of range,
      *  or if the day-of-month is invalid for the month
      */
-    public static MonthDay of(int month, int dayOfMonth) {
+    static MonthDay of(int month, int dayOfMonth) {
         return of(Month.of(month), dayOfMonth);
     }
 
@@ -251,7 +247,7 @@ public final class MonthDay
      * @return the month-day, not null
      * @throws DateTimeException if unable to convert to a {@code MonthDay}
      */
-    public static MonthDay from(TemporalAccessor temporal) {
+    static MonthDay from(TemporalAccessor temporal) {
         if (cast(MonthDay)(temporal) !is null) {
             return cast(MonthDay) temporal;
         }
@@ -277,7 +273,7 @@ public final class MonthDay
      * @return the parsed month-day, not null
      * @throws DateTimeParseException if the text cannot be parsed
      */
-    // public static MonthDay parse(string text) {
+    // static MonthDay parse(string text) {
     //     return parse(text, MonthDay.PARSER());
     // }
 
@@ -291,7 +287,7 @@ public final class MonthDay
      * @return the parsed month-day, not null
      * @throws DateTimeParseException if the text cannot be parsed
      */
-    // public static MonthDay parse(string text, DateTimeFormatter formatter) {
+    // static MonthDay parse(string text, DateTimeFormatter formatter) {
     //     assert(formatter, "formatter");
     //     return formatter.parse(text, new class TemporalQuery!MonthDay{
     //         MonthDay queryFrom(TemporalAccessor temporal)
@@ -349,7 +345,7 @@ public final class MonthDay
      * @return true if the field is supported on this month-day, false if not
      */
     override
-    public bool isSupported(TemporalField field) {
+    bool isSupported(TemporalField field) {
         if (cast(ChronoField)(field) !is null) {
             return field == ChronoField.MONTH_OF_YEAR || field == ChronoField.DAY_OF_MONTH;
         }
@@ -380,7 +376,7 @@ public final class MonthDay
      * @throws UnsupportedTemporalTypeException if the field is not supported
      */
     override
-    public ValueRange range(TemporalField field) {
+    ValueRange range(TemporalField field) {
         if (field == ChronoField.MONTH_OF_YEAR) {
             return field.range();
         } else if (field == ChronoField.DAY_OF_MONTH) {
@@ -426,7 +422,7 @@ public final class MonthDay
      * @throws ArithmeticException if numeric overflow occurs
      */
     override  // override for Javadoc
-    public int get(TemporalField field) {
+    int get(TemporalField field) {
         return range(field).checkValidIntValue(getLong(field), field);
     }
 
@@ -454,7 +450,7 @@ public final class MonthDay
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public long getLong(TemporalField field) {
+    long getLong(TemporalField field) {
         if (cast(ChronoField)(field) !is null) {
             auto f = cast(ChronoField) field;
             {
@@ -478,7 +474,7 @@ public final class MonthDay
      * @return the month-of-year, from 1 to 12
      * @see #getMonth()
      */
-    public int getMonthValue() {
+    int getMonthValue() {
         return month;
     }
 
@@ -493,7 +489,7 @@ public final class MonthDay
      * @return the month-of-year, not null
      * @see #getMonthValue()
      */
-    public Month getMonth() {
+    Month getMonth() {
         return Month.of(month);
     }
 
@@ -504,7 +500,7 @@ public final class MonthDay
      *
      * @return the day-of-month, from 1 to 31
      */
-    public int getDayOfMonth() {
+    int getDayOfMonth() {
         return day;
     }
 
@@ -519,7 +515,7 @@ public final class MonthDay
      * @return true if the year is valid for this month-day
      * @see Year#isValidMonthDay(MonthDay)
      */
-    public bool isValidYear(int year) {
+    bool isValidYear(int year) {
         return (day == 29 && month == 2 && Year.isLeap(year) == false) == false;
     }
 
@@ -537,7 +533,7 @@ public final class MonthDay
      * @return a {@code MonthDay} based on this month-day with the requested month, not null
      * @throws DateTimeException if the month-of-year value is invalid
      */
-    public MonthDay withMonth(int month) {
+    MonthDay withMonth(int month) {
         return _with(Month.of(month));
     }
 
@@ -553,7 +549,7 @@ public final class MonthDay
      * @param month  the month-of-year to set _in the returned month-day, not null
      * @return a {@code MonthDay} based on this month-day with the requested month, not null
      */
-    public MonthDay _with(Month month) {
+    MonthDay _with(Month month) {
         assert(month, "month");
         if (month.getValue() == this.month) {
             return this;
@@ -575,7 +571,7 @@ public final class MonthDay
      * @throws DateTimeException if the day-of-month value is invalid,
      *  or if the day-of-month is invalid for the month
      */
-    public MonthDay withDayOfMonth(int dayOfMonth) {
+    MonthDay withDayOfMonth(int dayOfMonth) {
         if (dayOfMonth == this.day) {
             return this;
         }
@@ -603,7 +599,7 @@ public final class MonthDay
      */
     /*@SuppressWarnings("unchecked")*/
     // override
-    public R query(R)(TemporalQuery!(R) query) {
+    R query(R)(TemporalQuery!(R) query) {
         if (query == TemporalQueries.chronology()) {
             return cast(R) IsoChronology.INSTANCE;
         }
@@ -645,7 +641,7 @@ public final class MonthDay
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Temporal adjustInto(Temporal temporal) {
+    Temporal adjustInto(Temporal temporal) {
         if ((Chronology.from(temporal) == IsoChronology.INSTANCE) == false) {
             throw new DateTimeException("Adjustment only supported on ISO date-time");
         }
@@ -662,7 +658,7 @@ public final class MonthDay
      * @return the formatted month-day string, not null
      * @throws DateTimeException if an error occurs during printing
      */
-    // public string format(DateTimeFormatter formatter) {
+    // string format(DateTimeFormatter formatter) {
     //     assert(formatter, "formatter");
     //     return formatter.format(this);
     // }
@@ -682,7 +678,7 @@ public final class MonthDay
      * @return the local date formed from this month-day and the specified year, not null
      * @throws DateTimeException if the year is outside the valid range of years
      */
-    public LocalDate atYear(int year) {
+    LocalDate atYear(int year) {
         return LocalDate.of(year, month, isValidYear(year) ? day : 28);
     }
 
@@ -697,7 +693,7 @@ public final class MonthDay
      * @return the comparator value, negative if less, positive if greater
      */
     // override
-    public int compareTo(MonthDay other) {
+    int compareTo(MonthDay other) {
         int cmp = (month - other.month);
         if (cmp == 0) {
             cmp = (day - other.day);
@@ -706,7 +702,7 @@ public final class MonthDay
     }
 
     override
-    public int opCmp(MonthDay other) {
+    int opCmp(MonthDay other) {
         return compareTo(other);
     }
 
@@ -716,7 +712,7 @@ public final class MonthDay
      * @param other  the other month-day to compare to, not null
      * @return true if this is after the specified month-day
      */
-    public bool isAfter(MonthDay other) {
+    bool isAfter(MonthDay other) {
         return compareTo(other) > 0;
     }
 
@@ -726,7 +722,7 @@ public final class MonthDay
      * @param other  the other month-day to compare to, not null
      * @return true if this point is before the specified month-day
      */
-    public bool isBefore(MonthDay other) {
+    bool isBefore(MonthDay other) {
         return compareTo(other) < 0;
     }
 
@@ -740,7 +736,7 @@ public final class MonthDay
      * @return true if this is equal to the other month-day
      */
     override
-    public bool opEquals(Object obj) {
+    bool opEquals(Object obj) {
         if (this is obj) {
             return true;
         }
@@ -757,7 +753,7 @@ public final class MonthDay
      * @return a suitable hash code
      */
     override
-    public size_t toHash() @trusted nothrow {
+    size_t toHash() @trusted nothrow {
         return (month << 6) + day;
     }
 
@@ -770,7 +766,7 @@ public final class MonthDay
      * @return a string representation of this month-day, not null
      */
     override
-    public string toString() {
+    string toString() {
         return new StringBuilder(10).append("--")
             .append(month < 10 ? "0" : "").append(month)
             .append(day < 10 ? "-0" : "-").append(day)

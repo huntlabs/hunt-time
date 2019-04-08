@@ -86,7 +86,7 @@ import std.concurrency : initOnce;
  * @since 1.8
  */
 public final class LocalTime
-        : Temporal, TemporalAdjuster, Comparable!(LocalTime), Serializable {
+        : Temporal, TemporalAdjuster, Comparable!(LocalTime) { // , Serializable 
 
     /**
      * The minimum supported {@code LocalTime}, '00:00'.

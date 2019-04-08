@@ -79,13 +79,9 @@ import hunt.text.StringBuilder;
  *
  * @since 1.8
  */
-public final class YearMonth
-        : Temporal, TemporalAdjuster, Comparable!(YearMonth), Serializable {
+final class YearMonth
+        : Temporal, TemporalAdjuster, Comparable!(YearMonth) { // , Serializable
 
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = 4183400860270640070L;
     /**
      * Parser.
      */
@@ -100,7 +96,7 @@ public final class YearMonth
      */
     private  int month;
 
-    // public static ref  DateTimeFormatter PARSER()
+    // static ref  DateTimeFormatter PARSER()
     //  {
     //      if(_PARSER is null)
     //      {
@@ -133,7 +129,7 @@ public final class YearMonth
      *
      * @return the current year-month using the system clock and default time-zone, not null
      */
-    public static YearMonth now() {
+    static YearMonth now() {
         return now(Clock.systemDefaultZone());
     }
 
@@ -149,7 +145,7 @@ public final class YearMonth
      * @param zone  the zone ID to use, not null
      * @return the current year-month using the system clock, not null
      */
-    public static YearMonth now(ZoneId zone) {
+    static YearMonth now(ZoneId zone) {
         return now(Clock.system(zone));
     }
 
@@ -163,7 +159,7 @@ public final class YearMonth
      * @param clock  the clock to use, not null
      * @return the current year-month, not null
      */
-    public static YearMonth now(Clock clock) {
+    static YearMonth now(Clock clock) {
         LocalDate now = LocalDate.now(clock);  // called once
         return YearMonth.of(now.getYear(), now.getMonth());
     }
@@ -177,7 +173,7 @@ public final class YearMonth
      * @return the year-month, not null
      * @throws DateTimeException if the year value is invalid
      */
-    public static YearMonth of(int year, Month month) {
+    static YearMonth of(int year, Month month) {
         assert(month, "month");
         return of(year, month.getValue());
     }
@@ -190,7 +186,7 @@ public final class YearMonth
      * @return the year-month, not null
      * @throws DateTimeException if either field value is invalid
      */
-    public static YearMonth of(int year, int month) {
+    static YearMonth of(int year, int month) {
         ChronoField.YEAR.checkValidValue(year);
         ChronoField.MONTH_OF_YEAR.checkValidValue(month);
         return new YearMonth(year, month);
@@ -216,7 +212,7 @@ public final class YearMonth
      * @return the year-month, not null
      * @throws DateTimeException if unable to convert to a {@code YearMonth}
      */
-    public static YearMonth from(TemporalAccessor temporal) {
+    static YearMonth from(TemporalAccessor temporal) {
         if (cast(YearMonth)(temporal) !is null) {
             return cast(YearMonth) temporal;
         }
@@ -244,7 +240,7 @@ public final class YearMonth
      * @return the parsed year-month, not null
      * @throws DateTimeParseException if the text cannot be parsed
      */
-    // public static YearMonth parse(string text) {
+    // static YearMonth parse(string text) {
     //     return parse(text, PARSER);
     // }
 
@@ -258,7 +254,7 @@ public final class YearMonth
      * @return the parsed year-month, not null
      * @throws DateTimeParseException if the text cannot be parsed
      */
-    // public static YearMonth parse(string text, DateTimeFormatter formatter) {
+    // static YearMonth parse(string text, DateTimeFormatter formatter) {
     //     assert(formatter, "formatter");
     //     return formatter.parse(text, new class TemporalQuery!YearMonth{
     //         YearMonth queryFrom(TemporalAccessor temporal)
@@ -336,7 +332,7 @@ public final class YearMonth
      * @return true if the field is supported on this year-month, false if not
      */
     override
-    public bool isSupported(TemporalField field) {
+    bool isSupported(TemporalField field) {
         if (cast(ChronoField)(field) !is null) {
             return field == ChronoField.YEAR || field ==ChronoField.MONTH_OF_YEAR ||
                     field == ChronoField.PROLEPTIC_MONTH || field == ChronoField.YEAR_OF_ERA || field == ChronoField.ERA;
@@ -372,7 +368,7 @@ public final class YearMonth
      * @return true if the unit can be added/subtracted, false if not
      */
     override
-    public bool isSupported(TemporalUnit unit) {
+    bool isSupported(TemporalUnit unit) {
         if (cast(ChronoUnit)(unit) !is null) {
             return unit == ChronoUnit.MONTHS || unit == ChronoUnit.YEARS || unit == ChronoUnit.DECADES || unit == ChronoUnit.CENTURIES || unit == ChronoUnit.MILLENNIA || unit == ChronoUnit.ERAS;
         }
@@ -404,7 +400,7 @@ public final class YearMonth
      * @throws UnsupportedTemporalTypeException if the field is not supported
      */
     override
-    public ValueRange range(TemporalField field) {
+    ValueRange range(TemporalField field) {
         if (field == ChronoField.YEAR_OF_ERA) {
             return (getYear() <= 0 ? ValueRange.of(1, Year.MAX_VALUE + 1) : ValueRange.of(1, Year.MAX_VALUE));
         }
@@ -448,7 +444,7 @@ public final class YearMonth
      * @throws ArithmeticException if numeric overflow occurs
      */
     override  // override for Javadoc
-    public int get(TemporalField field) {
+    int get(TemporalField field) {
         return range(field).checkValidIntValue(getLong(field), field);
     }
 
@@ -476,7 +472,7 @@ public final class YearMonth
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public long getLong(TemporalField field) {
+    long getLong(TemporalField field) {
         if (cast(ChronoField)(field) !is null) {
             auto f = cast(ChronoField) field;
             {
@@ -505,7 +501,7 @@ public final class YearMonth
      *
      * @return the year, from MIN_YEAR to MAX_YEAR
      */
-    public int getYear() {
+    int getYear() {
         return year;
     }
 
@@ -519,7 +515,7 @@ public final class YearMonth
      * @return the month-of-year, from 1 to 12
      * @see #getMonth()
      */
-    public int getMonthValue() {
+    int getMonthValue() {
         return month;
     }
 
@@ -534,7 +530,7 @@ public final class YearMonth
      * @return the month-of-year, not null
      * @see #getMonthValue()
      */
-    public Month getMonth() {
+    Month getMonth() {
         return Month.of(month);
     }
 
@@ -557,7 +553,7 @@ public final class YearMonth
      *
      * @return true if the year is leap, false otherwise
      */
-    public bool isLeapYear() {
+    bool isLeapYear() {
         return IsoChronology.INSTANCE.isLeapYear(year);
     }
 
@@ -570,7 +566,7 @@ public final class YearMonth
      * @param dayOfMonth  the day-of-month to validate, from 1 to 31, invalid value returns false
      * @return true if the day is valid for this year-month
      */
-    public bool isValidDay(int dayOfMonth) {
+    bool isValidDay(int dayOfMonth) {
         return dayOfMonth >= 1 && dayOfMonth <= lengthOfMonth();
     }
 
@@ -582,7 +578,7 @@ public final class YearMonth
      *
      * @return the length of the month _in days, from 28 to 31
      */
-    public int lengthOfMonth() {
+    int lengthOfMonth() {
         return getMonth().length(isLeapYear());
     }
 
@@ -593,7 +589,7 @@ public final class YearMonth
      *
      * @return 366 if the year is leap, 365 otherwise
      */
-    public int lengthOfYear() {
+    int lengthOfYear() {
         return (isLeapYear() ? 366 : 365);
     }
 
@@ -621,7 +617,7 @@ public final class YearMonth
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public YearMonth _with(TemporalAdjuster adjuster) {
+    YearMonth _with(TemporalAdjuster adjuster) {
         return cast(YearMonth) adjuster.adjustInto(this);
     }
 
@@ -674,7 +670,7 @@ public final class YearMonth
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public YearMonth _with(TemporalField field, long newValue) {
+    YearMonth _with(TemporalField field, long newValue) {
         if (cast(ChronoField)(field) !is null) {
             ChronoField f = cast(ChronoField) field;
             f.checkValidValue(newValue);
@@ -700,7 +696,7 @@ public final class YearMonth
      * @return a {@code YearMonth} based on this year-month with the requested year, not null
      * @throws DateTimeException if the year value is invalid
      */
-    public YearMonth withYear(int year) {
+    YearMonth withYear(int year) {
         ChronoField.YEAR.checkValidValue(year);
         return _with(year, month);
     }
@@ -714,7 +710,7 @@ public final class YearMonth
      * @return a {@code YearMonth} based on this year-month with the requested month, not null
      * @throws DateTimeException if the month-of-year value is invalid
      */
-    public YearMonth withMonth(int month) {
+    YearMonth withMonth(int month) {
         ChronoField.MONTH_OF_YEAR.checkValidValue(month);
         return _with(year, month);
     }
@@ -741,7 +737,7 @@ public final class YearMonth
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public YearMonth plus(TemporalAmount amountToAdd) {
+    YearMonth plus(TemporalAmount amountToAdd) {
         return cast(YearMonth) amountToAdd.addTo(this);
     }
 
@@ -797,7 +793,7 @@ public final class YearMonth
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public YearMonth plus(long amountToAdd, TemporalUnit unit) {
+    YearMonth plus(long amountToAdd, TemporalUnit unit) {
         if (cast(ChronoUnit)(unit) !is null) {
             auto f = cast(ChronoUnit) unit;
             {
@@ -822,7 +818,7 @@ public final class YearMonth
      * @return a {@code YearMonth} based on this year-month with the years added, not null
      * @throws DateTimeException if the result exceeds the supported range
      */
-    public YearMonth plusYears(long yearsToAdd) {
+    YearMonth plusYears(long yearsToAdd) {
         if (yearsToAdd == 0) {
             return this;
         }
@@ -839,7 +835,7 @@ public final class YearMonth
      * @return a {@code YearMonth} based on this year-month with the months added, not null
      * @throws DateTimeException if the result exceeds the supported range
      */
-    public YearMonth plusMonths(long monthsToAdd) {
+    YearMonth plusMonths(long monthsToAdd) {
         if (monthsToAdd == 0) {
             return this;
         }
@@ -872,7 +868,7 @@ public final class YearMonth
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public YearMonth minus(TemporalAmount amountToSubtract) {
+    YearMonth minus(TemporalAmount amountToSubtract) {
         return cast(YearMonth) amountToSubtract.subtractFrom(this);
     }
 
@@ -896,7 +892,7 @@ public final class YearMonth
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public YearMonth minus(long amountToSubtract, TemporalUnit unit) {
+    YearMonth minus(long amountToSubtract, TemporalUnit unit) {
         return (amountToSubtract == Long.MIN_VALUE ? plus(Long.MAX_VALUE, unit).plus(1, unit) : plus(-amountToSubtract, unit));
     }
 
@@ -909,7 +905,7 @@ public final class YearMonth
      * @return a {@code YearMonth} based on this year-month with the years subtracted, not null
      * @throws DateTimeException if the result exceeds the supported range
      */
-    public YearMonth minusYears(long yearsToSubtract) {
+    YearMonth minusYears(long yearsToSubtract) {
         return (yearsToSubtract == Long.MIN_VALUE ? plusYears(Long.MAX_VALUE).plusYears(1) : plusYears(-yearsToSubtract));
     }
 
@@ -922,7 +918,7 @@ public final class YearMonth
      * @return a {@code YearMonth} based on this year-month with the months subtracted, not null
      * @throws DateTimeException if the result exceeds the supported range
      */
-    public YearMonth minusMonths(long monthsToSubtract) {
+    YearMonth minusMonths(long monthsToSubtract) {
         return (monthsToSubtract == Long.MIN_VALUE ? plusMonths(Long.MAX_VALUE).plusMonths(1) : plusMonths(-monthsToSubtract));
     }
 
@@ -947,7 +943,7 @@ public final class YearMonth
      */
     /*@SuppressWarnings("unchecked")*/
     // override
-    public R query(R)(TemporalQuery!(R) query) {
+    R query(R)(TemporalQuery!(R) query) {
         if (query == TemporalQueries.chronology()) {
             return cast(R) IsoChronology.INSTANCE;
         } else if (query == TemporalQueries.precision()) {
@@ -990,7 +986,7 @@ public final class YearMonth
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Temporal adjustInto(Temporal temporal) {
+    Temporal adjustInto(Temporal temporal) {
         if ((Chronology.from(temporal) == IsoChronology.INSTANCE) == false) {
             throw new DateTimeException("Adjustment only supported on ISO date-time");
         }
@@ -1045,7 +1041,7 @@ public final class YearMonth
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public long until(Temporal endExclusive, TemporalUnit unit) {
+    long until(Temporal endExclusive, TemporalUnit unit) {
         YearMonth end = YearMonth.from(endExclusive);
         if (cast(ChronoUnit)(unit) !is null) {
             long monthsUntil = end.getProlepticMonth() - getProlepticMonth();  // no overflow
@@ -1072,7 +1068,7 @@ public final class YearMonth
      * @return the formatted year-month string, not null
      * @throws DateTimeException if an error occurs during printing
      */
-    // public string format(DateTimeFormatter formatter) {
+    // string format(DateTimeFormatter formatter) {
     //     assert(formatter, "formatter");
     //     return formatter.format(this);
     // }
@@ -1095,7 +1091,7 @@ public final class YearMonth
      * @throws DateTimeException if the day is invalid for the year-month
      * @see #isValidDay(int)
      */
-    public LocalDate atDay(int dayOfMonth) {
+    LocalDate atDay(int dayOfMonth) {
         return LocalDate.of(year, month, dayOfMonth);
     }
 
@@ -1113,7 +1109,7 @@ public final class YearMonth
      *
      * @return the last valid date of this year-month, not null
      */
-    public LocalDate atEndOfMonth() {
+    LocalDate atEndOfMonth() {
         return LocalDate.of(year, month, lengthOfMonth());
     }
 
@@ -1128,7 +1124,7 @@ public final class YearMonth
      * @return the comparator value, negative if less, positive if greater
      */
     // override
-    public int compareTo(YearMonth other) {
+    int compareTo(YearMonth other) {
         int cmp = (year - other.year);
         if (cmp == 0) {
             cmp = (month - other.month);
@@ -1137,7 +1133,7 @@ public final class YearMonth
     }
 
      override
-    public int opCmp(YearMonth other) {
+    int opCmp(YearMonth other) {
         return compareTo(other);
     }
 
@@ -1147,7 +1143,7 @@ public final class YearMonth
      * @param other  the other year-month to compare to, not null
      * @return true if this is after the specified year-month
      */
-    public bool isAfter(YearMonth other) {
+    bool isAfter(YearMonth other) {
         return compareTo(other) > 0;
     }
 
@@ -1157,7 +1153,7 @@ public final class YearMonth
      * @param other  the other year-month to compare to, not null
      * @return true if this point is before the specified year-month
      */
-    public bool isBefore(YearMonth other) {
+    bool isBefore(YearMonth other) {
         return compareTo(other) < 0;
     }
 
@@ -1171,7 +1167,7 @@ public final class YearMonth
      * @return true if this is equal to the other year-month
      */
     override
-    public bool opEquals(Object obj) {
+    bool opEquals(Object obj) {
         if (this is obj) {
             return true;
         }
@@ -1188,7 +1184,7 @@ public final class YearMonth
      * @return a suitable hash code
      */
     override
-    public size_t toHash() @trusted nothrow {
+    size_t toHash() @trusted nothrow {
         return year ^ (month << 27);
     }
 
@@ -1201,7 +1197,7 @@ public final class YearMonth
      * @return a string representation of this year-month, not null
      */
     override
-    public string toString() {
+    string toString() {
         int absYear = MathHelper.abs(year);
         StringBuilder buf = new StringBuilder(9);
         if (absYear < 1000) {

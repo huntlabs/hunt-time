@@ -89,7 +89,7 @@ import hunt.time.util.Common;
  * @since 1.8
  */
 public final class Year
-        : Temporal, TemporalAdjuster, Comparable!(Year), Serializable {
+        : Temporal, TemporalAdjuster, Comparable!(Year) { // , Serializable
 
     /**
      * The minimum supported year, '-999,999,999'.

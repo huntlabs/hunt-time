@@ -49,13 +49,9 @@ import hunt.text.StringBuilder;
  *
  * @since 1.8
  */
-public final class ZoneOffsetTransition
-        : Comparable!(ZoneOffsetTransition), Serializable {
+final class ZoneOffsetTransition
+        : Comparable!(ZoneOffsetTransition) { //, Serializable
 
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = -6946044323557704546L;
     /**
      * The transition epoch-second.
      */

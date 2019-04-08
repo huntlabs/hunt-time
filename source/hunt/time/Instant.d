@@ -164,7 +164,7 @@ import hunt.time.util.Common;
 import std.concurrency : initOnce;
 
 final class Instant
-        : Temporal, TemporalAdjuster, Comparable!(Instant), Serializable {
+        : Temporal, TemporalAdjuster, Comparable!(Instant) { // , Serializable
 
     /**
      * The minimum supported epoch second.

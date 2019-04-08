@@ -88,7 +88,7 @@ import std.conv;
  * @since 1.8
  */
 public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
-    Comparable!(ZoneOffset), Serializable
+    Comparable!(ZoneOffset) // , Serializable
 {
 
     /** Cache of time-zone offset by offset _in seconds. */
