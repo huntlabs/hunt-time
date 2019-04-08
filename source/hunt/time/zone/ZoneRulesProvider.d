@@ -114,13 +114,15 @@ abstract class ZoneRulesProvider {
         initOnce!(isInitialized)({
             _PROVIDERS = new ArrayList!(ZoneRulesProvider)();
             _ZONES = new HashMap!(string, ZoneRulesProvider)(512, 0.75f/* , 2 */);
-            registerProvider(new TzdbZoneRulesProvider());
+            registerProvider0(new TzdbZoneRulesProvider());
             return true;
         }());
     }
 
+    // FIXME: Needing refactor or cleanup -@zhangxueping at 4/4/2019, 5:51:46 PM
+    // 
     // shared static this() {
-    //     registerProvider(new TzdbZoneRulesProvider());
+    //     // registerProvider(new TzdbZoneRulesProvider());
     // }
 
     
@@ -233,8 +235,10 @@ abstract class ZoneRulesProvider {
     static void registerProvider(ZoneRulesProvider provider) {
         assert(provider !is null, "provider");
         synchronized {
+            // registerProvider0(provider);
+            // PROVIDERS.add(provider);
+            initializeGlobals();
             registerProvider0(provider);
-            PROVIDERS.add(provider);
         }
     }
 
@@ -247,7 +251,7 @@ abstract class ZoneRulesProvider {
     private static void registerProvider0(ZoneRulesProvider provider) {
         foreach(string zoneId ; provider.provideZoneIds()) {
             assert(zoneId, "zoneId");
-            ZoneRulesProvider old = ZONES.putIfAbsent(zoneId, provider);
+            ZoneRulesProvider old = _ZONES.putIfAbsent(zoneId, provider);
             if (old !is null) {
                 throw new ZoneRulesException(
                     "Unable to register zone as one already registered with that ID: " ~ zoneId ~
@@ -262,9 +266,11 @@ abstract class ZoneRulesProvider {
         // writeln("zone set : ",combinedSet);
         // ZONE_IDS = /* Collections.unmodifiableSet */(combinedSet);
         ZONE_IDS = new HashSet!(string)();
-        foreach(data; ZONES.keySet()) {
+        foreach(data; _ZONES.keySet()) {
             ZONE_IDS.add(data);
         }
+
+        _PROVIDERS.add(provider);
     }
 
     /**
