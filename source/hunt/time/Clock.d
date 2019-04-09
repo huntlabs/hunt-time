@@ -437,7 +437,7 @@ public abstract class Clock {
      * Implementation of a clock that always returns the latest time from
      * {@link System#currentTimeMillis()}.
      */
-    static final class SystemClock : Clock , Serializable {
+    static final class SystemClock : Clock { // , Serializable 
          enum long serialVersionUID = 6740630888130243051L;
         //  __gshared long OFFSET_SEED ; // initial offest
         // __gshared SystemClock UTC;
@@ -559,7 +559,7 @@ public abstract class Clock {
      * Implementation of a clock that always returns the same _instant.
      * This is typically used for testing.
      */
-    static final class FixedClock : Clock , Serializable {
+    static final class FixedClock : Clock  { //, Serializable
         private enum long serialVersionUID = 7430389292664866958L;
         private  Instant _instant;
         private  ZoneId zone;
@@ -609,7 +609,7 @@ public abstract class Clock {
     /**
      * Implementation of a clock that adds an _offset to an underlying clock.
      */
-    static final class OffsetClock : Clock , Serializable {
+    static final class OffsetClock : Clock  { // , Serializable
         private enum long serialVersionUID = 2007484719125426256L;
         private  Clock baseClock;
         private  Duration _offset;
@@ -659,7 +659,7 @@ public abstract class Clock {
     /**
      * Implementation of a clock that adds an _offset to an underlying clock.
      */
-    static final class TickClock : Clock , Serializable {
+    static final class TickClock : Clock  { //, Serializable
         private enum long serialVersionUID = 6504659149906368850L;
         private  Clock baseClock;
         private  long tickNanos;

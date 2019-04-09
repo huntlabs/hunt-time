@@ -63,6 +63,8 @@ import hunt.logging;
 // import hunt.util.stream.LongStream;
 // import hunt.util.stream.Stream;
 
+import hunt.util.Common;
+import hunt.util.Serialize;
 
 import std.algorithm.comparison;
 import std.conv;
@@ -2303,6 +2305,7 @@ public  class LocalDate
         int dayOfMonth = _in.readByte();
         return LocalDate.of(year, month, dayOfMonth);
     }
-
+    
+    mixin SerializationMember!(typeof(this));
 
 }

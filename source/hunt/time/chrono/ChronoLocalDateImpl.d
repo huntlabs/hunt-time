@@ -96,12 +96,8 @@ import hunt.text.StringBuilder;
  * @since 1.8
  */
 abstract class ChronoLocalDateImpl(D = ChronoLocalDate) if(is(D : ChronoLocalDate))
-        : ChronoLocalDate, Temporal, TemporalAdjuster, Serializable {
+        : ChronoLocalDate, Temporal, TemporalAdjuster { //, Serializable
 
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = 6282433883239719096L;
 
     /**
      * Casts the {@code Temporal} to {@code ChronoLocalDate} ensuring it bas the specified chronology.

@@ -38,6 +38,10 @@ import std.conv;
 import hunt.Exceptions;
 import hunt.util.Comparator;
 import hunt.time.util.Common;
+
+import hunt.util.Common;
+import hunt.util.Serialize;
+
 // import sun.util.locale.provider.CalendarDataUtility;
 // import sun.util.locale.provider.LocaleProviderAdapter;
 // import sun.util.locale.provider.LocaleResources;
@@ -681,6 +685,8 @@ public final class WeekFields : Serializable
     {
         return "WeekFields[" ~ firstDayOfWeek.toString ~ ',' ~ minimalDays.to!string ~ ']';
     }
+
+    mixin SerializationMember!(typeof(this));
 
     //-----------------------------------------------------------------------
     /**

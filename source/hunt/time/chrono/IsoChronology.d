@@ -48,14 +48,21 @@ import hunt.time.chrono.ChronoLocalDateTimeImpl;
 import hunt.time.chrono.ChronoZonedDateTime;
 import hunt.time.chrono.ChronoZonedDateTimeImpl;
 import hunt.time.chrono.ChronoLocalDate;
+import hunt.time.LocalTime;
+import hunt.time.util.QueryHelper;
+import hunt.time.util.Common;
+
 import hunt.Long;
 import hunt.math.Helper;
 import hunt.Exceptions;
 import hunt.collection;
+
+import hunt.util.Common;
 import hunt.util.Comparator;
-import hunt.time.LocalTime;
-import hunt.time.util.QueryHelper;
-import hunt.time.util.Common;
+import hunt.util.Serialize;
+
+import std.concurrency : initOnce;
+
 /**
  * The ISO calendar system.
  * !(p)
@@ -84,29 +91,23 @@ import hunt.time.util.Common;
  *
  * @since 1.8
  */
-public final class IsoChronology : AbstractChronology , Serializable {
+public final class IsoChronology : AbstractChronology { // , Serializable 
 
     /**
      * Singleton instance of the ISO chronology.
      */
-    // public __gshared IsoChronology INSTANCE;
-
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = -1440403870442975015L;
+    static IsoChronology INSTANCE() {
+        __gshared IsoChronology _INSTANCE;
+        return initOnce!(_INSTANCE)(new IsoChronology());
+    }    
 
     private enum long DAYS_0000_TO_1970 = (146097 * 5L) - (30L * 365L + 7L); // taken from LocalDate
 
-    // shared static this()
-    // {
-    //     INSTANCE = new IsoChronology();
-        mixin(MakeGlobalVar!(IsoChronology)("INSTANCE",`new IsoChronology()`));
-    // }
+ 
     /**
      * Restricted constructor.
      */
-     this() {
+    this() {
     }
 
     //-----------------------------------------------------------------------
@@ -700,6 +701,8 @@ public final class IsoChronology : AbstractChronology , Serializable {
         return getId().compare(other.getId());
     }
     
+    // mixin SerializationMember!(typeof(this));
+
     // override
 	//  ChronoLocalDateTime!(ChronoLocalDate) localDateTime(TemporalAccessor temporal) {
     //     try {

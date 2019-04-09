@@ -65,12 +65,8 @@ import hunt.time.LocalTime;
  * @since 1.8
  */
 final class ChronoZonedDateTimeImpl(D = ChronoLocalDate) if(is(D : ChronoLocalDate))
-        : ChronoZonedDateTime!(D), Serializable {
+        : ChronoZonedDateTime!(D) { //, Serializable
 
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = -5261813987200935591L;
 
     /**
      * The local date-time.

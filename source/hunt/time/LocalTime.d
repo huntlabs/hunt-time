@@ -43,8 +43,6 @@ import hunt.time.LocalDate;
 import hunt.time.OffsetTime;
 import hunt.time.ZoneOffset;
 import hunt.time.Exceptions;
-import hunt.util.Common;
-import hunt.util.Comparator;
 import hunt.text.StringBuilder;
 import hunt.time.Ser;
 import hunt.time.Duration;
@@ -52,6 +50,9 @@ import std.conv;
 import hunt.text.Common;
 import hunt.time.util.QueryHelper;
 import hunt.time.util.Common;
+import hunt.util.Common;
+import hunt.util.Comparator;
+import hunt.util.Serialize;
 
 import std.concurrency : initOnce;
 
@@ -86,14 +87,14 @@ import std.concurrency : initOnce;
  * @since 1.8
  */
 public final class LocalTime
-        : Temporal, TemporalAdjuster, Comparable!(LocalTime) { // , Serializable 
+        : Temporal, TemporalAdjuster, Comparable!(LocalTime), Serializable {
 
     /**
      * The minimum supported {@code LocalTime}, '00:00'.
      * This is the time of midnight at the start of the day.
      */
     static LocalTime MIN() {
-        return HOURS[0];
+        return HOURS()[0];
     }
 
     /**
@@ -109,14 +110,14 @@ public final class LocalTime
      * The time of midnight at the start of the day, '00:00'.
      */
     static LocalTime MIDNIGHT() {
-        return HOURS[0];
+        return HOURS()[0];
     }
 
     /**
      * The time of noon _in the middle of the day, '12:00'.
      */
     static LocalTime NOON() {
-        return HOURS[12];
+        return HOURS()[12];
     }
     /**
      * Constants for the local time of each hour.
@@ -1777,4 +1778,6 @@ public final class LocalTime
         return LocalTime.of(hour, minute, second, nano);
     }
 
+
+    mixin SerializationMember!(typeof(this));
 }

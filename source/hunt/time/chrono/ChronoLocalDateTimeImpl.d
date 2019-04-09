@@ -58,7 +58,7 @@ import hunt.time.ZoneOffset;
  * @since 1.8
  */
 final class ChronoLocalDateTimeImpl(D = ChronoLocalDate) if(is(D : ChronoLocalDate))
-        :  ChronoLocalDateTime!(D), Temporal, TemporalAdjuster, Serializable {
+        :  ChronoLocalDateTime!(D), Temporal, TemporalAdjuster { //, Serializable 
 
     /**
      * Serialization version.

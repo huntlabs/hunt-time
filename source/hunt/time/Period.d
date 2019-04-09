@@ -92,7 +92,7 @@ import hunt.time.util.Common;
  * @since 1.8
  */
 public final class Period
-        : ChronoPeriod, Serializable {
+        : ChronoPeriod { // , Serializable
 
     /**
      * A constant for a period of zero.

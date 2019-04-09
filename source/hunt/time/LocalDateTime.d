@@ -94,7 +94,7 @@ import std.concurrency : initOnce;
  * @since 1.8
  */
 public final class LocalDateTime
-        : Temporal, TemporalAdjuster, ChronoLocalDateTime!(LocalDate), Serializable {
+        : Temporal, TemporalAdjuster, ChronoLocalDateTime!(LocalDate) { // , Serializable
 
     /**
      * The minimum supported {@code LocalDateTime}, '-999999999-01-01T00:00:00'.

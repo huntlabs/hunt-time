@@ -29,6 +29,8 @@ import hunt.time.ZoneOffset;
 import hunt.time.Ser;
 import hunt.time.util.Common;
 
+import hunt.util.Common;
+import hunt.util.Serialize;
 
 import std.string;
 
@@ -349,4 +351,6 @@ final class ZoneRegion : ZoneId , Serializable {
             throw new DateTimeException("Invalid ID for offset-based ZoneId: " ~ zoneId, ex);
         }
     }
+
+        mixin SerializationMember!(typeof(this));
 }

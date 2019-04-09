@@ -39,6 +39,10 @@ import hunt.text.StringBuilder;
 import hunt.time.chrono.Ser;
 import hunt.time.util.QueryHelper;
 
+import hunt.util.Common;
+import hunt.util.Serialize;
+
+
 /**
  * A period expressed _in terms of a standard year-month-day calendar system.
  * !(p)
@@ -51,13 +55,9 @@ import hunt.time.util.QueryHelper;
  * @since 1.8
  */
 final class ChronoPeriodImpl
-        : ChronoPeriod, Serializable {
+        : ChronoPeriod { // , Serializable 
     // this class is only used by JDK chronology implementations and makes assumptions based on that fact
 
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = 57387258289L;
 
     /**
      * The set of supported units.
@@ -382,4 +382,5 @@ final class ChronoPeriodImpl
         return new ChronoPeriodImpl(chrono, years, months, days);
     }
 
+    mixin SerializationMember!(typeof(this));
 }

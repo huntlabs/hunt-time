@@ -42,6 +42,7 @@ import hunt.collection.HashMap;
 import hunt.time.chrono.Chronology;
 import hunt.time.chrono.ChronoLocalDate;
 import hunt.Long;
+import hunt.logging;
 import hunt.math.Helper;
 import hunt.time.chrono.IsoChronology;
 import hunt.time.chrono.Era;
@@ -49,30 +50,26 @@ import hunt.time.chrono.Ser;
 import hunt.time.util.Common;
 
 import std.conv;
+import std.concurrency : initOnce;
 
 public abstract class AbstractChronology : Chronology {
 
     /**
      * Map of available calendars by ID.
      */
-    // private static final ConcurrentHashMap!(string, Chronology) CHRONOS_BY_ID = new ConcurrentHashMap!(string, Chronology)();
-    //  __gshared HashMap!(string, Chronology) CHRONOS_BY_ID;
+    private static HashMap!(string, Chronology) CHRONOS_BY_ID() {
+        __gshared HashMap!(string, Chronology) _d;
+        return initOnce!(_d)(new HashMap!(string, Chronology)()); // = new ConcurrentHashMap!(string, Chronology)();
+    }   
 
     /**
      * Map of available calendars by calendar type.
      */
-    //  __gshared ConcurrentHashMap!(string, Chronology) CHRONOS_BY_TYPE = new ConcurrentHashMap!(string, Chronology)();
-    //  __gshared HashMap!(string, Chronology) CHRONOS_BY_TYPE;
+    static HashMap!(string, Chronology) CHRONOS_BY_TYPE() {
+        __gshared HashMap!(string, Chronology) _d;
+        return initOnce!(_d)(new HashMap!(string, Chronology)()); // = new ConcurrentHashMap!(string, Chronology)();
+    }   
 
-
-    // shared static this()
-    // {
-        // CHRONOS_BY_ID = new HashMap!(string, Chronology)();
-        mixin(MakeGlobalVar!(HashMap!(string, Chronology))("CHRONOS_BY_ID",`new HashMap!(string, Chronology)()`));
-        // CHRONOS_BY_TYPE = new HashMap!(string, Chronology)();
-        mixin(MakeGlobalVar!(HashMap!(string, Chronology))("CHRONOS_BY_TYPE",`new HashMap!(string, Chronology)()`));
-
-    // }
     /**
      * Register a Chronology by its ID and type for lookup by {@link #of(string)}.
      * Chronologies must not be registered until they are completely constructed.
@@ -140,7 +137,6 @@ public abstract class AbstractChronology : Chronology {
                 if (id == ("ISO") || registerChrono(chrono) !is null) {
                     // Log the attempt to replace an existing Chronology
                     // PlatformLogger logger = PlatformLogger.getLogger("hunt.time.chrono");
-                    import hunt.logging;
                     version(HUNT_DEBUG) trace("Ignoring duplicate Chronology, from ServiceLoader configuration "  ~ id);
                 }
             }

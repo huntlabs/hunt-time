@@ -47,10 +47,15 @@ import hunt.time.OffsetDateTime;
 import hunt.time.LocalDate;
 import hunt.time.Exceptions;
 import hunt.time.Ser;
+import hunt.time.util.Common;
 import hunt.util.Common;
 import hunt.util.Comparator;
+import hunt.util.Serialize;
+
 import std.conv;
-import hunt.time.util.Common;
+import std.concurrency : initOnce;
+
+
 /**
  * A time with an offset from UTC/Greenwich _in the ISO-8601 calendar system,
  * such as {@code 10:15:30+01:00}.
@@ -74,8 +79,8 @@ import hunt.time.util.Common;
  *
  * @since 1.8
  */
-public final class OffsetTime
-        : Temporal, TemporalAdjuster, Comparable!(OffsetTime) { // , Serializable
+final class OffsetTime
+        : Temporal, TemporalAdjuster, Comparable!(OffsetTime), Serializable { 
 
     /**
      * The minimum supported {@code OffsetTime}, '00:00:00+18:00'.
@@ -84,7 +89,11 @@ public final class OffsetTime
      * This combines {@link LocalTime#MIN} and {@link ZoneOffset#MAX}.
      * This could be used by an application as a "far past" date.
      */
-    // public __gshared OffsetTime MIN ;
+    static OffsetTime MIN() {
+        __gshared OffsetTime _MIN;
+        return initOnce!(_MIN)(LocalTime.MIN.atOffset(ZoneOffset.MAX));
+    }
+
     /**
      * The maximum supported {@code OffsetTime}, '23:59:59.999999999-18:00'.
      * This is the time just before midnight at the end of the day _in the minimum offset
@@ -92,30 +101,21 @@ public final class OffsetTime
      * This combines {@link LocalTime#MAX} and {@link ZoneOffset#MIN}.
      * This could be used by an application as a "far future" date.
      */
-    // public __gshared OffsetTime MAX ;
-
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = 7264499704384272492L;
+    static OffsetTime MAX() {
+        __gshared OffsetTime _MAX;
+        return initOnce!(_MAX)(LocalTime.MAX.atOffset(ZoneOffset.MIN));
+    }
 
     /**
      * The local date-time.
      */
     private  LocalTime time;
+
     /**
      * The offset from UTC/Greenwich.
      */
     private  ZoneOffset offset;
 
-    // shared static this()
-    // {
-        // MIN = LocalTime.MIN.atOffset(ZoneOffset.MAX);
-        mixin(MakeGlobalVar!(OffsetTime)("MIN",`LocalTime.MIN.atOffset(ZoneOffset.MAX)`));
-        // MAX = LocalTime.MAX.atOffset(ZoneOffset.MIN);
-        mixin(MakeGlobalVar!(OffsetTime)("MAX",`LocalTime.MAX.atOffset(ZoneOffset.MIN)`));
-
-    // }
 
     //-----------------------------------------------------------------------
     /**
@@ -130,7 +130,7 @@ public final class OffsetTime
      *
      * @return the current time using the system clock and default time-zone, not null
      */
-    public static OffsetTime now() {
+    static OffsetTime now() {
         return now(Clock.systemDefaultZone());
     }
 
@@ -147,7 +147,7 @@ public final class OffsetTime
      * @param zone  the zone ID to use, not null
      * @return the current time using the system clock, not null
      */
-    public static OffsetTime now(ZoneId zone) {
+    static OffsetTime now(ZoneId zone) {
         return now(Clock.system(zone));
     }
 
@@ -163,7 +163,7 @@ public final class OffsetTime
      * @param clock  the clock to use, not null
      * @return the current time, not null
      */
-    public static OffsetTime now(Clock clock) {
+    static OffsetTime now(Clock clock) {
         assert(clock, "clock");
         Instant now = clock.instant();  // called once
         return ofInstant(now, clock.getZone().getRules().getOffset(now));
@@ -177,7 +177,7 @@ public final class OffsetTime
      * @param offset  the zone offset, not null
      * @return the offset time, not null
      */
-    public static OffsetTime of(LocalTime time, ZoneOffset offset) {
+    static OffsetTime of(LocalTime time, ZoneOffset offset) {
         return new OffsetTime(time, offset);
     }
 
@@ -200,7 +200,7 @@ public final class OffsetTime
      * @return the offset time, not null
      * @throws DateTimeException if the value of any field is _out of range
      */
-    public static OffsetTime of(int hour, int minute, int second, int nanoOfSecond, ZoneOffset offset) {
+    static OffsetTime of(int hour, int minute, int second, int nanoOfSecond, ZoneOffset offset) {
         return new OffsetTime(LocalTime.of(hour, minute, second, nanoOfSecond), offset);
     }
 
@@ -220,7 +220,7 @@ public final class OffsetTime
      * @param zone  the time-zone, which may be an offset, not null
      * @return the offset time, not null
      */
-    public static OffsetTime ofInstant(Instant instant, ZoneId zone) {
+    static OffsetTime ofInstant(Instant instant, ZoneId zone) {
         assert(instant, "instant");
         assert(zone, "zone");
         ZoneRules rules = zone.getRules();
@@ -251,7 +251,7 @@ public final class OffsetTime
      * @return the offset time, not null
      * @throws DateTimeException if unable to convert to an {@code OffsetTime}
      */
-    public static OffsetTime from(TemporalAccessor temporal) {
+    static OffsetTime from(TemporalAccessor temporal) {
         if (cast(OffsetTime)(temporal) !is null) {
             return cast(OffsetTime) temporal;
         }
@@ -276,7 +276,7 @@ public final class OffsetTime
      * @return the parsed local time, not null
      * @throws DateTimeParseException if the text cannot be parsed
      */
-    // public static OffsetTime parse(string text) {
+    // static OffsetTime parse(string text) {
     //     return parse(text, DateTimeFormatter.ISO_OFFSET_TIME);
     // }
 
@@ -290,7 +290,7 @@ public final class OffsetTime
      * @return the parsed offset time, not null
      * @throws DateTimeParseException if the text cannot be parsed
      */
-    // public static OffsetTime parse(string text, DateTimeFormatter formatter) {
+    // static OffsetTime parse(string text, DateTimeFormatter formatter) {
     //     assert(formatter, "formatter");
     //     return formatter.parse(text,  new class TemporalQuery!OffsetTime{
     //         OffsetTime queryFrom(TemporalAccessor temporal)
@@ -375,7 +375,7 @@ public final class OffsetTime
      * @return true if the field is supported on this time, false if not
      */
     override
-    public bool isSupported(TemporalField field) {
+    bool isSupported(TemporalField field) {
         if (cast(ChronoField)(field) !is null) {
             return field.isTimeBased() || field == ChronoField.OFFSET_SECONDS;
         }
@@ -411,7 +411,7 @@ public final class OffsetTime
      * @return true if the unit can be added/subtracted, false if not
      */
     override  // override for Javadoc
-    public bool isSupported(TemporalUnit unit) {
+    bool isSupported(TemporalUnit unit) {
         if (cast(ChronoUnit)(unit) !is null) {
             return unit.isTimeBased();
         }
@@ -443,7 +443,7 @@ public final class OffsetTime
      * @throws UnsupportedTemporalTypeException if the field is not supported
      */
     override
-    public ValueRange range(TemporalField field) {
+    ValueRange range(TemporalField field) {
         if (cast(ChronoField)(field) !is null) {
             if (field == ChronoField.OFFSET_SECONDS) {
                 return field.range();
@@ -481,7 +481,7 @@ public final class OffsetTime
      * @throws ArithmeticException if numeric overflow occurs
      */
     override  // override for Javadoc
-    public int get(TemporalField field) {
+    int get(TemporalField field) {
         return /* Temporal. super.*/super_get(field);
     }
     int super_get(TemporalField field) {
@@ -520,7 +520,7 @@ public final class OffsetTime
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public long getLong(TemporalField field) {
+    long getLong(TemporalField field) {
         if (cast(ChronoField)(field) !is null) {
             if (field == ChronoField.OFFSET_SECONDS) {
                 return offset.getTotalSeconds();
@@ -538,7 +538,7 @@ public final class OffsetTime
      *
      * @return the zone offset, not null
      */
-    public ZoneOffset getOffset() {
+    ZoneOffset getOffset() {
         return offset;
     }
 
@@ -559,7 +559,7 @@ public final class OffsetTime
      * @param offset  the zone offset to change to, not null
      * @return an {@code OffsetTime} based on this time with the requested offset, not null
      */
-    public OffsetTime withOffsetSameLocal(ZoneOffset offset) {
+    OffsetTime withOffsetSameLocal(ZoneOffset offset) {
         return offset !is null && offset == (this.offset) ? this : new OffsetTime(time, offset);
     }
 
@@ -581,7 +581,7 @@ public final class OffsetTime
      * @param offset  the zone offset to change to, not null
      * @return an {@code OffsetTime} based on this time with the requested offset, not null
      */
-    public OffsetTime withOffsetSameInstant(ZoneOffset offset) {
+    OffsetTime withOffsetSameInstant(ZoneOffset offset) {
         if (offset == (this.offset)) {
             return this;
         }
@@ -599,7 +599,7 @@ public final class OffsetTime
      *
      * @return the time part of this date-time, not null
      */
-    public LocalTime toLocalTime() {
+    LocalTime toLocalTime() {
         return time;
     }
 
@@ -609,7 +609,7 @@ public final class OffsetTime
      *
      * @return the hour-of-day, from 0 to 23
      */
-    public int getHour() {
+    int getHour() {
         return time.getHour();
     }
 
@@ -618,7 +618,7 @@ public final class OffsetTime
      *
      * @return the minute-of-hour, from 0 to 59
      */
-    public int getMinute() {
+    int getMinute() {
         return time.getMinute();
     }
 
@@ -627,7 +627,7 @@ public final class OffsetTime
      *
      * @return the second-of-minute, from 0 to 59
      */
-    public int getSecond() {
+    int getSecond() {
         return time.getSecond();
     }
 
@@ -636,7 +636,7 @@ public final class OffsetTime
      *
      * @return the nano-of-second, from 0 to 999,999,999
      */
-    public int getNano() {
+    int getNano() {
         return time.getNano();
     }
 
@@ -670,7 +670,7 @@ public final class OffsetTime
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public OffsetTime _with(TemporalAdjuster adjuster) {
+    OffsetTime _with(TemporalAdjuster adjuster) {
         // optimizations
         if (cast(LocalTime)(adjuster) !is null) {
             return _with(cast(LocalTime) adjuster, offset);
@@ -718,7 +718,7 @@ public final class OffsetTime
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public OffsetTime _with(TemporalField field, long newValue) {
+    OffsetTime _with(TemporalField field, long newValue) {
         if (cast(ChronoField)(field) !is null) {
             if (field == ChronoField.OFFSET_SECONDS) {
                 ChronoField f = cast(ChronoField) field;
@@ -741,7 +741,7 @@ public final class OffsetTime
      * @return an {@code OffsetTime} based on this time with the requested hour, not null
      * @throws DateTimeException if the hour value is invalid
      */
-    public OffsetTime withHour(int hour) {
+    OffsetTime withHour(int hour) {
         return _with(time.withHour(hour), offset);
     }
 
@@ -756,7 +756,7 @@ public final class OffsetTime
      * @return an {@code OffsetTime} based on this time with the requested minute, not null
      * @throws DateTimeException if the minute value is invalid
      */
-    public OffsetTime withMinute(int minute) {
+    OffsetTime withMinute(int minute) {
         return _with(time.withMinute(minute), offset);
     }
 
@@ -771,7 +771,7 @@ public final class OffsetTime
      * @return an {@code OffsetTime} based on this time with the requested second, not null
      * @throws DateTimeException if the second value is invalid
      */
-    public OffsetTime withSecond(int second) {
+    OffsetTime withSecond(int second) {
         return _with(time.withSecond(second), offset);
     }
 
@@ -786,7 +786,7 @@ public final class OffsetTime
      * @return an {@code OffsetTime} based on this time with the requested nanosecond, not null
      * @throws DateTimeException if the nanos value is invalid
      */
-    public OffsetTime withNano(int nanoOfSecond) {
+    OffsetTime withNano(int nanoOfSecond) {
         return _with(time.withNano(nanoOfSecond), offset);
     }
 
@@ -813,7 +813,7 @@ public final class OffsetTime
      * @throws DateTimeException if unable to truncate
      * @throws UnsupportedTemporalTypeException if the unit is not supported
      */
-    public OffsetTime truncatedTo(TemporalUnit unit) {
+    OffsetTime truncatedTo(TemporalUnit unit) {
         return _with(time.truncatedTo(unit), offset);
     }
 
@@ -839,7 +839,7 @@ public final class OffsetTime
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public OffsetTime plus(TemporalAmount amountToAdd) {
+    OffsetTime plus(TemporalAmount amountToAdd) {
         return cast(OffsetTime) amountToAdd.addTo(this);
     }
 
@@ -869,7 +869,7 @@ public final class OffsetTime
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public OffsetTime plus(long amountToAdd, TemporalUnit unit) {
+    OffsetTime plus(long amountToAdd, TemporalUnit unit) {
         if (cast(ChronoUnit)(unit) !is null) {
             return _with(time.plus(amountToAdd, unit), offset);
         }
@@ -888,7 +888,7 @@ public final class OffsetTime
      * @param hours  the hours to add, may be negative
      * @return an {@code OffsetTime} based on this time with the hours added, not null
      */
-    public OffsetTime plusHours(long hours) {
+    OffsetTime plusHours(long hours) {
         return _with(time.plusHours(hours), offset);
     }
 
@@ -903,7 +903,7 @@ public final class OffsetTime
      * @param minutes  the minutes to add, may be negative
      * @return an {@code OffsetTime} based on this time with the minutes added, not null
      */
-    public OffsetTime plusMinutes(long minutes) {
+    OffsetTime plusMinutes(long minutes) {
         return _with(time.plusMinutes(minutes), offset);
     }
 
@@ -918,7 +918,7 @@ public final class OffsetTime
      * @param seconds  the seconds to add, may be negative
      * @return an {@code OffsetTime} based on this time with the seconds added, not null
      */
-    public OffsetTime plusSeconds(long seconds) {
+    OffsetTime plusSeconds(long seconds) {
         return _with(time.plusSeconds(seconds), offset);
     }
 
@@ -933,7 +933,7 @@ public final class OffsetTime
      * @param nanos  the nanos to add, may be negative
      * @return an {@code OffsetTime} based on this time with the nanoseconds added, not null
      */
-    public OffsetTime plusNanos(long nanos) {
+    OffsetTime plusNanos(long nanos) {
         return _with(time.plusNanos(nanos), offset);
     }
 
@@ -959,7 +959,7 @@ public final class OffsetTime
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public OffsetTime minus(TemporalAmount amountToSubtract) {
+    OffsetTime minus(TemporalAmount amountToSubtract) {
         return cast(OffsetTime) amountToSubtract.subtractFrom(this);
     }
 
@@ -983,7 +983,7 @@ public final class OffsetTime
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public OffsetTime minus(long amountToSubtract, TemporalUnit unit) {
+    OffsetTime minus(long amountToSubtract, TemporalUnit unit) {
         return (amountToSubtract == Long.MIN_VALUE ? plus(Long.MAX_VALUE, unit).plus(1, unit) : plus(-amountToSubtract, unit));
     }
 
@@ -999,7 +999,7 @@ public final class OffsetTime
      * @param hours  the hours to subtract, may be negative
      * @return an {@code OffsetTime} based on this time with the hours subtracted, not null
      */
-    public OffsetTime minusHours(long hours) {
+    OffsetTime minusHours(long hours) {
         return _with(time.minusHours(hours), offset);
     }
 
@@ -1014,7 +1014,7 @@ public final class OffsetTime
      * @param minutes  the minutes to subtract, may be negative
      * @return an {@code OffsetTime} based on this time with the minutes subtracted, not null
      */
-    public OffsetTime minusMinutes(long minutes) {
+    OffsetTime minusMinutes(long minutes) {
         return _with(time.minusMinutes(minutes), offset);
     }
 
@@ -1029,7 +1029,7 @@ public final class OffsetTime
      * @param seconds  the seconds to subtract, may be negative
      * @return an {@code OffsetTime} based on this time with the seconds subtracted, not null
      */
-    public OffsetTime minusSeconds(long seconds) {
+    OffsetTime minusSeconds(long seconds) {
         return _with(time.minusSeconds(seconds), offset);
     }
 
@@ -1044,7 +1044,7 @@ public final class OffsetTime
      * @param nanos  the nanos to subtract, may be negative
      * @return an {@code OffsetTime} based on this time with the nanoseconds subtracted, not null
      */
-    public OffsetTime minusNanos(long nanos) {
+    OffsetTime minusNanos(long nanos) {
         return _with(time.minusNanos(nanos), offset);
     }
 
@@ -1069,7 +1069,7 @@ public final class OffsetTime
      */
     /*@SuppressWarnings("unchecked")*/
     // override
-    public R query(R)(TemporalQuery!(R) query) {
+    R query(R)(TemporalQuery!(R) query) {
         if (query == TemporalQueries.offset() || query == TemporalQueries.zone()) {
             return cast(R) offset;
         } else if (((query == TemporalQueries.zoneId()) | (query == TemporalQueries.chronology())) || query == TemporalQueries.localDate()) {
@@ -1111,7 +1111,7 @@ public final class OffsetTime
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Temporal adjustInto(Temporal temporal) {
+    Temporal adjustInto(Temporal temporal) {
         return temporal
                 ._with(ChronoField.NANO_OF_DAY, time.toNanoOfDay())
                 ._with(ChronoField.OFFSET_SECONDS, offset.getTotalSeconds());
@@ -1168,7 +1168,7 @@ public final class OffsetTime
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public long until(Temporal endExclusive, TemporalUnit unit) {
+    long until(Temporal endExclusive, TemporalUnit unit) {
         OffsetTime end = OffsetTime.from(endExclusive);
         if (cast(ChronoUnit)(unit) !is null) {
             long nanosUntil = end.toEpochNano() - toEpochNano();  // no overflow
@@ -1196,7 +1196,7 @@ public final class OffsetTime
      * @return the formatted time string, not null
      * @throws DateTimeException if an error occurs during printing
      */
-    // public string format(DateTimeFormatter formatter) {
+    // string format(DateTimeFormatter formatter) {
     //     assert(formatter, "formatter");
     //     return formatter.format(this);
     // }
@@ -1211,7 +1211,7 @@ public final class OffsetTime
      * @param date  the date to combine with, not null
      * @return the offset date-time formed from this time and the specified date, not null
      */
-    public OffsetDateTime atDate(LocalDate date) {
+    OffsetDateTime atDate(LocalDate date) {
         return OffsetDateTime.of(date, time, offset);
     }
 
@@ -1241,7 +1241,7 @@ public final class OffsetTime
      * @return the number of seconds since the epoch of 1970-01-01T00:00:00Z, may be negative
      * @since 9
      */
-    public long toEpochSecond(LocalDate date) {
+    long toEpochSecond(LocalDate date) {
         assert(date, "date");
         long epochDay = date.toEpochDay();
         long secs = epochDay * 86400 + time.toSecondOfDay();
@@ -1277,7 +1277,7 @@ public final class OffsetTime
      * @return the comparator value, negative if less, positive if greater
      */
     // override
-    public int compareTo(OffsetTime other) {
+    int compareTo(OffsetTime other) {
         if (offset == (other.offset)) {
             return time.compareTo(other.time);
         }
@@ -1288,7 +1288,7 @@ public final class OffsetTime
         return compare;
     }
 
-    override public int opCmp(OffsetTime other) {
+    override int opCmp(OffsetTime other) {
         if (offset == (other.offset)) {
             return time.compareTo(other.time);
         }
@@ -1311,7 +1311,7 @@ public final class OffsetTime
      * @param other  the other time to compare to, not null
      * @return true if this is after the instant of the specified time
      */
-    public bool isAfter(OffsetTime other) {
+    bool isAfter(OffsetTime other) {
         return toEpochNano() > other.toEpochNano();
     }
 
@@ -1326,7 +1326,7 @@ public final class OffsetTime
      * @param other  the other time to compare to, not null
      * @return true if this is before the instant of the specified time
      */
-    public bool isBefore(OffsetTime other) {
+    bool isBefore(OffsetTime other) {
         return toEpochNano() < other.toEpochNano();
     }
 
@@ -1341,7 +1341,7 @@ public final class OffsetTime
      * @param other  the other time to compare to, not null
      * @return true if this is equal to the instant of the specified time
      */
-    public bool isEqual(OffsetTime other) {
+    bool isEqual(OffsetTime other) {
         return toEpochNano() == other.toEpochNano();
     }
 
@@ -1360,7 +1360,7 @@ public final class OffsetTime
      * @return true if this is equal to the other time
      */
     override
-    public bool opEquals(Object obj) {
+    bool opEquals(Object obj) {
         if (this is obj) {
             return true;
         }
@@ -1377,7 +1377,7 @@ public final class OffsetTime
      * @return a suitable hash code
      */
     override
-    public size_t toHash() @trusted nothrow {
+    size_t toHash() @trusted nothrow {
         return time.toHash() ^ offset.toHash();
     }
 
@@ -1399,7 +1399,7 @@ public final class OffsetTime
      * @return a string representation of this time, not null
      */
     override
-    public string toString() {
+    string toString() {
         return time.toString() ~ offset.toString();
     }
 
@@ -1442,4 +1442,6 @@ public final class OffsetTime
     //     return OffsetTime.of(time, offset);
     // }
 
+
+    mixin SerializationMember!(typeof(this));
 }

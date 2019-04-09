@@ -18,6 +18,8 @@ import hunt.text.StringBuilder;
 import hunt.io.Common;
 import hunt.time.Exceptions;
 import hunt.time.temporal.TemporalField;
+import hunt.util.Common;
+import hunt.util.Serialize;
 
 /**
  * The range of valid values for a date-time field.
@@ -41,10 +43,6 @@ import hunt.time.temporal.TemporalField;
  */
 public final class ValueRange : Serializable {
 
-    /**
-     * Serialization version.
-     */
-    private static  long serialVersionUID = -7317881728594519368L;
 
     /**
      * The smallest minimum value.
@@ -381,4 +379,5 @@ public final class ValueRange : Serializable {
         return buf.toString();
     }
 
+    mixin SerializationMember!(typeof(this));
 }

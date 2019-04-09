@@ -29,15 +29,17 @@ import hunt.time.temporal.Temporal;
 import hunt.time.temporal.TemporalAmount;
 import hunt.time.temporal.TemporalUnit;
 import hunt.time.Exceptions;
+import hunt.time.util.Common;
+
 import hunt.collection;
 import hunt.Functions;
 import hunt.Long;
 import hunt.math.Helper;
-import hunt.util.Common;
 import hunt.text.Common;
 import hunt.text.StringBuilder;
+import hunt.util.Common;
 import hunt.util.Comparator;
-import hunt.time.util.Common;
+import hunt.util.Serialize;
 
 import std.conv;
 import std.concurrency : initOnce;
@@ -81,8 +83,8 @@ import std.string;
  *
  * @since 1.8
  */
-public final class Duration
-        : TemporalAmount, Comparable!(Duration) { // , Serializable
+final class Duration
+        : TemporalAmount, Comparable!(Duration), Serializable { 
 
     /**
      * Constant for a duration of zero.
@@ -129,7 +131,7 @@ public final class Duration
      * @return a {@code Duration}, not null
      * @throws ArithmeticException if the input days exceeds the capacity of {@code Duration}
      */
-    public static Duration ofDays(long days) {
+    static Duration ofDays(long days) {
         return create(MathHelper.multiplyExact(days , TimeConstant.SECONDS_PER_DAY), 0);
     }
 
@@ -144,7 +146,7 @@ public final class Duration
      * @return a {@code Duration}, not null
      * @throws ArithmeticException if the input hours exceeds the capacity of {@code Duration}
      */
-    public static Duration ofHours(long hours) {
+    static Duration ofHours(long hours) {
         return create(MathHelper.multiplyExact(hours, TimeConstant.SECONDS_PER_HOUR), 0);
     }
 
@@ -159,7 +161,7 @@ public final class Duration
      * @return a {@code Duration}, not null
      * @throws ArithmeticException if the input minutes exceeds the capacity of {@code Duration}
      */
-    public static Duration ofMinutes(long minutes) {
+    static Duration ofMinutes(long minutes) {
         return create(MathHelper.multiplyExact(minutes, TimeConstant.SECONDS_PER_MINUTE), 0);
     }
 
@@ -172,7 +174,7 @@ public final class Duration
      * @param seconds  the number of seconds, positive or negative
      * @return a {@code Duration}, not null
      */
-    public static Duration ofSeconds(long seconds) {
+    static Duration ofSeconds(long seconds) {
         return create(seconds, 0);
     }
 
@@ -195,7 +197,7 @@ public final class Duration
      * @return a {@code Duration}, not null
      * @throws ArithmeticException if the adjustment causes the seconds to exceed the capacity of {@code Duration}
      */
-    public static Duration ofSeconds(long seconds, long nanoAdjustment) {
+    static Duration ofSeconds(long seconds, long nanoAdjustment) {
         long secs = MathHelper.addExact(seconds , MathHelper.floorDiv(nanoAdjustment , TimeConstant.NANOS_PER_SECOND));
         int nos = cast(int) (MathHelper.floorMod(nanoAdjustment, TimeConstant.NANOS_PER_SECOND));
         return create(secs, nos);
@@ -210,7 +212,7 @@ public final class Duration
      * @param millis  the number of milliseconds, positive or negative
      * @return a {@code Duration}, not null
      */
-    public static Duration ofMillis(long millis) {
+    static Duration ofMillis(long millis) {
         long secs = millis / 1000;
         int mos = cast(int) (millis % 1000);
         if (mos < 0) {
@@ -229,7 +231,7 @@ public final class Duration
      * @param nanos  the number of nanoseconds, positive or negative
      * @return a {@code Duration}, not null
      */
-    public static Duration ofNanos(long nanos) {
+    static Duration ofNanos(long nanos) {
         long secs = nanos / TimeConstant.NANOS_PER_SECOND;
         int nos = cast(int) (nanos % TimeConstant.NANOS_PER_SECOND);
         if (nos < 0) {
@@ -258,7 +260,7 @@ public final class Duration
      * @throws DateTimeException if the period unit has an estimated duration
      * @throws ArithmeticException if a numeric overflow occurs
      */
-    public static Duration of(long amount, TemporalUnit unit) {
+    static Duration of(long amount, TemporalUnit unit) {
         return ZERO.plus(amount, unit);
     }
 
@@ -283,7 +285,7 @@ public final class Duration
      * @throws DateTimeException if unable to convert to a {@code Duration}
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public static Duration from(TemporalAmount amount) {
+    static Duration from(TemporalAmount amount) {
         assert(amount, "amount");
         Duration duration = ZERO;
         foreach(TemporalUnit unit ; amount.getUnits()) {
@@ -337,7 +339,7 @@ public final class Duration
      * @return the parsed duration, not null
      * @throws DateTimeParseException if the text cannot be parsed to a duration
      */
-    public static Duration parse(string text) {
+    static Duration parse(string text) {
         assert(text, "text");
         auto matchers = matchAll(text, PATTERN);
         if (!matchers.empty()) {
@@ -436,7 +438,7 @@ public final class Duration
      * @throws DateTimeException if the seconds between the temporals cannot be obtained
      * @throws ArithmeticException if the calculation exceeds the capacity of {@code Duration}
      */
-    public static Duration between(Temporal startInclusive, Temporal endExclusive) {
+    static Duration between(Temporal startInclusive, Temporal endExclusive) {
         try {
             return ofNanos(startInclusive.until(endExclusive, ChronoUnit.NANOS));
         } catch (DateTimeException  ex) {
@@ -496,7 +498,7 @@ public final class Duration
      * @throws UnsupportedTemporalTypeException if the unit is not supported
      */
     override
-    public long get(TemporalUnit unit) {
+    long get(TemporalUnit unit) {
         if (unit == ChronoUnit.SECONDS) {
             return seconds;
         } else if (unit == ChronoUnit.NANOS) {
@@ -519,7 +521,7 @@ public final class Duration
      * @return a list containing the seconds and nanos units, not null
      */
     override
-    public List!(TemporalUnit) getUnits() {
+    List!(TemporalUnit) getUnits() {
         __gshared List!(TemporalUnit) _UNITS;
         return initOnce!(_UNITS)({
             auto r = new ArrayList!(TemporalUnit)();
@@ -540,7 +542,7 @@ public final class Duration
      *
      * @return true if this duration has a total length equal to zero
      */
-    public bool isZero() {
+    bool isZero() {
         return (seconds | nanos) == 0;
     }
 
@@ -553,7 +555,7 @@ public final class Duration
      *
      * @return true if this duration has a total length less than zero
      */
-    public bool isNegative() {
+    bool isNegative() {
         return seconds < 0;
     }
 
@@ -572,7 +574,7 @@ public final class Duration
      *
      * @return the whole seconds part of the length of the duration, positive or negative
      */
-    public long getSeconds() {
+    long getSeconds() {
         return seconds;
     }
 
@@ -590,7 +592,7 @@ public final class Duration
      *
      * @return the nanoseconds within the second part of the length of the duration, from 0 to 999,999,999
      */
-    public int getNano() {
+    int getNano() {
         return nanos;
     }
 
@@ -606,7 +608,7 @@ public final class Duration
      * @param seconds  the seconds to represent, may be negative
      * @return a {@code Duration} based on this period with the requested seconds, not null
      */
-    public Duration withSeconds(long seconds) {
+    Duration withSeconds(long seconds) {
         return create(seconds, nanos);
     }
 
@@ -622,7 +624,7 @@ public final class Duration
      * @return a {@code Duration} based on this period with the requested nano-of-second, not null
      * @throws DateTimeException if the nano-of-second is invalid
      */
-    public Duration withNanos(int nanoOfSecond) {
+    Duration withNanos(int nanoOfSecond) {
         ChronoField.NANO_OF_SECOND.checkValidIntValue(nanoOfSecond);
         return create(seconds, nanoOfSecond);
     }
@@ -637,7 +639,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified duration added, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration plus(Duration duration) {
+    Duration plus(Duration duration) {
         return plus(duration.getSeconds(), duration.getNano());
      }
 
@@ -657,7 +659,7 @@ public final class Duration
      * @throws UnsupportedTemporalTypeException if the unit is not supported
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration plus(long amountToAdd, TemporalUnit unit) {
+    Duration plus(long amountToAdd, TemporalUnit unit) {
         assert(unit, "unit");
         if (unit == ChronoUnit.DAYS) {
             return plus(MathHelper.multiplyExact(amountToAdd , TimeConstant.SECONDS_PER_DAY), 0);
@@ -694,7 +696,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified days added, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration plusDays(long daysToAdd) {
+    Duration plusDays(long daysToAdd) {
         return plus(MathHelper.multiplyExact(daysToAdd  , TimeConstant.SECONDS_PER_DAY), 0);
     }
 
@@ -707,7 +709,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified hours added, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration plusHours(long hoursToAdd) {
+    Duration plusHours(long hoursToAdd) {
         return plus(MathHelper.multiplyExact(hoursToAdd , TimeConstant.SECONDS_PER_HOUR), 0);
     }
 
@@ -720,7 +722,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified minutes added, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration plusMinutes(long minutesToAdd) {
+    Duration plusMinutes(long minutesToAdd) {
         return plus(MathHelper.multiplyExact(minutesToAdd , TimeConstant.SECONDS_PER_MINUTE), 0);
     }
 
@@ -733,7 +735,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified seconds added, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration plusSeconds(long secondsToAdd) {
+    Duration plusSeconds(long secondsToAdd) {
         return plus(secondsToAdd, 0);
     }
 
@@ -746,7 +748,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified milliseconds added, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration plusMillis(long millisToAdd) {
+    Duration plusMillis(long millisToAdd) {
         return plus(millisToAdd / 1000, (millisToAdd % 1000) * 1000_000);
     }
 
@@ -759,7 +761,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified nanoseconds added, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration plusNanos(long nanosToAdd) {
+    Duration plusNanos(long nanosToAdd) {
         return plus(0, nanosToAdd);
     }
 
@@ -794,7 +796,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified duration subtracted, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration minus(Duration duration) {
+    Duration minus(Duration duration) {
         long secsToSubtract = duration.getSeconds();
         int nanosToSubtract = duration.getNano();
         if (secsToSubtract == Long.MIN_VALUE) {
@@ -818,7 +820,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified duration subtracted, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration minus(long amountToSubtract, TemporalUnit unit) {
+    Duration minus(long amountToSubtract, TemporalUnit unit) {
         return (amountToSubtract == Long.MIN_VALUE ? plus(Long.MAX_VALUE, unit).plus(1, unit) : plus(-amountToSubtract, unit));
     }
 
@@ -835,7 +837,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified days subtracted, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration minusDays(long daysToSubtract) {
+    Duration minusDays(long daysToSubtract) {
         return (daysToSubtract == Long.MIN_VALUE ? plusDays(Long.MAX_VALUE).plusDays(1) : plusDays(-daysToSubtract));
     }
 
@@ -850,7 +852,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified hours subtracted, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration minusHours(long hoursToSubtract) {
+    Duration minusHours(long hoursToSubtract) {
         return (hoursToSubtract == Long.MIN_VALUE ? plusHours(Long.MAX_VALUE).plusHours(1) : plusHours(-hoursToSubtract));
     }
 
@@ -865,7 +867,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified minutes subtracted, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration minusMinutes(long minutesToSubtract) {
+    Duration minusMinutes(long minutesToSubtract) {
         return (minutesToSubtract == Long.MIN_VALUE ? plusMinutes(Long.MAX_VALUE).plusMinutes(1) : plusMinutes(-minutesToSubtract));
     }
 
@@ -878,7 +880,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified seconds subtracted, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration minusSeconds(long secondsToSubtract) {
+    Duration minusSeconds(long secondsToSubtract) {
         return (secondsToSubtract == Long.MIN_VALUE ? plusSeconds(Long.MAX_VALUE).plusSeconds(1) : plusSeconds(-secondsToSubtract));
     }
 
@@ -891,7 +893,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified milliseconds subtracted, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration minusMillis(long millisToSubtract) {
+    Duration minusMillis(long millisToSubtract) {
         return (millisToSubtract == Long.MIN_VALUE ? plusMillis(Long.MAX_VALUE).plusMillis(1) : plusMillis(-millisToSubtract));
     }
 
@@ -904,7 +906,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the specified nanoseconds subtracted, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration minusNanos(long nanosToSubtract) {
+    Duration minusNanos(long nanosToSubtract) {
         return (nanosToSubtract == Long.MIN_VALUE ? plusNanos(Long.MAX_VALUE).plusNanos(1) : plusNanos(-nanosToSubtract));
     }
 
@@ -918,7 +920,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration multiplied by the specified scalar, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration multipliedBy(long multiplicand) {
+    Duration multipliedBy(long multiplicand) {
         if (multiplicand == 0) {
             return ZERO;
         }
@@ -938,7 +940,7 @@ public final class Duration
      * @throws ArithmeticException if the divisor is zero or if numeric overflow occurs
      */
      ///@gxc
-    // public Duration dividedBy(long divisor) {
+    // Duration dividedBy(long divisor) {
     //     if (divisor == 0) {
     //         throw new ArithmeticException("Cannot divide by zero");
     //     }
@@ -960,7 +962,7 @@ public final class Duration
      * @since 9
      */
      ///@gxc
-    // public long dividedBy(Duration divisor) {
+    // long dividedBy(Duration divisor) {
     //     assert(divisor, "divisor");
     //     BigDecimal dividendBigD = toBigDecimalSeconds();
     //     BigDecimal divisorBigD = divisor.toBigDecimalSeconds();
@@ -1006,7 +1008,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with the amount negated, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration negated() {
+    Duration negated() {
         return multipliedBy(-1);
     }
 
@@ -1021,7 +1023,7 @@ public final class Duration
      * @return a {@code Duration} based on this duration with an absolute length, not null
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public Duration abs() {
+    Duration abs() {
         return isNegative() ? negated() : this;
     }
 
@@ -1051,7 +1053,7 @@ public final class Duration
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Temporal addTo(Temporal temporal) {
+    Temporal addTo(Temporal temporal) {
         if (seconds != 0) {
             temporal = temporal.plus(seconds, ChronoUnit.SECONDS);
         }
@@ -1086,7 +1088,7 @@ public final class Duration
      * @throws ArithmeticException if numeric overflow occurs
      */
     override
-    public Temporal subtractFrom(Temporal temporal) {
+    Temporal subtractFrom(Temporal temporal) {
         if (seconds != 0) {
             temporal = temporal.minus(seconds, ChronoUnit.SECONDS);
         }
@@ -1108,7 +1110,7 @@ public final class Duration
      *
      * @return the number of days _in the duration, may be negative
      */
-    public long toDays() {
+    long toDays() {
         return seconds / TimeConstant.SECONDS_PER_DAY;
     }
 
@@ -1122,7 +1124,7 @@ public final class Duration
      *
      * @return the number of hours _in the duration, may be negative
      */
-    public long toHours() {
+    long toHours() {
         return seconds / TimeConstant.SECONDS_PER_HOUR;
     }
 
@@ -1136,7 +1138,7 @@ public final class Duration
      *
      * @return the number of minutes _in the duration, may be negative
      */
-    public long toMinutes() {
+    long toMinutes() {
         return seconds / TimeConstant.SECONDS_PER_MINUTE;
     }
 
@@ -1150,7 +1152,7 @@ public final class Duration
      * @return the whole seconds part of the length of the duration, positive or negative
      * @since 9
      */
-    public long toSeconds() {
+    long toSeconds() {
         return seconds;
     }
 
@@ -1167,7 +1169,7 @@ public final class Duration
      * @return the total length of the duration _in milliseconds
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public long toMillis() {
+    long toMillis() {
         long tempSeconds = seconds;
         long tempNanos = nanos;
         if (tempSeconds < 0) {
@@ -1190,7 +1192,7 @@ public final class Duration
      * @return the total length of the duration _in nanoseconds
      * @throws ArithmeticException if numeric overflow occurs
      */
-    public long toNanos() {
+    long toNanos() {
         long tempSeconds = seconds;
         long tempNanos = nanos;
         if (tempSeconds < 0) {
@@ -1216,7 +1218,7 @@ public final class Duration
      * @return the number of days _in the duration, may be negative
      * @since 9
      */
-    public long toDaysPart(){
+    long toDaysPart(){
         return seconds / TimeConstant.SECONDS_PER_DAY;
     }
 
@@ -1232,7 +1234,7 @@ public final class Duration
      * @return the number of hours part _in the duration, may be negative
      * @since 9
      */
-    public int toHoursPart(){
+    int toHoursPart(){
         return cast(int) (toHours() % 24);
     }
 
@@ -1248,7 +1250,7 @@ public final class Duration
      * @return the number of minutes parts _in the duration, may be negative
      * @since 9
      */
-    public int toMinutesPart(){
+    int toMinutesPart(){
         return cast(int) (toMinutes() % TimeConstant.MINUTES_PER_HOUR);
     }
 
@@ -1264,7 +1266,7 @@ public final class Duration
      * @return the number of seconds parts _in the duration, may be negative
      * @since 9
      */
-    public int toSecondsPart(){
+    int toSecondsPart(){
         return cast(int) (seconds % TimeConstant.SECONDS_PER_MINUTE);
     }
 
@@ -1282,7 +1284,7 @@ public final class Duration
      * @return the number of milliseconds part of the duration.
      * @since 9
      */
-    public int toMillisPart(){
+    int toMillisPart(){
         return nanos / 1000_000;
     }
 
@@ -1299,7 +1301,7 @@ public final class Duration
      * @return the nanoseconds within the second part of the length of the duration, from 0 to 999,999,999
      * @since 9
      */
-    public int toNanosPart(){
+    int toNanosPart(){
         return nanos;
     }
 
@@ -1328,7 +1330,7 @@ public final class Duration
      * @throws UnsupportedTemporalTypeException if the unit is not supported
      * @since 9
      */
-    public Duration truncatedTo(TemporalUnit unit) {
+    Duration truncatedTo(TemporalUnit unit) {
         assert(unit, "unit");
         if (unit == ChronoUnit.SECONDS && (seconds >= 0 || nanos == 0)) {
             return new Duration(seconds, 0);
@@ -1359,7 +1361,7 @@ public final class Duration
      * @return the comparator value, negative if less, positive if greater
      */
     // override
-    public int compareTo(Duration otherDuration) {
+    int compareTo(Duration otherDuration) {
         import hunt.util.Comparator;
 
         int cmp = compare(seconds, otherDuration.seconds);
@@ -1379,7 +1381,7 @@ public final class Duration
      * @return true if the other duration is equal to this one
      */
     override
-    public bool opEquals(Object otherDuration) {
+    bool opEquals(Object otherDuration) {
         if (this == otherDuration) {
             return true;
         }
@@ -1397,7 +1399,7 @@ public final class Duration
      * @return a suitable hash code
      */
     override
-    public size_t toHash() @trusted nothrow {
+    size_t toHash() @trusted nothrow {
         return (cast(int) (seconds ^ (seconds >>> 32))) + (51 * nanos);
     }
 
@@ -1425,7 +1427,7 @@ public final class Duration
      * @return an ISO-8601 representation of this duration, not null
      */
     override
-    public string toString() {
+    string toString() {
         if (this == ZERO) {
             return "PT0S";
         }
@@ -1518,4 +1520,7 @@ public final class Duration
             res = compare(this.nanos,o.nanos);
         return res;
     }
+
+
+    mixin SerializationMember!(typeof(this));
 }

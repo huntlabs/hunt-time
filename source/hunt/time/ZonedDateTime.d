@@ -58,6 +58,10 @@ import std.conv;
 import hunt.time.Ser;
 import hunt.util.Comparator;
 
+
+import hunt.util.Common;
+import hunt.util.Serialize;
+
 /**
  * A date-time with a time-zone _in the ISO-8601 calendar system,
  * such as {@code 2007-12-03T10:15:30+01:00 Europe/Paris}.
@@ -129,12 +133,7 @@ import hunt.util.Comparator;
  * @since 1.8
  */
 public  class ZonedDateTime
-        : Temporal, ChronoZonedDateTime!(LocalDate), Serializable {
-
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = -6260982410461394882L;
+        : Temporal, ChronoZonedDateTime!(LocalDate) { // , Serializable
 
     /**
      * The local date-time.

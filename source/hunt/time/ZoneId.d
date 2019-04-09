@@ -42,9 +42,9 @@ import hunt.Assert;
 import hunt.time.Instant;
 import hunt.time.util.QueryHelper;
 import hunt.time.util.Common;
-// import hunt.util.TimeZone;
 
-// import java.util.Map.entry;
+import hunt.util.Common;
+import hunt.util.Serialize;
 
 /**
  * A time-zone ID, such as {@code Europe/Paris}.
@@ -591,5 +591,7 @@ public abstract class ZoneId : Serializable {
     // }
 
     // abstract void write(DataOutput _out) /*throws IOException*/;
+    
+    mixin SerializationMember!(typeof(this));
 
 }

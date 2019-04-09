@@ -29,6 +29,11 @@ import hunt.time.chrono.IsoChronology;
 import hunt.time.zone.ZoneOffsetTransition;
 import hunt.text.StringBuilder;
 import hunt.time.util.Common;
+
+import hunt.util.Common;
+import hunt.util.Serialize;
+
+
 /**
  * A rule expressing how to create a transition.
  * !(p)
@@ -49,10 +54,6 @@ import hunt.time.util.Common;
  */
 public final class ZoneOffsetTransitionRule : Serializable {
 
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = 6889046316657758795L;
 
     /**
      * The month of the month-day of the first day of the cutover week.
@@ -623,5 +624,7 @@ public final class ZoneOffsetTransitionRule : Serializable {
             }
         }
     }
+
+    mixin SerializationMember!(typeof(this));
 
 }

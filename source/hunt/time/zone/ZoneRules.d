@@ -65,13 +65,9 @@ import std.concurrency : initOnce;
  * This class is immutable and thread-safe.
  *
  */
-public final class ZoneRules : Serializable
+public final class ZoneRules // : Serializable
 {
 
-    /**
-     * Serialization version.
-     */
-    // private enum long serialVersionUID = 3044319355680032515L;
     /**
      * The last year to have its transitions cached.
      */

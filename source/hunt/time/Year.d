@@ -95,15 +95,12 @@ public final class Year
      * The minimum supported year, '-999,999,999'.
      */
     public enum int MIN_VALUE = -999_999_999;
+    
     /**
      * The maximum supported year, '+999,999,999'.
      */
     public enum int MAX_VALUE = 999_999_999;
 
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = -23038383694477807L;
     /**
      * Parser.
      */
