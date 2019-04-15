@@ -133,7 +133,8 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
     static ZoneOffset MAX() {
         __gshared ZoneOffset _MAX;
         return initOnce!(_MAX)(ZoneOffset.ofTotalSeconds(MAX_SECONDS));
-    }    
+    }
+    
 
     /**
      * The total offset _in seconds.
@@ -143,25 +144,8 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
     /**
      * The string form of the time-zone offset.
      */
-    private  /*transient*/ string id;
+    private  string id;
 
-    // shared static this()
-    // {
-    //     // SECONDS_CACHE = new HashMap!(Integer, ZoneOffset)(16, 0.75f /* , 4 */ );
-        // mixin(MakeGlobalVar!(HashMap!(Integer, ZoneOffset))("SECONDS_CACHE",`new HashMap!(Integer, ZoneOffset)(16, 0.75f /* , 4 */ )`));
-        // // ID_CACHE = new HashMap!(string, ZoneOffset)(16, 0.75f /* , 4 */ );
-        // mixin(MakeGlobalVar!(HashMap!(string, ZoneOffset))("ID_CACHE",`new HashMap!(string, ZoneOffset)(16, 0.75f /* , 4 */ )`));
-
-        // // UTC = ZoneOffset.ofTotalSeconds(0);
-        // mixin(MakeGlobalVar!(ZoneOffset)("UTC",`ZoneOffset.ofTotalSeconds(0)`));
-
-        // // MIN = ZoneOffset.ofTotalSeconds(-MAX_SECONDS);
-        // mixin(MakeGlobalVar!(ZoneOffset)("MIN",`ZoneOffset.ofTotalSeconds(-MAX_SECONDS)`));
-
-        // // MAX = ZoneOffset.ofTotalSeconds(MAX_SECONDS);
-        // mixin(MakeGlobalVar!(ZoneOffset)("MAX",`ZoneOffset.ofTotalSeconds(MAX_SECONDS)`));
-
-    // }
     //-----------------------------------------------------------------------
     /**
      * Obtains an instance of {@code ZoneOffset} using the ID.

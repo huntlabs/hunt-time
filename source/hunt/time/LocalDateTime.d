@@ -105,7 +105,8 @@ public final class LocalDateTime
     static LocalDateTime MIN() {
         __gshared LocalDateTime _MIN;
         return initOnce!(_MIN)(LocalDateTime.of(LocalDate.MIN, LocalTime.MIN));
-    }    
+    }
+
     /**
      * The maximum supported {@code LocalDateTime}, '+999999999-12-31T23:59:59.999999999'.
      * This is the local date-time just before midnight at the end of the maximum date.
@@ -116,11 +117,6 @@ public final class LocalDateTime
         __gshared LocalDateTime _MAX;
         return initOnce!(_MAX)(LocalDateTime.of(LocalDate.MAX, LocalTime.MAX));
     }    
-
-    /**
-     * Serialization version.
-     */
-    // private enum long serialVersionUID = 6207766400415563566L;
 
     /**
      * The date part.
@@ -2111,6 +2107,12 @@ public final class LocalDateTime
     }
 
     long toEpochMilli() {
-        return this.toInstant(ZoneOffset.UTC).toEpochMilli();
+        if(_defaultZoneOffset is null) {
+            Instant now = Clock.systemDefaultZone().instant();  // called once
+            _defaultZoneOffset = Clock.systemDefaultZone().getZone().getRules().getOffset(now);
+        }
+        return this.toInstant(_defaultZoneOffset).toEpochMilli();
     }
+
+    private ZoneOffset _defaultZoneOffset;
 }

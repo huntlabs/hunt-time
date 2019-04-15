@@ -57,17 +57,13 @@ import std.string;
 final class ZoneRegion : ZoneId , Serializable {
 
     /**
-     * Serialization version.
-     */
-    // private enum  long serialVersionUID = 8386373296231747096L;
-    /**
      * The time-zone ID, not null.
      */
     private  string id;
     /**
      * The time-zone rules, null if zone ID was loaded leniently.
      */
-    private  /*transient*/ ZoneRules rules;
+    private  ZoneRules rules;
 
     /**
      * Checks that the given string is a legal ZondId name.

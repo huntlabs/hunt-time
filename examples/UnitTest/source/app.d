@@ -1,6 +1,7 @@
 import std.stdio;
-import hunt.logging;
+import hunt.logging.ConsoleLogger;
 import hunt.util.UnitTest;
+import hunt.util.DateTime;
 
 import std.string;
 import core.thread;
@@ -12,6 +13,7 @@ import test.TestLocalDate;
 import test.TestMonthDay;
 import test.TestTimeZone;
 import test.TestInstant;
+
 
 void main()
 {
@@ -25,5 +27,23 @@ void main()
 	// TestTimeZone.test();
 	// TestInstant.test();
 
-	testUnits!DayOfWeekTest();
+	// testUnits!DayOfWeekTest();
+	testStdTime();
+}
+
+void testStdTime() {
+	import core.time;
+	import std.datetime;
+	long t = Clock.currStdTime;
+	trace("std time: ", t);
+	SysTime st = SysTime(t);
+	trace("local time: ", st.toString());
+	trace("unix timestamp(seconds): ", st.toUnixTime());
+	trace("Unix timestamp(milliseconds): ", DateTimeHelper.currentTimeMillis());
+
+	// trace(SysTime(63690574746246*10000).toString());
+
+	import core.stdc.time;
+	immutable unixTimeC = core.stdc.time.time(null);
+	trace("unix time from system: ", unixTimeC);
 }

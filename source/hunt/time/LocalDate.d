@@ -135,10 +135,6 @@ public  class LocalDate
     }
 
     /**
-     * Serialization version.
-     */
-    // private enum long serialVersionUID = 2942565459149668126L;
-    /**
      * The number of days _in a 400 year cycle.
      */
     private enum int DAYS_PER_CYCLE = 146097;

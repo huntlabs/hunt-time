@@ -21,14 +21,13 @@ import hunt.time.Duration;
 import hunt.time.Instant;
 import hunt.time.ZoneOffset;
 import hunt.time.util.Common;
+import hunt.util.DateTime;
 
 import core.time : convert;
 import std.conv;
 import std.math;
 
-
-// import hunt.util.TimeZone;
-// import jdk.internal.misc.VM;
+import std.concurrency : initOnce;
 
 /**
  * A clock providing access to the current _instant, date and time using a time-zone.
@@ -140,7 +139,8 @@ public abstract class Clock {
      * @see ZoneId#systemDefault()
      */
     public static Clock systemDefaultZone() {
-        return new SystemClock(ZoneRegion.systemDefault());
+        // return new SystemClock(ZoneRegion.systemDefault());
+        return SystemClock.DEFAULT();
     }
 
     /**
@@ -438,19 +438,25 @@ public abstract class Clock {
      * {@link System#currentTimeMillis()}.
      */
     static final class SystemClock : Clock { // , Serializable 
-         enum long serialVersionUID = 6740630888130243051L;
-        //  __gshared long OFFSET_SEED ; // initial offest
-        // __gshared SystemClock UTC;
 
-        // shared static this()
-        // {
-            // OFFSET_SEED =
-            //     System.currentTimeMillis()/1000 /* - 1024 */; // initial offest
-            mixin(MakeGlobalVar!(long)("OFFSET_SEED",`System.currentTimeMillis()/1000`));
-            // UTC = new SystemClock(ZoneOffset.UTC);
-            mixin(MakeGlobalVar!(SystemClock)("UTC",`new SystemClock(ZoneOffset.UTC)`));
+        static long OFFSET_SEED() {
+            __gshared long _o;
+            // return initOnce!(_o)(DateTimeHelper.currentTimeMillis()/1000);
+            // FIXME: Needing refactor or cleanup -@zhangxueping at 4/15/2019, 1:15:39 PM
+            // 
+            return initOnce!(_o)(DateTimeHelper.currentTimeMillis()/1000 - 1024);
+        }
+        
+        static SystemClock UTC() {
+            __gshared SystemClock _UTC;
+            return initOnce!(_UTC)(new SystemClock(ZoneOffset.UTC));
+        }
+        
+        static SystemClock DEFAULT() {
+            __gshared SystemClock _DEFAULT;
+            return initOnce!(_DEFAULT)(new SystemClock(ZoneRegion.systemDefault()));
+        }
 
-        // }
 
         private  ZoneId zone;
         // We don't actually need a volatile here.
@@ -461,7 +467,7 @@ public abstract class Clock {
         // _offset, the worst that can happen is that we will get a -1 value
         // from getNanoTimeAdjustment, forcing us to update the _offset
         // once again.
-        private /*transient*/ long _offset;
+        private long _offset;
 
         this(ZoneId zone) {
             this.zone = zone;
@@ -560,7 +566,6 @@ public abstract class Clock {
      * This is typically used for testing.
      */
     static final class FixedClock : Clock  { //, Serializable
-        private enum long serialVersionUID = 7430389292664866958L;
         private  Instant _instant;
         private  ZoneId zone;
 
