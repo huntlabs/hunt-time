@@ -47,10 +47,10 @@ import std.concurrency : initOnce;
  * that requires the current _instant. A dependency injection framework is one
  * way to achieve this:
  * !(pre)
- *  public class MyBean {
+ *  class MyBean {
  *    private Clock clock;  // dependency inject
  *    ...
- *    public void process(LocalDate eventDate) {
+ *    void process(LocalDate eventDate) {
  *      if (eventDate.isBefore(LocalDate.now(clock)) {
  *        ...
  *      }
@@ -95,7 +95,7 @@ import std.concurrency : initOnce;
  *
  * @since 1.8
  */
-public abstract class Clock {
+abstract class Clock {
 
     /**
      * Obtains a clock that returns the current _instant using the best available
@@ -115,7 +115,7 @@ public abstract class Clock {
      *
      * @return a clock that uses the best available system clock _in the UTC zone, not null
      */
-    public static Clock systemUTC() {
+    static Clock systemUTC() {
         return SystemClock.UTC;
     }
 
@@ -138,7 +138,7 @@ public abstract class Clock {
      * @return a clock that uses the best available system clock _in the default zone, not null
      * @see ZoneId#systemDefault()
      */
-    public static Clock systemDefaultZone() {
+    static Clock systemDefaultZone() {
         // return new SystemClock(ZoneRegion.systemDefault());
         return SystemClock.DEFAULT();
     }
@@ -158,7 +158,7 @@ public abstract class Clock {
      * @param zone  the time-zone to use to convert the _instant to date-time, not null
      * @return a clock that uses the best available system clock _in the specified zone, not null
      */
-    public static Clock system(ZoneId zone) {
+    static Clock system(ZoneId zone) {
         assert(zone, "zone");
         if (zone == ZoneOffset.UTC) {
             return SystemClock.UTC;
@@ -187,7 +187,7 @@ public abstract class Clock {
      * @return a clock that ticks _in whole milliseconds using the specified zone, not null
      * @since 9
      */
-    public static Clock tickMillis(ZoneId zone) {
+    static Clock tickMillis(ZoneId zone) {
         return new TickClock(system(zone), TimeConstant.NANOS_PER_MILLI);
     }
 
@@ -211,7 +211,7 @@ public abstract class Clock {
      * @param zone  the time-zone to use to convert the _instant to date-time, not null
      * @return a clock that ticks _in whole seconds using the specified zone, not null
      */
-    public static Clock tickSeconds(ZoneId zone) {
+    static Clock tickSeconds(ZoneId zone) {
         return new TickClock(system(zone), TimeConstant.NANOS_PER_SECOND);
     }
 
@@ -234,7 +234,7 @@ public abstract class Clock {
      * @param zone  the time-zone to use to convert the _instant to date-time, not null
      * @return a clock that ticks _in whole minutes using the specified zone, not null
      */
-    public static Clock tickMinutes(ZoneId zone) {
+    static Clock tickMinutes(ZoneId zone) {
         return new TickClock(system(zone), TimeConstant.NANOS_PER_MINUTE);
     }
 
@@ -269,7 +269,7 @@ public abstract class Clock {
      *  divisible into one second
      * @throws ArithmeticException if the duration is too large to be represented as nanos
      */
-    public static Clock tick(Clock baseClock, Duration tickDuration) {
+    static Clock tick(Clock baseClock, Duration tickDuration) {
         assert(baseClock, "baseClock");
         assert(tickDuration, "tickDuration");
         if (tickDuration.isNegative()) {
@@ -304,7 +304,7 @@ public abstract class Clock {
      * @param zone  the time-zone to use to convert the _instant to date-time, not null
      * @return a clock that always returns the same _instant, not null
      */
-    public static Clock fixed(Instant fixedInstant, ZoneId zone) {
+    static Clock fixed(Instant fixedInstant, ZoneId zone) {
         assert(fixedInstant, "fixedInstant");
         assert(zone, "zone");
         return new FixedClock(fixedInstant, zone);
@@ -330,7 +330,7 @@ public abstract class Clock {
      * @param offsetDuration  the duration to add, not null
      * @return a clock based on the base clock with the duration added, not null
      */
-    public static Clock _offset(Clock baseClock, Duration offsetDuration) {
+    static Clock _offset(Clock baseClock, Duration offsetDuration) {
         assert(baseClock, "baseClock");
         assert(offsetDuration, "offsetDuration");
         if (offsetDuration.opEquals(Duration.ZERO)) {
@@ -355,7 +355,7 @@ public abstract class Clock {
      *
      * @return the time-zone being used to interpret instants, not null
      */
-    public abstract ZoneId getZone();
+    abstract ZoneId getZone();
 
     /**
      * Returns a copy of this clock with a different time-zone.
@@ -367,7 +367,7 @@ public abstract class Clock {
      * @param zone  the time-zone to change to, not null
      * @return a clock based on this clock with the specified time-zone, not null
      */
-    public abstract Clock withZone(ZoneId zone);
+    abstract Clock withZone(ZoneId zone);
 
     //-------------------------------------------------------------------------
     /**
@@ -387,7 +387,7 @@ public abstract class Clock {
      *  the Java epoch of 1970-01-01T00:00Z (UTC), not null
      * @throws DateTimeException if the _instant cannot be obtained, not thrown by most implementations
      */
-    public long millis() {
+    long millis() {
         return instant().toEpochMilli();
     }
 
@@ -400,7 +400,7 @@ public abstract class Clock {
      * @return the current _instant from this clock, not null
      * @throws DateTimeException if the _instant cannot be obtained, not thrown by most implementations
      */
-    public abstract Instant instant();
+    abstract Instant instant();
 
     //-----------------------------------------------------------------------
     /**
@@ -414,7 +414,7 @@ public abstract class Clock {
      * @return true if this is equal to the other clock
      */
     override
-    public bool opEquals(Object obj) {
+    bool opEquals(Object obj) {
         return super.opEquals(obj);
     }
 
@@ -428,7 +428,7 @@ public abstract class Clock {
      * @return a suitable hash code
      */
     override
-    public  size_t toHash() @trusted nothrow {
+     size_t toHash() @trusted nothrow {
         return super.toHash();
     }
 
@@ -474,18 +474,18 @@ public abstract class Clock {
             this._offset = OFFSET_SEED;
         }
         override
-        public ZoneId getZone() {
+        ZoneId getZone() {
             return zone;
         }
         override
-        public Clock withZone(ZoneId zone) {
+        Clock withZone(ZoneId zone) {
             if (zone.opEquals(this.zone)) {  // intentional NPE
                 return this;
             }
             return new SystemClock(zone);
         }
         override
-        public long millis() {
+        long millis() {
             // System.currentTimeMillis() and VM.getNanoTimeAdjustment(_offset)
             // use the same time source - System.currentTimeMillis() simply
             // limits the resolution to milliseconds.
@@ -495,7 +495,7 @@ public abstract class Clock {
             return System.currentTimeMillis();
         }
         override
-        public Instant instant() {
+        Instant instant() {
             // Take a local copy of _offset. _offset can be updated concurrently
             // by other threads (even if we haven't made it volatile) so we will
             // work with a local copy.
@@ -538,18 +538,18 @@ public abstract class Clock {
             return Instant.ofEpochSecond(localOffset, adjustment);
         }
         override
-        public bool opEquals(Object obj) {
+        bool opEquals(Object obj) {
             if (cast(SystemClock)(obj) !is null) {
                 return zone.opEquals((cast(SystemClock) obj).zone);
             }
             return false;
         }
         override
-        public size_t toHash() @trusted nothrow {
+        size_t toHash() @trusted nothrow {
             return zone.toHash() + 1;
         }
         override
-        public string toString() {
+        string toString() {
             return "SystemClock[" ~ zone.to!string ~ "]";
         }
         ///@gxc
@@ -574,26 +574,26 @@ public abstract class Clock {
             this.zone = zone;
         }
         override
-        public ZoneId getZone() {
+        ZoneId getZone() {
             return zone;
         }
         override
-        public Clock withZone(ZoneId zone) {
+        Clock withZone(ZoneId zone) {
             if (zone.opEquals(this.zone)) {  // intentional NPE
                 return this;
             }
             return new FixedClock(_instant, zone);
         }
         override
-        public long millis() {
+        long millis() {
             return _instant.toEpochMilli();
         }
         override
-        public Instant instant() {
+        Instant instant() {
             return _instant;
         }
         override
-        public bool opEquals(Object obj) {
+        bool opEquals(Object obj) {
             if (cast(FixedClock)(obj) !is null) {
                 FixedClock other = cast(FixedClock) obj;
                 return _instant.opEquals(other._instant) && zone.opEquals(other.zone);
@@ -601,11 +601,11 @@ public abstract class Clock {
             return false;
         }
         override
-        public size_t toHash() @trusted nothrow {
+        size_t toHash() @trusted nothrow {
             return _instant.toHash() ^ zone.toHash();
         }
         override
-        public string toString() {
+        string toString() {
             return "FixedClock[" ~ _instant.toString ~ "," ~ zone.toString ~ "]";
         }
     }
@@ -624,26 +624,26 @@ public abstract class Clock {
             this._offset = _offset;
         }
         override
-        public ZoneId getZone() {
+        ZoneId getZone() {
             return baseClock.getZone();
         }
         override
-        public Clock withZone(ZoneId zone) {
+        Clock withZone(ZoneId zone) {
             if (zone.opEquals(baseClock.getZone())) {  // intentional NPE
                 return this;
             }
             return new OffsetClock(baseClock.withZone(zone), _offset);
         }
         override
-        public long millis() {
+        long millis() {
             return MathHelper.addExact(baseClock.millis(), _offset.toMillis());
         }
         override
-        public Instant instant() {
+        Instant instant() {
             return baseClock.instant().plus(_offset);
         }
         override
-        public bool opEquals(Object obj) {
+        bool opEquals(Object obj) {
             if (cast(OffsetClock)(obj) !is null) {
                 OffsetClock other = cast(OffsetClock) obj;
                 return baseClock.opEquals(other.baseClock) && _offset.opEquals(other._offset);
@@ -651,11 +651,11 @@ public abstract class Clock {
             return false;
         }
         override
-        public size_t toHash() @trusted nothrow {
+        size_t toHash() @trusted nothrow {
             return baseClock.toHash() ^ _offset.toHash();
         }
         override
-        public string toString() {
+        string toString() {
             return "OffsetClock[" ~ baseClock.toString ~ "," ~ _offset.toString ~ "]";
         }
     }
@@ -674,23 +674,23 @@ public abstract class Clock {
             this.tickNanos = tickNanos;
         }
         override
-        public ZoneId getZone() {
+        ZoneId getZone() {
             return baseClock.getZone();
         }
         override
-        public Clock withZone(ZoneId zone) {
+        Clock withZone(ZoneId zone) {
             if (zone.opEquals(baseClock.getZone())) {  // intentional NPE
                 return this;
             }
             return new TickClock(baseClock.withZone(zone), tickNanos);
         }
         override
-        public long millis() {
+        long millis() {
             long millis = baseClock.millis();
             return millis - MathHelper.floorMod(millis, (tickNanos / 1000_000L));
         }
         override
-        public Instant instant() {
+        Instant instant() {
             if ((tickNanos % 1000_000) == 0) {
                 long millis = baseClock.millis();
                 return Instant.ofEpochMilli(millis - MathHelper.floorMod(millis , (tickNanos / 1000_000L)));
@@ -701,7 +701,7 @@ public abstract class Clock {
             return _instant.minusNanos(adjust);
         }
         override
-        public bool opEquals(Object obj) {
+        bool opEquals(Object obj) {
             if (cast(TickClock)(obj) !is null) {
                 TickClock other = cast(TickClock) obj;
                 return baseClock.opEquals(other.baseClock) && tickNanos == other.tickNanos;
@@ -709,11 +709,11 @@ public abstract class Clock {
             return false;
         }
         override
-        public size_t toHash() @trusted nothrow {
+        size_t toHash() @trusted nothrow {
             return baseClock.toHash() ^ (cast(int) (tickNanos ^ (tickNanos >>> 32)));
         }
         override
-        public string toString() {
+        string toString() {
             return "TickClock[" ~ baseClock.toString ~ "," ~ Duration.ofNanos(tickNanos).toString ~ "]";
         }
     }

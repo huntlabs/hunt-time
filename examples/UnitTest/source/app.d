@@ -32,9 +32,14 @@ void main()
 }
 
 void testStdTime() {
+	import hunt.time.LocalDateTime;
+	import hunt.time.ZoneOffset;
+	import hunt.time.Instant;
+
 	import core.time;
 	import std.datetime;
 	long t = Clock.currStdTime;
+	LocalDateTime ldt;
 	trace("std time: ", t);
 	SysTime st = SysTime(t);
 	trace("local time: ", st.toString());
@@ -46,4 +51,18 @@ void testStdTime() {
 	import core.stdc.time;
 	immutable unixTimeC = core.stdc.time.time(null);
 	trace("unix time from system: ", unixTimeC);
+
+
+	ldt = LocalDateTime.now();
+	tracef("%d", ldt.toEpochMilli());
+	tracef("%d", ldt.atZone(ZoneOffset.of("+8"))
+            .toInstant()
+            .toEpochMilli());
+	trace("=======================");
+	long d = 1555315608921L;
+	ldt = LocalDateTime.ofEpochMilli(d);
+	tracef("%d", ldt.toEpochMilli());
+	assert(ldt.toEpochMilli() == d);
+	Instant inst = ldt.toInstant(ZoneOffset.UTC);
+	trace(inst.getNano());
 }
