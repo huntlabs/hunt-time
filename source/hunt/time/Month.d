@@ -30,9 +30,12 @@ import hunt.time.temporal.ValueRange;
 import hunt.time.util.Locale;
 import hunt.time.Exceptions;
 import hunt.time.LocalDate;
-// import hunt.lang;
-import std.conv;
 import hunt.time.util.Common;
+
+import hunt.Enum;
+
+import std.conv;
+import std.concurrency : initOnce;
 
 /**
  * A month-of-year, such as 'July'.
@@ -58,263 +61,197 @@ import hunt.time.util.Common;
  *
  * @since 1.8
  */
-public class Month : TemporalAccessor, TemporalAdjuster
-{
+class Month : AbstractEnum!Month, TemporalAccessor, TemporalAdjuster {
 
     /**
      * The singleton instance for the month of January with 31 days.
      * This has the numeric value of {@code 1}.
      */
-    //static Month JANUARY;
+    static Month JANUARY() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(0, "JANUARY"));
+    }
+
     /**
      * The singleton instance for the month of February with 28 days, or 29 _in a leap year.
      * This has the numeric value of {@code 2}.
      */
-    //static Month FEBRUARY;
+    static Month FEBRUARY() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(1, "FEBRUARY"));
+    }
+
     /**
      * The singleton instance for the month of March with 31 days.
      * This has the numeric value of {@code 3}.
      */
-    //static Month MARCH;
+    static Month MARCH() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(2, "MARCH"));
+    }
+    
     /**
      * The singleton instance for the month of April with 30 days.
      * This has the numeric value of {@code 4}.
      */
-    //static Month APRIL;
+    static Month APRIL() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(3, "APRIL"));
+    }
+    
     /**
      * The singleton instance for the month of May with 31 days.
      * This has the numeric value of {@code 5}.
      */
-    //static Month MAY;
+    static Month MAY() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(5, "MAY"));
+    }
+    
     /**
      * The singleton instance for the month of June with 30 days.
      * This has the numeric value of {@code 6}.
      */
-    //static Month JUNE;
+    static Month JUNE() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(5, "JUNE"));
+    }
+    
     /**
      * The singleton instance for the month of July with 31 days.
      * This has the numeric value of {@code 7}.
      */
-    //static Month JULY;
+    static Month JULY() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(6, "JULY"));
+    }
+    
     /**
      * The singleton instance for the month of August with 31 days.
      * This has the numeric value of {@code 8}.
      */
-    //static Month AUGUST;
+    static Month AUGUST() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(7, "AUGUST"));
+    }
+    
     /**
      * The singleton instance for the month of September with 30 days.
      * This has the numeric value of {@code 9}.
      */
-    //static Month SEPTEMBER;
+    static Month SEPTEMBER() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(8, "SEPTEMBER"));
+    }
+    
     /**
      * The singleton instance for the month of October with 31 days.
      * This has the numeric value of {@code 10}.
      */
-    //static Month OCTOBER;
+    static Month OCTOBER() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(9, "OCTOBER"));
+    }
+    
     /**
      * The singleton instance for the month of November with 30 days.
      * This has the numeric value of {@code 11}.
      */
-    //static Month NOVEMBER;
+    static Month NOVEMBER() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(10, "NOVEMBER"));
+    }
+    
     /**
      * The singleton instance for the month of December with 31 days.
      * This has the numeric value of {@code 12}.
      */
-    //static Month DECEMBER;
+    static Month DECEMBER() {
+        __gshared Month m;
+        return initOnce!(m)(new Month(11, "DECEMBER"));
+    }
+
+
+    this(int ordinal, string name) {
+        super(name, ordinal);
+    }
+
+    alias ENUMS = values;
+
     /**
      * Private cache of all the constants.
      */
-    static Month[] _ENUMS;
+    static Month[] values() {
+        __gshared Month[] _e;
+        return initOnce!(_e)({ 
+            Month[] _ENUMS;
+            if(_ENUMS.length == 0) {
+            /**
+            * The singleton instance for the month of January with 31 days.
+            * This has the numeric value of {@code 1}.
+            */
+                _ENUMS ~= JANUARY;
+            /**
+            * The singleton instance for the month of February with 28 days, or 29 _in a leap year.
+            * This has the numeric value of {@code 2}.
+            */
+                _ENUMS ~= FEBRUARY;
+            /**
+            * The singleton instance for the month of March with 31 days.
+            * This has the numeric value of {@code 3}.
+            */
+                _ENUMS ~= MARCH;
+            /**
+            * The singleton instance for the month of April with 30 days.
+            * This has the numeric value of {@code 4}.
+            */
+                _ENUMS ~= APRIL;
+            /**
+            * The singleton instance for the month of May with 31 days.
+            * This has the numeric value of {@code 5}.
+            */
+                _ENUMS ~= MAY;
+            /**
+            * The singleton instance for the month of June with 30 days.
+            * This has the numeric value of {@code 6}.
+            */
+                _ENUMS ~= JUNE;
+            /**
+            * The singleton instance for the month of July with 31 days.
+            * This has the numeric value of {@code 7}.
+            */
+                _ENUMS ~= JULY;
+            /**
+            * The singleton instance for the month of August with 31 days.
+            * This has the numeric value of {@code 8}.
+            */
+                _ENUMS ~= AUGUST;
+            /**
+            * The singleton instance for the month of September with 30 days.
+            * This has the numeric value of {@code 9}.
+            */
+                _ENUMS ~= SEPTEMBER;
+            /**
+            * The singleton instance for the month of October with 31 days.
+            * This has the numeric value of {@code 10}.
+            */
+                _ENUMS ~= OCTOBER;
+            /**
+            * The singleton instance for the month of November with 30 days.
+            * This has the numeric value of {@code 11}.
+            */
+                _ENUMS ~= NOVEMBER;
 
-    private int _ordinal = 0;
-    private string _name;
-
-    public string name()
-    {
-        return _name;
+            /**
+            * The singleton instance for the month of December with 31 days.
+            * This has the numeric value of {@code 12}.
+            */
+                _ENUMS ~= DECEMBER;
+            }
+            return _ENUMS;
+        }());
     }
 
-    public int ordinal()
-    {
-        return _ordinal;
-    }
-
-    this(int ord, string name)
-    {
-        _ordinal = ord;
-        _name = name;
-    }
-
-    public static ref Month[] ENUMS()
-    {
-        if(_ENUMS.length == 0)
-        {
-             /**
-        * The singleton instance for the month of January with 31 days.
-        * This has the numeric value of {@code 1}.
-        */
-            _ENUMS ~= JANUARY;
-            /**
-        * The singleton instance for the month of February with 28 days, or 29 _in a leap year.
-        * This has the numeric value of {@code 2}.
-        */
-            _ENUMS ~= FEBRUARY;
-            /**
-        * The singleton instance for the month of March with 31 days.
-        * This has the numeric value of {@code 3}.
-        */
-            _ENUMS ~= MARCH;
-            /**
-        * The singleton instance for the month of April with 30 days.
-        * This has the numeric value of {@code 4}.
-        */
-            _ENUMS ~= APRIL;
-            /**
-        * The singleton instance for the month of May with 31 days.
-        * This has the numeric value of {@code 5}.
-        */
-            MAY = new Month(4, "MAY");
-            _ENUMS ~= MAY;
-            /**
-        * The singleton instance for the month of June with 30 days.
-        * This has the numeric value of {@code 6}.
-        */
-            _ENUMS ~= JUNE;
-            /**
-        * The singleton instance for the month of July with 31 days.
-        * This has the numeric value of {@code 7}.
-        */
-            _ENUMS ~= JULY;
-            /**
-        * The singleton instance for the month of August with 31 days.
-        * This has the numeric value of {@code 8}.
-        */
-            _ENUMS ~= AUGUST;
-            /**
-        * The singleton instance for the month of September with 30 days.
-        * This has the numeric value of {@code 9}.
-        */
-            _ENUMS ~= SEPTEMBER;
-            /**
-        * The singleton instance for the month of October with 31 days.
-        * This has the numeric value of {@code 10}.
-        */
-            _ENUMS ~= OCTOBER;
-            /**
-        * The singleton instance for the month of November with 30 days.
-        * This has the numeric value of {@code 11}.
-        */
-            _ENUMS ~= NOVEMBER;
-
-            /**
-        * The singleton instance for the month of December with 31 days.
-        * This has the numeric value of {@code 12}.
-        */
-            _ENUMS ~= DECEMBER;
-        }
-        return _ENUMS;
-    }
-
-    // shared static this()
-    // {
-        /**
-     * The singleton instance for the month of January with 31 days.
-     * This has the numeric value of {@code 1}.
-     */
-        // JANUARY = new Month(0, "JANUARY");
-        mixin(MakeGlobalVar!(Month)("JANUARY",`new Month(0, "JANUARY")`));
-        // ENUMS ~= JANUARY;
-        /**
-     * The singleton instance for the month of February with 28 days, or 29 _in a leap year.
-     * This has the numeric value of {@code 2}.
-     */
-        // FEBRUARY = new Month(1, "FEBRUARY");
-        mixin(MakeGlobalVar!(Month)("FEBRUARY",`new Month(1, "FEBRUARY")`));
-
-        // ENUMS ~= FEBRUARY;
-        /**
-     * The singleton instance for the month of March with 31 days.
-     * This has the numeric value of {@code 3}.
-     */
-        // MARCH = new Month(2, "MARCH");
-        mixin(MakeGlobalVar!(Month)("MARCH",`new Month(2, "MARCH")`));
-
-        // ENUMS ~= MARCH;
-        /**
-     * The singleton instance for the month of April with 30 days.
-     * This has the numeric value of {@code 4}.
-     */
-        // APRIL = new Month(3, "APRIL");
-        mixin(MakeGlobalVar!(Month)("APRIL",`new Month(3, "APRIL")`));
-
-        // ENUMS ~= APRIL;
-        /**
-     * The singleton instance for the month of May with 31 days.
-     * This has the numeric value of {@code 5}.
-     */
-        // MAY = new Month(4, "MAY");
-        mixin(MakeGlobalVar!(Month)("MAY",`new Month(4, "MAY")`));
-
-        // ENUMS ~= MAY;
-        /**
-     * The singleton instance for the month of June with 30 days.
-     * This has the numeric value of {@code 6}.
-     */
-        // JUNE = new Month(5, "JUNE");
-        mixin(MakeGlobalVar!(Month)("JUNE",`new Month(5, "JUNE")`));
-
-        // ENUMS ~= JUNE;
-        /**
-     * The singleton instance for the month of July with 31 days.
-     * This has the numeric value of {@code 7}.
-     */
-        // JULY = new Month(6, "JULY");
-        mixin(MakeGlobalVar!(Month)("JULY",`new Month(6, "JULY")`));
-
-        // ENUMS ~= JULY;
-        /**
-     * The singleton instance for the month of August with 31 days.
-     * This has the numeric value of {@code 8}.
-     */
-        // AUGUST = new Month(7, "AUGUST");
-        mixin(MakeGlobalVar!(Month)("AUGUST",` new Month(7, "AUGUST")`));
-
-        // ENUMS ~= AUGUST;
-        /**
-     * The singleton instance for the month of September with 30 days.
-     * This has the numeric value of {@code 9}.
-     */
-        // SEPTEMBER = new Month(8, "SEPTEMBER");
-        mixin(MakeGlobalVar!(Month)("SEPTEMBER",` new Month(8, "SEPTEMBER")`));
-
-        // ENUMS ~= SEPTEMBER;
-        /**
-     * The singleton instance for the month of October with 31 days.
-     * This has the numeric value of {@code 10}.
-     */
-        // OCTOBER = new Month(9, "OCTOBER");
-        mixin(MakeGlobalVar!(Month)("OCTOBER",` new Month(9, "OCTOBER")`));
-
-        // ENUMS ~= OCTOBER;
-        /**
-     * The singleton instance for the month of November with 30 days.
-     * This has the numeric value of {@code 11}.
-     */
-        // NOVEMBER = new Month(10, "NOVEMBER");
-        mixin(MakeGlobalVar!(Month)("NOVEMBER",` new Month(10, "NOVEMBER")`));
-
-        // ENUMS ~= NOVEMBER;
-
-        /**
-     * The singleton instance for the month of December with 31 days.
-     * This has the numeric value of {@code 12}.
-     */
-        // DECEMBER = new Month(11, "DECEMBER");
-        mixin(MakeGlobalVar!(Month)("DECEMBER",` new Month(11, "DECEMBER")`));
-
-
-        // ENUMS ~= DECEMBER;
-    // }
 
     //-----------------------------------------------------------------------
     /**
@@ -328,7 +265,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @return the month-of-year, not null
      * @throws DateTimeException if the month-of-year is invalid
      */
-    public static Month of(int month)
+    static Month of(int month)
     {
         if (month < 1 || month > 12)
         {
@@ -356,7 +293,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @return the month-of-year, not null
      * @throws DateTimeException if unable to convert to a {@code Month}
      */
-    public static Month from(TemporalAccessor temporal)
+    static Month from(TemporalAccessor temporal)
     {
         if (cast(Month)(temporal) !is null)
         {
@@ -386,7 +323,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      *
      * @return the month-of-year, from 1 (January) to 12 (December)
      */
-    public int getValue()
+    int getValue()
     {
         return ordinal() + 1;
     }
@@ -405,7 +342,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @param locale  the locale to use, not null
      * @return the text value of the month-of-year, not null
      */
-    // public string getDisplayName(TextStyle style, Locale locale)
+    // string getDisplayName(TextStyle style, Locale locale)
     // {
     //     return new DateTimeFormatterBuilder().appendText(ChronoField.MONTH_OF_YEAR,
     //             style).toFormatter(locale).format(this);
@@ -431,7 +368,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @param field  the field to check, null returns false
      * @return true if the field is supported on this month-of-year, false if not
      */
-    override public bool isSupported(TemporalField field)
+    override bool isSupported(TemporalField field)
     {
         if (cast(ChronoField)(field) !is null)
         {
@@ -462,7 +399,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @throws DateTimeException if the range for the field cannot be obtained
      * @throws UnsupportedTemporalTypeException if the field is not supported
      */
-    override public ValueRange range(TemporalField field)
+    override ValueRange range(TemporalField field)
     {
         if (field == ChronoField.MONTH_OF_YEAR)
         {
@@ -509,7 +446,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      *         the range of values exceeds an {@code int}
      * @throws ArithmeticException if numeric overflow occurs
      */
-    override public int get(TemporalField field)
+    override int get(TemporalField field)
     {
         if (field == ChronoField.MONTH_OF_YEAR)
         {
@@ -557,7 +494,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @throws UnsupportedTemporalTypeException if the field is not supported
      * @throws ArithmeticException if numeric overflow occurs
      */
-    override public long getLong(TemporalField field)
+    override long getLong(TemporalField field)
     {
         if (field == ChronoField.MONTH_OF_YEAR)
         {
@@ -582,7 +519,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @param months  the months to add, positive or negative
      * @return the resulting month, not null
      */
-    public Month plus(long months)
+    Month plus(long months)
     {
         int amount = cast(int)(months % 12);
         return ENUMS[(ordinal() + (amount + 12)) % 12];
@@ -599,7 +536,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @param months  the months to subtract, positive or negative
      * @return the resulting month, not null
      */
-    public Month minus(long months)
+    Month minus(long months)
     {
         return plus(-(months % 12));
     }
@@ -617,7 +554,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @param leapYear  true if the length is required for a leap year
      * @return the length of this month _in days, from 28 to 31
      */
-    public int length(bool leapYear)
+    int length(bool leapYear)
     {
         switch (_ordinal)
         {
@@ -642,7 +579,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      *
      * @return the minimum length of this month _in days, from 28 to 31
      */
-    public int minLength()
+    int minLength()
     {
         switch (_ordinal)
         {
@@ -667,7 +604,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      *
      * @return the maximum length of this month _in days, from 29 to 31
      */
-    public int maxLength()
+    int maxLength()
     {
         switch (_ordinal)
         {
@@ -693,7 +630,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @param leapYear  true if the length is required for a leap year
      * @return the day of year corresponding to the first day of this month, from 1 to 336
      */
-    public int firstDayOfYear(bool leapYear)
+    int firstDayOfYear(bool leapYear)
     {
         int leap = leapYear ? 1 : 0;
         switch (_name)
@@ -738,7 +675,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      *
      * @return the first month of the quarter corresponding to this month, not null
      */
-    public Month firstMonthOfQuarter()
+    Month firstMonthOfQuarter()
     {
         return ENUMS[(ordinal() / 3) * 3];
     }
@@ -764,7 +701,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      */
     /*@SuppressWarnings("unchecked")*/
     // override
-    public R query(R)(TemporalQuery!(R) query)
+    R query(R)(TemporalQuery!(R) query)
     {
         if (query == TemporalQueries.chronology())
         {
@@ -822,7 +759,7 @@ public class Month : TemporalAccessor, TemporalAdjuster
      * @throws DateTimeException if unable to make the adjustment
      * @throws ArithmeticException if numeric overflow occurs
      */
-    override public Temporal adjustInto(Temporal temporal)
+    override Temporal adjustInto(Temporal temporal)
     {
         if ((Chronology.from(temporal) == IsoChronology.INSTANCE) == false)
         {

@@ -41,7 +41,6 @@ import hunt.text.StringBuilder;
 import hunt.time.Ser;
 import hunt.time.util.QueryHelper;
 import hunt.time.util.Common;
-// import hunt.concurrent.ConcurrentMap;
 
 import std.concurrency: initOnce;
 import std.conv;
@@ -87,7 +86,7 @@ import std.conv;
  *
  * @since 1.8
  */
-public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
+final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
     Comparable!(ZoneOffset) // , Serializable
 {
 
@@ -178,7 +177,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @throws DateTimeException if the offset ID is invalid
      */
     // @SuppressWarnings("fallthrough")
-    public static ZoneOffset of(string offsetId)
+    static ZoneOffset of(string offsetId)
     {
         assert(offsetId, "offsetId");
         // "Z" is always _in the cache
@@ -272,7 +271,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @return the zone-offset, not null
      * @throws DateTimeException if the offset is not _in the required range
      */
-    public static ZoneOffset ofHours(int hours)
+    static ZoneOffset ofHours(int hours)
     {
         return ofHoursMinutesSeconds(hours, 0, 0);
     }
@@ -290,7 +289,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @return the zone-offset, not null
      * @throws DateTimeException if the offset is not _in the required range
      */
-    public static ZoneOffset ofHoursMinutes(int hours, int minutes)
+    static ZoneOffset ofHoursMinutes(int hours, int minutes)
     {
         return ofHoursMinutesSeconds(hours, minutes, 0);
     }
@@ -308,7 +307,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @return the zone-offset, not null
      * @throws DateTimeException if the offset is not _in the required range
      */
-    public static ZoneOffset ofHoursMinutesSeconds(int hours, int minutes, int seconds)
+    static ZoneOffset ofHoursMinutesSeconds(int hours, int minutes, int seconds)
     {
         validate(hours, minutes, seconds);
         int _totalSeconds = totalSeconds(hours, minutes, seconds);
@@ -336,7 +335,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @return the zone-offset, not null
      * @throws DateTimeException if unable to convert to an {@code ZoneOffset}
      */
-    public static ZoneOffset from(TemporalAccessor temporal)
+    static ZoneOffset from(TemporalAccessor temporal)
     {
         assert(temporal, "temporal");
         ZoneOffset offset = QueryHelper.query!ZoneOffset(temporal, TemporalQueries.offset());
@@ -426,7 +425,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @return the ZoneOffset, not null
      * @throws DateTimeException if the offset is not _in the required range
      */
-    public static ZoneOffset ofTotalSeconds(int _totalSeconds)
+    static ZoneOffset ofTotalSeconds(int _totalSeconds)
     {
         if (_totalSeconds < -MAX_SECONDS || _totalSeconds > MAX_SECONDS)
         {
@@ -498,7 +497,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      *
      * @return the total zone offset amount _in seconds
      */
-    public int getTotalSeconds()
+    int getTotalSeconds()
     {
         return _totalSeconds;
     }
@@ -516,7 +515,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      *
      * @return the zone offset ID, not null
      */
-    override public string getId()
+    override string getId()
     {
         return id;
     }
@@ -529,7 +528,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      *
      * @return the rules, not null
      */
-    override public ZoneRules getRules()
+    override ZoneRules getRules()
     {
         return ZoneRules.of(this);
     }
@@ -554,7 +553,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @param field  the field to check, null returns false
      * @return true if the field is supported on this offset, false if not
      */
-    override public bool isSupported(TemporalField field)
+    override bool isSupported(TemporalField field)
     {
         if (cast(ChronoField)(field) !is null)
         {
@@ -587,7 +586,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @throws UnsupportedTemporalTypeException if the field is not supported
      */
     override  // override for Javadoc
-    public ValueRange range(TemporalField field)
+    ValueRange range(TemporalField field)
     {
         return  /* TemporalAccessor. super.*/ super_range(field);
     }
@@ -631,7 +630,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @throws ArithmeticException if numeric overflow occurs
      */
     override  // override for Javadoc and performance
-    public int get(TemporalField field)
+    int get(TemporalField field)
     {
         if (field == ChronoField.OFFSET_SECONDS)
         {
@@ -666,7 +665,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @throws UnsupportedTemporalTypeException if the field is not supported
      * @throws ArithmeticException if numeric overflow occurs
      */
-    override public long getLong(TemporalField field)
+    override long getLong(TemporalField field)
     {
         if (field == ChronoField.OFFSET_SECONDS)
         {
@@ -699,7 +698,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @throws ArithmeticException if numeric overflow occurs (defined by the query)
      */
     /*@SuppressWarnings("unchecked")*/
-    /* override */ public R query(R)(TemporalQuery!(R) query)
+    /* override */ R query(R)(TemporalQuery!(R) query)
     {
         if (query == TemporalQueries.offset() || query == TemporalQueries.zone())
         {
@@ -739,7 +738,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @throws DateTimeException if unable to make the adjustment
      * @throws ArithmeticException if numeric overflow occurs
      */
-    override public Temporal adjustInto(Temporal temporal)
+    override Temporal adjustInto(Temporal temporal)
     {
         return temporal._with(ChronoField.OFFSET_SECONDS, _totalSeconds);
     }
@@ -759,13 +758,13 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @throws NullPointerException if {@code other} is null
      */
     // override
-    public int compareTo(ZoneOffset other)
+    int compareTo(ZoneOffset other)
     {
         // abs(_totalSeconds) <= MAX_SECONDS, so no overflow can happen here
         return other._totalSeconds - _totalSeconds;
     }
 
-    override public int opCmp(ZoneOffset other)
+    override int opCmp(ZoneOffset other)
     {
         // abs(_totalSeconds) <= MAX_SECONDS, so no overflow can happen here
         return other._totalSeconds - _totalSeconds;
@@ -781,7 +780,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      * @param obj  the object to check, null returns false
      * @return true if this is equal to the other offset
      */
-    override public bool opEquals(Object obj)
+    override bool opEquals(Object obj)
     {
         if (this is obj)
         {
@@ -799,7 +798,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      *
      * @return a suitable hash code
      */
-    override public size_t toHash() @trusted nothrow
+    override size_t toHash() @trusted nothrow
     {
         return _totalSeconds;
     }
@@ -810,7 +809,7 @@ public final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
      *
      * @return a string representation of this offset, not null
      */
-    override public string toString()
+    override string toString()
     {
         return id;
     }

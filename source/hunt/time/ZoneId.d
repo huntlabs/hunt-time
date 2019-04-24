@@ -183,10 +183,7 @@ public abstract class ZoneId : Serializable {
      * The map is unmodifiable.
      */
     public __gshared Map!(string, string) _SHORT_IDS;
-    /**
-     * Serialization version.
-     */
-    private enum long serialVersionUID = 8352817235686L;
+    
 
     public static ref Map!(string, string) SHORT_IDS()
     {

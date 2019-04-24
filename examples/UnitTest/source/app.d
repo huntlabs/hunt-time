@@ -35,9 +35,14 @@ void testStdTime() {
 	import hunt.time.LocalDateTime;
 	import hunt.time.ZoneOffset;
 	import hunt.time.Instant;
+	import hunt.time.Month;
+	import hunt.time.ZoneId;
+	import hunt.time.ZoneRegion;
+	import hunt.time.ZoneOffset;
+
 
 	import core.time;
-	import std.datetime;
+	import std.datetime : Clock, SysTime;
 	long t = Clock.currStdTime;
 	LocalDateTime ldt;
 	trace("std time: ", t);
@@ -65,4 +70,16 @@ void testStdTime() {
 	assert(ldt.toEpochMilli() == d);
 	Instant inst = ldt.toInstant(ZoneOffset.UTC);
 	trace(inst.getNano());
+
+	LocalDateTime specificDate = LocalDateTime.of(2014, Month.JANUARY, 1, 10, 10, 30);
+	trace(specificDate.toString());
+	trace(specificDate.toEpochMilli());
+	assert(specificDate.toInstant(ZoneOffset.of("+8")).toEpochMilli() == 1388542230000L);
+
+	ZoneId ar = ZoneRegion.systemDefault();
+	trace(ar);
+
+	ZoneOffset zid = ZoneOffset.of("+8");
+	trace(zid);
+
 }
