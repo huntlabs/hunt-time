@@ -434,9 +434,10 @@ final class ZoneOffset : ZoneId, TemporalAccessor, TemporalAdjuster,
         if (_totalSeconds % (15 * LocalTime.SECONDS_PER_MINUTE) == 0)
         {
             // Integer totalSecs = new Integer(_totalSeconds);
-            ZoneOffset result = SECONDS_CACHE.get(_totalSeconds);
-            if (result is null)
-            {
+            ZoneOffset result;
+            if (SECONDS_CACHE.containsKey(_totalSeconds)) {
+                result = SECONDS_CACHE.get(_totalSeconds);
+            } else {
                 result = new ZoneOffset(_totalSeconds);
                 SECONDS_CACHE.putIfAbsent(_totalSeconds, result);
                 result = SECONDS_CACHE.get(_totalSeconds);

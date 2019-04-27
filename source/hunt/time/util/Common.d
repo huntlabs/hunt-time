@@ -30,10 +30,10 @@ class System
         return convert!("hnsecs", "nsecs")(Clock.currStdTime() - (Date(1970, 1, 1) - Date.init).total!"hnsecs");
     }
 
-    static string getSystemTimeZone()
-    {
-        return DateTimeHelper.getSystemTimeZoneId();
-    }
+    // static string getSystemTimeZone()
+    // {
+    //     return DateTimeHelper.getSystemTimeZoneId();
+    // }
 }
 
 

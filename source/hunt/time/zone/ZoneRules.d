@@ -765,13 +765,12 @@ public final class ZoneRules // : Serializable
     private ZoneOffsetTransition[] findTransitionArray(int year)
     {
         Integer yearObj = new Integer(year); // should use Year class, but this saves a class load
-        ZoneOffsetTransition[] transArray = lastRulesCache.get(yearObj);
-        if (transArray !is null)
+        if (lastRulesCache.containsKey(yearObj))
         {
-            return transArray;
+            return lastRulesCache.get(yearObj);
         }
         ZoneOffsetTransitionRule[] ruleArray = lastRules;
-        transArray = new ZoneOffsetTransition[ruleArray.length];
+        ZoneOffsetTransition[] transArray = new ZoneOffsetTransition[ruleArray.length];
         for (int i = 0; i < ruleArray.length; i++)
         {
             transArray[i] = ruleArray[i].createTransition(year);

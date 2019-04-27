@@ -1664,7 +1664,8 @@ abstract class Calendar : Cloneable, Comparable!(Calendar) { // Serializable,
     }
 
     private static TimeZone defaultTimeZone(Locale l) {
-        string tzId = System.getSystemTimeZone();
+        import hunt.system.TimeZone;
+        string tzId = getSystemTimeZoneId();
         version(Posix) {
             return cast(TimeZone)PosixTimeZone.getTimeZone(tzId);
         } else version(Windows) {

@@ -172,8 +172,8 @@ final class ZoneRegion : ZoneId , Serializable {
      */
     public static ZoneId systemDefault() {
         // return TimeZone.getDefault().toZoneId();
-        ///@gxc
-        return ZoneRegion.of(System.getSystemTimeZone(),true);
+        import hunt.system.TimeZone;
+        return ZoneRegion.of(getSystemTimeZoneId(),true);
     }
 
     //-----------------------------------------------------------------------

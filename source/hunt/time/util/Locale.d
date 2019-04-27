@@ -11,13 +11,16 @@
 
 module hunt.time.util.Locale;
 
-import hunt.io.Common;
+import hunt.time.util.LocaleExtensions;
+
 import hunt.Exceptions;
 import hunt.Functions;
-import hunt.logging;
+import hunt.io.Common;
+import hunt.logging.ConsoleLogger;
 import hunt.collection;
-import hunt.time.util.LocaleExtensions;
+import hunt.system.Environment;
 import hunt.util.Common;
+import hunt.util.Configuration;
 // import java.text.MessageFormat;
 // import java.util.concurrent.ConcurrentHashMap;
 // import java.util.spi.LocaleNameProvider;
@@ -37,6 +40,10 @@ import hunt.util.Common;
 // import sun.util.locale.provider.LocaleResources;
 // import sun.util.locale.provider.LocaleServiceProviderPool;
 // import sun.util.locale.provider.TimeZoneNameUtility;
+
+import std.array;
+import std.concurrency : initOnce;
+import std.string;
 
 /**
  * A <code>Locale</code> object represents a specific geographical, political,
@@ -455,95 +462,150 @@ import hunt.util.Common;
  * @author Mark Davis
  * @since 1.1
  */
-final class Locale : Cloneable
+final class Locale // : Cloneable
 {
 
-    // private static final  Cache LOCALECACHE = new Cache();
+    private __gshared  Locale[size_t]  LOCALECACHE;
 
     /** Useful constant for language.
      */
-    __gshared Locale ENGLISH;
+    static Locale ENGLISH() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("en", ""));
+    }
 
     /** Useful constant for language.
      */
-    __gshared Locale FRENCH ;
+    static Locale FRENCH() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("fr", ""));
+    }
 
     /** Useful constant for language.
      */
-    __gshared Locale GERMAN ;
+    static Locale GERMAN() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("de", ""));
+    }
 
     /** Useful constant for language.
      */
-    __gshared Locale ITALIAN ;
+    static Locale ITALIAN() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("it", ""));
+    }
 
     /** Useful constant for language.
      */
-    __gshared Locale JAPANESE ;
+    static Locale JAPANESE() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("ja", ""));
+    }
 
     /** Useful constant for language.
      */
-    __gshared Locale KOREAN ;
+    static Locale KOREAN() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("ko", ""));
+    }
 
     /** Useful constant for language.
      */
-    __gshared Locale CHINESE ;
+    static Locale CHINESE() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("zh", ""));
+    }
 
     /** Useful constant for language.
      */
-    __gshared Locale SIMPLIFIED_CHINESE ;
+    static Locale SIMPLIFIED_CHINESE() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("zh", "CN"));
+    }
 
     /** Useful constant for language.
      */
-    __gshared Locale TRADITIONAL_CHINESE ;
+    static Locale TRADITIONAL_CHINESE() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("zh", "TW"));
+    }
 
     /** Useful constant for country.
      */
-    __gshared Locale FRANCE ;
+    static Locale FRANCE() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("fr", "FR"));
+    }
 
     /** Useful constant for country.
      */
-    __gshared Locale GERMANY ;
+    static Locale GERMANY() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("de", "DE"));
+    }
 
     /** Useful constant for country.
      */
-    __gshared Locale ITALY ;
+    static Locale ITALY() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("it", "IT"));
+    }
 
     /** Useful constant for country.
      */
-    __gshared Locale JAPAN ;
+    static Locale JAPAN() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("ja", "JP"));
+    }
 
     /** Useful constant for country.
      */
-    __gshared Locale KOREA ;
+    static Locale KOREA() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("ko", "KR"));
+    }
 
     /** Useful constant for country.
      */
-    __gshared Locale CHINA ;
+    
+    alias CHINA = SIMPLIFIED_CHINESE;
 
     /** Useful constant for country.
      */
-    __gshared Locale PRC ;
+    alias PRC = SIMPLIFIED_CHINESE;
 
     /** Useful constant for country.
      */
-    __gshared Locale TAIWAN ;
+    alias TAIWAN = TRADITIONAL_CHINESE;
 
 
     /** Useful constant for country.
      */
-    __gshared Locale UK ;
+    static Locale UK() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("en", "GB"));
+    }
 
     /** Useful constant for country.
      */
-    __gshared Locale US ;
+    static Locale US() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("en", "US"));
+    }
 
     /** Useful constant for country.
      */
-    __gshared Locale CANADA ;
+    static Locale CANADA() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("en", "CA"));
+    }
 
     /** Useful constant for country.
      */
-    __gshared Locale CANADA_FRENCH ;
+    static Locale CANADA_FRENCH() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("fr", "CA"));
+    }
 
     /**
      * Useful constant for the root locale.  The root locale is the locale whose
@@ -553,7 +615,10 @@ final class Locale : Cloneable
      *
      * @since 1.6
      */
-    __gshared Locale ROOT ;
+    static Locale ROOT() {
+        __gshared Locale m;
+        return initOnce!(m)(new Locale("", ""));
+    }
 
     /**
      * The key for the private use extension ('x').
@@ -573,107 +638,6 @@ final class Locale : Cloneable
      */
     enum char UNICODE_LOCALE_EXTENSION = 'u';
 
-
-    shared static this()
-    {
-        ENGLISH = createConstant("en", "");
-
-        /** Useful constant for language.
-     */
-        FRENCH = createConstant("fr", "");
-
-        /** Useful constant for language.
-     */
-        GERMAN = createConstant("de", "");
-
-        /** Useful constant for language.
-     */
-        ITALIAN = createConstant("it", "");
-
-        /** Useful constant for language.
-     */
-        JAPANESE = createConstant("ja", "");
-
-        /** Useful constant for language.
-     */
-        KOREAN = createConstant("ko", "");
-
-        /** Useful constant for language.
-     */
-        CHINESE = createConstant("zh", "");
-
-        /** Useful constant for language.
-     */
-        SIMPLIFIED_CHINESE = createConstant("zh", "CN");
-
-        /** Useful constant for language.
-     */
-        TRADITIONAL_CHINESE = createConstant("zh", "TW");
-
-        /** Useful constant for country.
-     */
-        FRANCE = createConstant("fr", "FR");
-
-        /** Useful constant for country.
-     */
-        GERMANY = createConstant("de", "DE");
-
-        /** Useful constant for country.
-     */
-        ITALY = createConstant("it", "IT");
-
-        /** Useful constant for country.
-     */
-        JAPAN = createConstant("ja", "JP");
-
-        /** Useful constant for country.
-     */
-        KOREA = createConstant("ko", "KR");
-
-        /** Useful constant for country.
-     */
-        CHINA = SIMPLIFIED_CHINESE;
-
-        /** Useful constant for country.
-     */
-        PRC = SIMPLIFIED_CHINESE;
-
-        /** Useful constant for country.
-     */
-        TAIWAN = TRADITIONAL_CHINESE;
-
-        /** Useful constant for country.
-     */
-        UK = createConstant("en", "GB");
-
-        /** Useful constant for country.
-     */
-        US = createConstant("en", "US");
-
-        /** Useful constant for country.
-     */
-        CANADA = createConstant("en", "CA");
-
-        /** Useful constant for country.
-     */
-        CANADA_FRENCH = createConstant("fr", "CA");
-
-        /**
-     * Useful constant for the root locale.  The root locale is the locale whose
-     * language, country, and variant are empty ("") strings.  This is regarded
-     * as the base locale of all locales, and is used as the language/country
-     * neutral locale for the locale sensitive operations.
-     *
-     * @since 1.6
-     */
-        ROOT = createConstant("", "");
-
-        CHINA = SIMPLIFIED_CHINESE;
-        PRC = SIMPLIFIED_CHINESE;
-        TAIWAN = TRADITIONAL_CHINESE;
-
-        defaultLocale = initDefault();
-    }
 
     /**
      * Enum for specifying the type defined in ISO 3166. This enum is used to
@@ -773,6 +737,11 @@ final class Locale : Cloneable
     private enum int DISPLAY_UEXT_KEY = 4;
     private enum int DISPLAY_UEXT_TYPE = 5;
 
+    private string language;
+    private string script;
+    private string region;
+    private string variant;
+
     /**
      * Private constructor used by getInstance method
      */
@@ -813,8 +782,10 @@ final class Locale : Cloneable
         {
             throw new NullPointerException();
         }
-        // baseLocale = BaseLocale.getInstance(convertOldISOCodes(language), "", country, variant);
-        // localeExtensions = getCompatibilityExtensions(language, "", country, variant);
+
+        this.language = convertOldISOCodes(language);        
+        this.region = country;
+        this.variant = variant;
     }
 
     /**
@@ -895,89 +866,27 @@ final class Locale : Cloneable
      * @exception NullPointerException if any argument is null.
      */
     static Locale getInstance(string language, string country, string variant) {
-        return getInstance(language, "", country, variant, null);
+        return getInstance(language, "", country, variant);
     }
 
-    static Locale getInstance(string language, string script, string country,
-                                      string variant, LocaleExtensions extensions) {
+    static Locale getInstance(string language, string script, string country, string variant) {
         if (language is null || script is null || country is null || variant is null) {
             throw new NullPointerException();
         }
 
-        // if (extensions is null) {
-        //     extensions = getCompatibilityExtensions(language, script, country, variant);
-        // }
-        tracef("language=%s, script=%s, country=%s, variant=%s", language, script, country, variant);
-        implementationMissing(false);
-        return null;
-        // BaseLocale baseloc = BaseLocale.getInstance(language, script, country, variant);
-        // return getInstance(baseloc, extensions);
+        version(HUNT_DEBUG) {
+            tracef("language=%s, script=%s, country=%s, variant=%s", 
+                language, script, country, variant);
+        }
+        size_t key = hashOf(language.toLower()) // + hashOf(script.toLower()) 
+            + hashOf(country.toLower()) + hashOf(variant.toLower());
+        Locale le = LOCALECACHE.get(key, null);
+        if(le is null)  {
+            le = new Locale(language,  country, variant);
+            LOCALECACHE[key] = le;
+        }
+        return le;
     }
-
-    // static Locale getInstance(BaseLocale baseloc, LocaleExtensions extensions) {
-    //     if (extensions is null) {
-    //         return LOCALECACHE.get(baseloc);
-    //     } else {
-    //         LocaleKey key = new LocaleKey(baseloc, extensions);
-    //         return LOCALECACHE.get(key);
-    //     }
-    // }
-
-    // private static class Cache extends LocaleObjectCache<Object, Locale> {
-    //     private Cache() {
-    //     }
-
-    //     override
-    //     protected Locale createObject(Object key) {
-    //         if (key instanceof BaseLocale) {
-    //             return new Locale((BaseLocale)key, null);
-    //         } else {
-    //             LocaleKey lk = (LocaleKey)key;
-    //             return new Locale(lk.base, lk.exts);
-    //         }
-    //     }
-    // }
-
-    // private static final class LocaleKey {
-    //     private final BaseLocale base;
-    //     private final LocaleExtensions exts;
-    //     private final int hash;
-
-    //     private LocaleKey(BaseLocale baseLocale, LocaleExtensions extensions) {
-    //         base = baseLocale;
-    //         exts = extensions;
-
-    //         // Calculate the hash value here because it's always used.
-    //         int h = base.hashCode();
-    //         if (exts !is null) {
-    //             h ^= exts.hashCode();
-    //         }
-    //         hash = h;
-    //     }
-
-    //     override
-    //     boolean equals(Object obj) {
-    //         if (this is obj) {
-    //             return true;
-    //         }
-    //         if (!(obj instanceof LocaleKey)) {
-    //             return false;
-    //         }
-    //         LocaleKey other = (LocaleKey)obj;
-    //         if (hash != other.hash || !base.equals(other.base)) {
-    //             return false;
-    //         }
-    //         if (exts is null) {
-    //             return other.exts is null;
-    //         }
-    //         return exts.equals(other.exts);
-    //     }
-
-    //     override
-    //     int hashCode() {
-    //         return hash;
-    //     }
-    // }
 
     /**
      * Gets the current value of the default locale for this instance
@@ -993,9 +902,10 @@ final class Locale : Cloneable
      */
     static Locale getDefault()
     {
+        return initOnce!(defaultLocale)(initDefault());
         // do not synchronize this method - see 4071298
-        return defaultLocale;
     }
+    private __gshared Locale defaultLocale;
 
     /**
      * Gets the current value of the default locale for the specified Category
@@ -1034,162 +944,118 @@ final class Locale : Cloneable
             }
             return defaultFormatLocale;
         } else {
-            assert(false, "Unknown Category");
+            assert(false, "Unknown locale category");
         }
-        // return getDefault();
     }
 
     private static Locale initDefault() {
-        string language = "en";
-        string region = "";
-        string script = "";
-        string country = "";
-        string variant = "";
+        ConfigBuilder props = Environment.getProperties();
+        string language = props.getProperty("user.language", "en");
+        string script = props.getProperty("user.script", "");
+        string country = props.getProperty("user.country", "");
+        string variant = props.getProperty("user.variant", "");
 
-        return getInstance(language, script, country, variant, null);
-
-      //   Properties props = GetPropertyAction.privilegedGetProperties();
-      //   language = props.getProperty("user.language", "en");
-      //   // for compatibility, check for old user.region property
-      //   region = props.getProperty("user.region");
-      //   if (region !is null) {
-      //       // region can be of form country, country_variant, or _variant
-      //       int i = region.indexOf('_');
-      //       if (i >= 0) {
-      //           country = region.substring(0, i);
-      //           variant = region.substring(i + 1);
-      //       } else {
-      //           country = region;
-      //           variant = "";
-      //       }
-      //       script = "";
-      //   } else {
-      //       script = props.getProperty("user.script", "");
-      //       country = props.getProperty("user.country", "");
-      //       variant = props.getProperty("user.variant", "");
-      //   }
-
-      //   return getInstance(language, script, country, variant,
-      //           getDefaultExtensions(props.getProperty("user.extensions", ""))
-      //               .orElse(null));
+        return getInstance(language, script, country, variant);
     }
 
     private static Locale initDefault(LocaleCategory category) {
-        // TODO: Tasks pending completion -@zxp at 12/20/2018, 8:47:02 PM
-        // 
-        implementationMissing(false);
-        return null;
-        // Properties props = GetPropertyAction.privilegedGetProperties();
+        ConfigBuilder props = Environment.getProperties();
+        Locale defaultLocale = getDefault();
 
-        // return getInstance(
-        //     props.getProperty(category.languageKey,
-        //             defaultLocale.getLanguage()),
-        //     props.getProperty(category.scriptKey,
-        //             defaultLocale.getScript()),
-        //     props.getProperty(category.countryKey,
-        //             defaultLocale.getCountry()),
-        //     props.getProperty(category.variantKey,
-        //             defaultLocale.getVariant()),
-        //     getDefaultExtensions(props.getProperty(category.extensionsKey, ""))
-        //         .orElse(defaultLocale.getLocaleExtensions()));
+        return getInstance(
+            props.getProperty(category.languageKey,
+                    defaultLocale.getLanguage()),
+            props.getProperty(category.scriptKey,
+                    defaultLocale.getScript()),
+            props.getProperty(category.countryKey,
+                    defaultLocale.getCountry()),
+            props.getProperty(category.variantKey,
+                    defaultLocale.getVariant()));
     }
 
-    // private static Optional<LocaleExtensions> getDefaultExtensions(string extensionsProp) {
-    //     LocaleExtensions exts = null;
 
-    //     try {
-    //         exts = new InternalLocaleBuilder()
-    //             .setExtensions(extensionsProp)
-    //             .getLocaleExtensions();
-    //     } catch (LocaleSyntaxException e) {
-    //         // just ignore this incorrect property
-    //     }
+    /**
+     * Sets the default locale for this instance of the Java Virtual Machine.
+     * This does not affect the host locale.
+     * <p>
+     * If there is a security manager, its <code>checkPermission</code>
+     * method is called with a <code>PropertyPermission("user.language", "write")</code>
+     * permission before the default locale is changed.
+     * <p>
+     * The Java Virtual Machine sets the default locale during startup
+     * based on the host environment. It is used by many locale-sensitive
+     * methods if no locale is explicitly specified.
+     * <p>
+     * Since changing the default locale may affect many different areas
+     * of functionality, this method should only be used if the caller
+     * is prepared to reinitialize locale-sensitive code running
+     * within the same Java Virtual Machine.
+     * <p>
+     * By setting the default locale with this method, all of the default
+     * locales for each Category are also set to the specified default locale.
+     *
+     * @throws SecurityException
+     *        if a security manager exists and its
+     *        <code>checkPermission</code> method doesn't allow the operation.
+     * @throws NullPointerException if <code>newLocale</code> is null
+     * @param newLocale the new default locale
+     * @see SecurityManager#checkPermission
+     * @see java.util.PropertyPermission
+     */
+    static void setDefault(Locale newLocale) {
+        setDefault(LocaleCategory.DISPLAY, newLocale);
+        setDefault(LocaleCategory.FORMAT, newLocale);
+        defaultLocale = newLocale;
+    }
 
-    //     return Optional.ofNullable(exts);
-    // }
+    /**
+     * Sets the default locale for the specified Category for this instance
+     * of the Java Virtual Machine. This does not affect the host locale.
+     * <p>
+     * If there is a security manager, its checkPermission method is called
+     * with a PropertyPermission("user.language", "write") permission before
+     * the default locale is changed.
+     * <p>
+     * The Java Virtual Machine sets the default locale during startup based
+     * on the host environment. It is used by many locale-sensitive methods
+     * if no locale is explicitly specified.
+     * <p>
+     * Since changing the default locale may affect many different areas of
+     * functionality, this method should only be used if the caller is
+     * prepared to reinitialize locale-sensitive code running within the
+     * same Java Virtual Machine.
+     *
+     * @param category - the specified category to set the default locale
+     * @param newLocale - the new default locale
+     * @throws SecurityException if a security manager exists and its
+     *     checkPermission method doesn't allow the operation.
+     * @throws NullPointerException if category and/or newLocale is null
+     * @see SecurityManager#checkPermission(java.security.Permission)
+     * @see PropertyPermission
+     * @see #getDefault(LocaleCategory)
+     * @since 1.7
+     */
+    static void setDefault(LocaleCategory category, Locale newLocale) {
+        implementationMissing(false);
+        // if (category is null)
+        //     throw new NullPointerException("Category cannot be NULL");
+        // if (newLocale is null)
+        //     throw new NullPointerException("Can't set default locale to NULL");
 
-    // /**
-    //  * Sets the default locale for this instance of the Java Virtual Machine.
-    //  * This does not affect the host locale.
-    //  * <p>
-    //  * If there is a security manager, its <code>checkPermission</code>
-    //  * method is called with a <code>PropertyPermission("user.language", "write")</code>
-    //  * permission before the default locale is changed.
-    //  * <p>
-    //  * The Java Virtual Machine sets the default locale during startup
-    //  * based on the host environment. It is used by many locale-sensitive
-    //  * methods if no locale is explicitly specified.
-    //  * <p>
-    //  * Since changing the default locale may affect many different areas
-    //  * of functionality, this method should only be used if the caller
-    //  * is prepared to reinitialize locale-sensitive code running
-    //  * within the same Java Virtual Machine.
-    //  * <p>
-    //  * By setting the default locale with this method, all of the default
-    //  * locales for each Category are also set to the specified default locale.
-    //  *
-    //  * @throws SecurityException
-    //  *        if a security manager exists and its
-    //  *        <code>checkPermission</code> method doesn't allow the operation.
-    //  * @throws NullPointerException if <code>newLocale</code> is null
-    //  * @param newLocale the new default locale
-    //  * @see SecurityManager#checkPermission
-    //  * @see java.util.PropertyPermission
-    //  */
-    // static synchronized void setDefault(Locale newLocale) {
-    //     setDefault(Category.DISPLAY, newLocale);
-    //     setDefault(Category.FORMAT, newLocale);
-    //     defaultLocale = newLocale;
-    // }
-
-    // /**
-    //  * Sets the default locale for the specified Category for this instance
-    //  * of the Java Virtual Machine. This does not affect the host locale.
-    //  * <p>
-    //  * If there is a security manager, its checkPermission method is called
-    //  * with a PropertyPermission("user.language", "write") permission before
-    //  * the default locale is changed.
-    //  * <p>
-    //  * The Java Virtual Machine sets the default locale during startup based
-    //  * on the host environment. It is used by many locale-sensitive methods
-    //  * if no locale is explicitly specified.
-    //  * <p>
-    //  * Since changing the default locale may affect many different areas of
-    //  * functionality, this method should only be used if the caller is
-    //  * prepared to reinitialize locale-sensitive code running within the
-    //  * same Java Virtual Machine.
-    //  *
-    //  * @param category - the specified category to set the default locale
-    //  * @param newLocale - the new default locale
-    //  * @throws SecurityException if a security manager exists and its
-    //  *     checkPermission method doesn't allow the operation.
-    //  * @throws NullPointerException if category and/or newLocale is null
-    //  * @see SecurityManager#checkPermission(java.security.Permission)
-    //  * @see PropertyPermission
-    //  * @see #getDefault(LocaleCategory)
-    //  * @since 1.7
-    //  */
-    // static synchronized void setDefault(LocaleCategory category,
-    //     Locale newLocale) {
-    //     if (category is null)
-    //         throw new NullPointerException("Category cannot be NULL");
-    //     if (newLocale is null)
-    //         throw new NullPointerException("Can't set default locale to NULL");
-
-    //     SecurityManager sm = System.getSecurityManager();
-    //     if (sm !is null) sm.checkPermission(new PropertyPermission
-    //                     ("user.language", "write"));
-    //     switch (category) {
-    //     case DISPLAY:
-    //         defaultDisplayLocale = newLocale;
-    //         break;
-    //     case FORMAT:
-    //         defaultFormatLocale = newLocale;
-    //         break;
-    //     default:
-    //         assert false: "Unknown Category";
-    //     }
-    // }
+        // SecurityManager sm = System.getSecurityManager();
+        // if (sm !is null) sm.checkPermission(new PropertyPermission
+        //                 ("user.language", "write"));
+        // switch (category) {
+        // case DISPLAY:
+        //     defaultDisplayLocale = newLocale;
+        //     break;
+        // case FORMAT:
+        //     defaultFormatLocale = newLocale;
+        //     break;
+        // default:
+        //     assert false: "Unknown Category";
+        // }
+    }
 
     // /**
     //  * Returns an array of all installed locales.
@@ -1279,75 +1145,75 @@ final class Locale : Cloneable
     //     return isoTable;
     // }
 
-    // /**
-    //  * Returns the language code of this Locale.
-    //  *
-    //  * <p><b>Note:</b> ISO 639 is not a stable standard&mdash; some languages' codes have changed.
-    //  * Locale's constructor recognizes both the new and the old codes for the languages
-    //  * whose codes have changed, but this function always returns the old code.  If you
-    //  * want to check for a specific language whose code has changed, don't do
-    //  * <pre>
-    //  * if (locale.getLanguage().equals("he")) // BAD!
-    //  *    ...
-    //  * </pre>
-    //  * Instead, do
-    //  * <pre>
-    //  * if (locale.getLanguage().equals(new Locale("he").getLanguage()))
-    //  *    ...
-    //  * </pre>
-    //  * @return The language code, or the empty string if none is defined.
-    //  * @see #getDisplayLanguage
-    //  */
-    // string getLanguage() {
-    //     return baseLocale.getLanguage();
-    // }
+    /**
+     * Returns the language code of this Locale.
+     *
+     * <p><b>Note:</b> ISO 639 is not a stable standard&mdash; some languages' codes have changed.
+     * Locale's constructor recognizes both the new and the old codes for the languages
+     * whose codes have changed, but this function always returns the old code.  If you
+     * want to check for a specific language whose code has changed, don't do
+     * <pre>
+     * if (locale.getLanguage().equals("he")) // BAD!
+     *    ...
+     * </pre>
+     * Instead, do
+     * <pre>
+     * if (locale.getLanguage().equals(new Locale("he").getLanguage()))
+     *    ...
+     * </pre>
+     * @return The language code, or the empty string if none is defined.
+     * @see #getDisplayLanguage
+     */
+    string getLanguage() {
+        return language;
+    }
 
-    // /**
-    //  * Returns the script for this locale, which should
-    //  * either be the empty string or an ISO 15924 4-letter script
-    //  * code. The first letter is uppercase and the rest are
-    //  * lowercase, for example, 'Latn', 'Cyrl'.
-    //  *
-    //  * @return The script code, or the empty string if none is defined.
-    //  * @see #getDisplayScript
-    //  * @since 1.7
-    //  */
-    // string getScript() {
-    //     return baseLocale.getScript();
-    // }
+    /**
+     * Returns the script for this locale, which should
+     * either be the empty string or an ISO 15924 4-letter script
+     * code. The first letter is uppercase and the rest are
+     * lowercase, for example, 'Latn', 'Cyrl'.
+     *
+     * @return The script code, or the empty string if none is defined.
+     * @see #getDisplayScript
+     * @since 1.7
+     */
+    string getScript() {
+        return script;
+    }
 
-    // /**
-    //  * Returns the country/region code for this locale, which should
-    //  * either be the empty string, an uppercase ISO 3166 2-letter code,
-    //  * or a UN M.49 3-digit code.
-    //  *
-    //  * @return The country/region code, or the empty string if none is defined.
-    //  * @see #getDisplayCountry
-    //  */
-    // string getCountry() {
-    //     return baseLocale.getRegion();
-    // }
+    /**
+     * Returns the country/region code for this locale, which should
+     * either be the empty string, an uppercase ISO 3166 2-letter code,
+     * or a UN M.49 3-digit code.
+     *
+     * @return The country/region code, or the empty string if none is defined.
+     * @see #getDisplayCountry
+     */
+    string getCountry() {
+        return region;
+    }
 
-    // /**
-    //  * Returns the variant code for this locale.
-    //  *
-    //  * @return The variant code, or the empty string if none is defined.
-    //  * @see #getDisplayVariant
-    //  */
-    // string getVariant() {
-    //     return baseLocale.getVariant();
-    // }
+    /**
+     * Returns the variant code for this locale.
+     *
+     * @return The variant code, or the empty string if none is defined.
+     * @see #getDisplayVariant
+     */
+    string getVariant() {
+        return variant;
+    }
 
-    // /**
-    //  * Returns {@code true} if this {@code Locale} has any <a href="#def_extensions">
-    //  * extensions</a>.
-    //  *
-    //  * @return {@code true} if this {@code Locale} has any extensions
-    //  * @since 1.8
-    //  */
-    // boolean hasExtensions() {
-    //     return localeExtensions !is null;
-    // }
+    /**
+     * Returns {@code true} if this {@code Locale} has any <a href="#def_extensions">
+     * extensions</a>.
+     *
+     * @return {@code true} if this {@code Locale} has any extensions
+     * @since 1.8
+     */
+    bool hasExtensions() {
+        return false;
+    }
 
     // /**
     //  * Returns a copy of this {@code Locale} with no <a href="#def_extensions">
@@ -1515,25 +1381,25 @@ final class Locale : Cloneable
     //  */
     // override
     // final string tostring() {
-    //     boolean l = (baseLocale.getLanguage().length() != 0);
-    //     boolean s = (baseLocale.getScript().length() != 0);
-    //     boolean r = (baseLocale.getRegion().length() != 0);
-    //     boolean v = (baseLocale.getVariant().length() != 0);
-    //     boolean e = (localeExtensions !is null && localeExtensions.getID().length() != 0);
+    //     bool l = (language.length() != 0);
+    //     bool s = (script.length() != 0);
+    //     bool r = (region.length() != 0);
+    //     bool v = (variant.length() != 0);
+    //     bool e = (localeExtensions !is null && localeExtensions.getID().length() != 0);
 
-    //     stringBuilder result = new stringBuilder(baseLocale.getLanguage());
+    //     stringBuilder result = new stringBuilder(language);
     //     if (r || (l && (v || s || e))) {
     //         result.append('_')
-    //             .append(baseLocale.getRegion()); // This may just append '_'
+    //             .append(region); // This may just append '_'
     //     }
     //     if (v && (l || r)) {
     //         result.append('_')
-    //             .append(baseLocale.getVariant());
+    //             .append(variant);
     //     }
 
     //     if (s && (l || r)) {
     //         result.append("_#")
-    //             .append(baseLocale.getScript());
+    //             .append(script);
     //     }
 
     //     if (e && (l || r)) {
@@ -1825,7 +1691,7 @@ final class Locale : Cloneable
     //  * three-letter language abbreviation is not available for this locale.
     //  */
     // string getISO3Language() throws MissingResourceException {
-    //     string lang = baseLocale.getLanguage();
+    //     string lang = language;
     //     if (lang.length() == 3) {
     //         return lang;
     //     }
@@ -1852,10 +1718,10 @@ final class Locale : Cloneable
     //  * three-letter country abbreviation is not available for this locale.
     //  */
     // string getISO3Country() throws MissingResourceException {
-    //     string country3 = getISO3Code(baseLocale.getRegion(), LocaleISOData.isoCountryTable);
+    //     string country3 = getISO3Code(region, LocaleISOData.isoCountryTable);
     //     if (country3 is null) {
     //         throw new MissingResourceException("Couldn't find 3-letter country code for "
-    //                 + baseLocale.getRegion(), "FormatData_" ~ tostring(), "ShortCountry");
+    //                 + region, "FormatData_" ~ tostring(), "ShortCountry");
     //     }
     //     return country3;
     // }
@@ -1921,7 +1787,7 @@ final class Locale : Cloneable
     //  * @exception NullPointerException if <code>inLocale</code> is <code>null</code>
     //  */
     // string getDisplayLanguage(Locale inLocale) {
-    //     return getDisplaystring(baseLocale.getLanguage(), null, inLocale, DISPLAY_LANGUAGE);
+    //     return getDisplaystring(language, null, inLocale, DISPLAY_LANGUAGE);
     // }
 
     // /**
@@ -1951,7 +1817,7 @@ final class Locale : Cloneable
     //  * @since 1.7
     //  */
     // string getDisplayScript(Locale inLocale) {
-    //     return getDisplaystring(baseLocale.getScript(), null, inLocale, DISPLAY_SCRIPT);
+    //     return getDisplaystring(script, null, inLocale, DISPLAY_SCRIPT);
     // }
 
     // /**
@@ -1994,7 +1860,7 @@ final class Locale : Cloneable
     //  * @exception NullPointerException if <code>inLocale</code> is <code>null</code>
     //  */
     // string getDisplayCountry(Locale inLocale) {
-    //     return getDisplaystring(baseLocale.getRegion(), null, inLocale, DISPLAY_COUNTRY);
+    //     return getDisplaystring(region, null, inLocale, DISPLAY_COUNTRY);
     // }
 
     // private string getDisplaystring(string code, string cat, Locale inLocale, int type) {
@@ -2036,7 +1902,7 @@ final class Locale : Cloneable
     //  * @exception NullPointerException if <code>inLocale</code> is <code>null</code>
     //  */
     // string getDisplayVariant(Locale inLocale) {
-    //     if (baseLocale.getVariant().length() == 0)
+    //     if (variant.length() == 0)
     //         return "";
 
     //     LocaleResources lr = LocaleProviderAdapter
@@ -2238,7 +2104,7 @@ final class Locale : Cloneable
     //  * @return true if this Locale is equal to the specified object.
     //  */
     // override
-    // boolean equals(Object obj) {
+    // bool equals(Object obj) {
     //     if (this is obj)                      // quick check
     //         return true;
     //     if (!(obj instanceof Locale))
@@ -2263,7 +2129,7 @@ final class Locale : Cloneable
      */
     private int hashCodeValue;
 
-    private __gshared Locale defaultLocale;
+    // private __gshared Locale _defaultLocale;
     private __gshared Locale defaultDisplayLocale;
     private __gshared Locale defaultFormatLocale;
 
@@ -2276,7 +2142,7 @@ final class Locale : Cloneable
     //  */
     // private string[] getDisplayVariantArray(Locale inLocale) {
     //     // Split the variant name into tokens separated by '_'.
-    //     stringTokenizer tokenizer = new stringTokenizer(baseLocale.getVariant(), "_");
+    //     stringTokenizer tokenizer = new stringTokenizer(variant, "_");
     //     string[] names = new string[tokenizer.countTokens()];
 
     //     // For each variant token, lookup the display name.  If
@@ -2358,7 +2224,7 @@ final class Locale : Cloneable
 
     // // Duplicate of sun.util.locale.UnicodeLocaleExtension.isKey in order to
     // // avoid its class loading.
-    // private static boolean isUnicodeExtensionKey(string s) {
+    // private static bool isUnicodeExtensionKey(string s) {
     //     // 2alphanum
     //     return (s.length() == 2) && LocaleUtils.isAlphaNumericstring(s);
     // }
@@ -2403,10 +2269,10 @@ final class Locale : Cloneable
     //  */
     // private void writeObject(ObjectOutputStream out) throws IOException {
     //     ObjectOutputStream.PutField fields = out.putFields();
-    //     fields.put("language", baseLocale.getLanguage());
-    //     fields.put("script", baseLocale.getScript());
-    //     fields.put("country", baseLocale.getRegion());
-    //     fields.put("variant", baseLocale.getVariant());
+    //     fields.put("language", language);
+    //     fields.put("script", script);
+    //     fields.put("country", region);
+    //     fields.put("variant", variant);
     //     fields.put("extensions", localeExtensions is null ? "" : localeExtensions.getID());
     //     fields.put("hashcode", -1); // place holder just for backward support
     //     out.writeFields();
@@ -2456,28 +2322,28 @@ final class Locale : Cloneable
     //  * @throws java.io.ObjectStreamException
     //  */
     // private Object readResolve() throws java.io.ObjectStreamException {
-    //     return getInstance(baseLocale.getLanguage(), baseLocale.getScript(),
-    //             baseLocale.getRegion(), baseLocale.getVariant(), localeExtensions);
+    //     return getInstance(language, script,
+    //             region, variant, localeExtensions);
     // }
 
     // private static string[] isoLanguages;
 
     // private static string[] isoCountries;
 
-    // private static string convertOldISOCodes(string language) {
-    //     // we accept both the old and the new ISO codes for the languages whose ISO
-    //     // codes have changed, but we always store the OLD code, for backward compatibility
-    //     language = LocaleUtils.toLowerstring(language).intern();
-    //     if (language == "he") {
-    //         return "iw";
-    //     } else if (language == "yi") {
-    //         return "ji";
-    //     } else if (language == "id") {
-    //         return "in";
-    //     } else {
-    //         return language;
-    //     }
-    // }
+    private static string convertOldISOCodes(string language) {
+        // we accept both the old and the new ISO codes for the languages whose ISO
+        // codes have changed, but we always store the OLD code, for backward compatibility
+        language = language.toLower();
+        if (language == "he") {
+            return "iw";
+        } else if (language == "yi") {
+            return "ji";
+        } else if (language == "id") {
+            return "in";
+        } else {
+            return language;
+        }
+    }
 
     // private static LocaleExtensions getCompatibilityExtensions(string language,
     //                                                            string script,
@@ -3119,7 +2985,7 @@ final class Locale : Cloneable
     //         range = range.toLowerCase(Locale.ROOT);
 
     //         // Do syntax check.
-    //         boolean isIllFormed = false;
+    //         bool isIllFormed = false;
     //         string[] subtags = range.split("-");
     //         if (isSubtagIllFormed(subtags[0], true)
     //             || range.endsWith("-")) {
@@ -3140,8 +3006,8 @@ final class Locale : Cloneable
     //         this.weight = weight;
     //     }
 
-    //     private static boolean isSubtagIllFormed(string subtag,
-    //                                              boolean isFirstSubtag) {
+    //     private static bool isSubtagIllFormed(string subtag,
+    //                                              bool isFirstSubtag) {
     //         if (subtag.equals("") || subtag.length() > 8) {
     //             return true;
     //         } else if (subtag.equals("*")) {
@@ -3360,7 +3226,7 @@ final class Locale : Cloneable
     //      *     otherwise.
     //      */
     //     override
-    //     boolean equals(Object obj) {
+    //     bool equals(Object obj) {
     //         if (this is obj) {
     //             return true;
     //         }

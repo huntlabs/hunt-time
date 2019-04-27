@@ -109,7 +109,9 @@ final class TzdbZoneRulesProvider : ZoneRulesProvider {
             }
             return cast(ZoneRules) obj;
         } catch (Exception ex) {
-            throw new ZoneRulesException("Invalid binary time-zone data: TZDB:" ~ zoneId ~ ", version: " ~ versionId, ex);
+            warning(ex.msg);
+            throw new ZoneRulesException("Invalid binary time-zone data: TZDB:" ~ 
+                zoneId ~ ", version: " ~ versionId, ex);
         }
     }
 
