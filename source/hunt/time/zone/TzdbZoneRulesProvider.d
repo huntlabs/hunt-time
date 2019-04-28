@@ -26,12 +26,12 @@ import hunt.time.zone.ZoneRulesProvider;
 import hunt.time.zone.ZoneRules;
 import hunt.time.zone.Ser;
 
+import hunt.logging.ConsoleLogger;
+
 import std.conv;
 import std.file;
 import std.path;
 import std.stdio;
-
-version (HUNT_DEBUG) import hunt.logging.ConsoleLogger;
 
 /**
  * Loads time-zone rules for 'TZDB'.
