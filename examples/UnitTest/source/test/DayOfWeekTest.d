@@ -4,7 +4,7 @@ import hunt.time.DayOfWeek;
 import hunt.time.format.TextStyle;
 import hunt.time.LocalDate;
 
-import hunt.time.util.Locale;
+import hunt.util.Locale;
 
 import std.conv;
 import std.stdio;

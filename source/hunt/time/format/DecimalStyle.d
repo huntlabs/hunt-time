@@ -11,16 +11,16 @@
 
 module hunt.time.format.DecimalStyle;
 
+import hunt.time.util.Common;
+
 // import hunt.text.DecimalFormatSymbols;
 import hunt.collection.Collections;
 import hunt.collection.HashSet;
-import hunt.time.util.Locale;
-
 import hunt.collection.Set;
 import hunt.collection.HashMap;
 import hunt.collection.Map;
 import hunt.Exceptions;
-import hunt.time.util.Common;
+import hunt.util.Locale;
 // import hunt.concurrent.ConcurrentMap;
 
 /**

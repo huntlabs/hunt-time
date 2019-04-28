@@ -27,12 +27,12 @@ import hunt.time.temporal.TemporalQueries;
 import hunt.time.temporal.TemporalQuery;
 import hunt.time.Exceptions;
 import hunt.time.temporal.ValueRange;
-import hunt.time.util.Locale;
 import hunt.time.Exceptions;
 import hunt.time.LocalDate;
 import hunt.time.util.Common;
 
 import hunt.Enum;
+import hunt.util.Locale;
 
 import std.conv;
 import std.concurrency : initOnce;

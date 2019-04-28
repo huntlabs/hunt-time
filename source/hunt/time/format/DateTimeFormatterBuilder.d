@@ -53,7 +53,6 @@ import hunt.time.temporal.TemporalQuery;
 import hunt.time.temporal.TemporalQueries;
 
 import hunt.time.util.Common;
-import hunt.time.util.Locale;
 import hunt.time.util.QueryHelper;
 import hunt.time.ZoneId;
 import hunt.time.ZoneOffset;
@@ -71,6 +70,7 @@ import hunt.text.Common;
 import hunt.text.StringBuilder;
 import hunt.util.Common;
 import hunt.util.Comparator;
+import hunt.util.Locale;
 
 import std.conv;
 import std.concurrency : initOnce;

@@ -10,7 +10,6 @@ import test.DayOfWeekTest;
 import test.TestLocalDateTime;
 import test.TestLocalTime;
 import test.TestLocalDate;
-import test.TestLocale;
 import test.TestMonthDay;
 import test.TestTimeZone;
 import test.TestInstant;
@@ -29,8 +28,7 @@ void main()
 	// TestInstant.test();
 
 	// testUnits!DayOfWeekTest();
-	testUnits!TestLocale();
-	// testStdTime();
+	testStdTime();
 }
 
 void testStdTime() {

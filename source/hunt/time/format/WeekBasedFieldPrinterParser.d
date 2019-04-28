@@ -8,10 +8,11 @@ import hunt.time.format.ReducedPrinterParser;
 import hunt.time.format.SignStyle;
 import hunt.time.temporal.TemporalField;
 import hunt.time.temporal.WeekFields;
-import hunt.time.util.Locale;
+
 import hunt.text.StringBuilder;
 
 import hunt.Exceptions;
+import hunt.util.Locale;
 
 //-----------------------------------------------------------------------
 /**

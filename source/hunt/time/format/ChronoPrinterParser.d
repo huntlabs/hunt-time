@@ -9,11 +9,11 @@ import hunt.time.format.DateTimeTextProvider;
 import hunt.time.format.TextStyle;
 import hunt.time.temporal.TemporalField;
 import hunt.time.temporal.TemporalQueries;
-import hunt.time.util.Locale;
 
 import hunt.collection.Set;
 import hunt.text.StringBuilder;
 import hunt.Exceptions;
+import hunt.util.Locale;
 
 //-----------------------------------------------------------------------
 /**
