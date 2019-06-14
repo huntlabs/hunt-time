@@ -484,6 +484,7 @@ abstract class Clock {
             }
             return new SystemClock(zone);
         }
+
         override
         long millis() {
             // System.currentTimeMillis() and VM.getNanoTimeAdjustment(_offset)
@@ -492,8 +493,9 @@ abstract class Clock {
             // So we take the faster path and call System.currentTimeMillis()
             // directly - _in order to avoid the performance penalty of
             // VM.getNanoTimeAdjustment(_offset) which is less efficient.
-            return System.currentTimeMillis();
+            return DateTimeHelper.currentTimeMillis();
         }
+
         override
         Instant instant() {
             // Take a local copy of _offset. _offset can be updated concurrently
@@ -529,7 +531,7 @@ abstract class Clock {
             //         _offset = localOffset;
             //     }
             // }
-            long nsecs = System.currentTimeNsecs();
+            long nsecs = DateTimeHelper.currentTimeNsecs();
             long localOffset = convert!("nsecs", "seconds")(nsecs);
             long adjustment = nsecs - localOffset * 1000_000_000L;
             // import hunt.logging;
@@ -537,6 +539,7 @@ abstract class Clock {
             // version(HUNT_DEBUG) logDebug("(nsecs : %s , msecs : %s , offset: %s )".format(nsecs,localOffset,adjustment));
             return Instant.ofEpochSecond(localOffset, adjustment);
         }
+
         override
         bool opEquals(Object obj) {
             if (cast(SystemClock)(obj) !is null) {
@@ -544,6 +547,7 @@ abstract class Clock {
             }
             return false;
         }
+
         override
         size_t toHash() @trusted nothrow {
             return zone.toHash() + 1;

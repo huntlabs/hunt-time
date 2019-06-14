@@ -27,7 +27,7 @@ void main()
 	// TestTimeZone.test();
 	// TestInstant.test();
 
-	// testUnits!DayOfWeekTest();
+	testUnits!DayOfWeekTest();
 	testStdTime();
 }
 
@@ -39,6 +39,7 @@ void testStdTime() {
 	import hunt.time.ZoneId;
 	import hunt.time.ZoneRegion;
 	import hunt.time.ZoneOffset;
+	import hunt.time.OffsetDateTime;
 
 
 	import core.time;
@@ -47,23 +48,38 @@ void testStdTime() {
 	LocalDateTime ldt;
 	trace("std time: ", t);
 	SysTime st = SysTime(t);
+	long unixTime = st.toUnixTime();
 	trace("local time: ", st.toString());
-	trace("unix timestamp(seconds): ", st.toUnixTime());
+	trace("unix timestamp(seconds): ", unixTime);
 	trace("Unix timestamp(milliseconds): ", DateTimeHelper.currentTimeMillis());
-
 	// trace(SysTime(63690574746246*10000).toString());
 
 	import core.stdc.time;
 	immutable unixTimeC = core.stdc.time.time(null);
 	trace("unix time from system: ", unixTimeC);
 
+	ldt = LocalDateTime.ofEpochMilli(unixTime*1000);
+	tracef("EpochMilli from unix timestamp: %d", ldt.toEpochMilli());
+	
+	// https://stackoverflow.com/questions/41427384/how-to-get-default-zoneoffset-in-java8
+	ldt = LocalDateTime.ofEpochSecond(unixTime, 0,  ZoneOffset.of("+8"));
+	tracef("EpochMilli from unix timestamp: %d", ldt.toEpochMilli());
+
+	OffsetDateTime odt = OffsetDateTime.now ();
+	ZoneOffset zoneOffset = odt.getOffset();
+	trace("zoneOffset: ", zoneOffset.toString());
+	ldt = LocalDateTime.ofEpochSecond(unixTime, 0, zoneOffset);
+	tracef("EpochMilli from unix timestamp: %d", ldt.toEpochMilli());
+	info("=======================");
+
+
 
 	ldt = LocalDateTime.now();
-	tracef("%d", ldt.toEpochMilli());
-	tracef("%d", ldt.atZone(ZoneOffset.of("+8"))
+	tracef("EpochMilli: %d", ldt.toEpochMilli());
+	tracef("EpochMilli: %d", ldt.atZone(ZoneOffset.of("+8"))
             .toInstant()
             .toEpochMilli());
-	trace("=======================");
+	info("=======================");
 	long d = 1555315608921L;
 	ldt = LocalDateTime.ofEpochMilli(d);
 	tracef("%d", ldt.toEpochMilli());
@@ -81,5 +97,10 @@ void testStdTime() {
 
 	ZoneOffset zid = ZoneOffset.of("+8");
 	trace(zid);
+
+	Instant instant = Instant.now(); //can be LocalDateTime
+	ZoneId systemZone = ZoneRegion.systemDefault(); // my timezone
+	ZoneOffset currentOffsetForMyZone = systemZone.getRules().getOffset(instant);
+	trace(currentOffsetForMyZone);
 
 }

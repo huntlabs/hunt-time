@@ -46,6 +46,8 @@ import hunt.time.util.Common;
 import hunt.util.Common;
 import hunt.util.Serialize;
 
+import std.concurrency : initOnce;
+
 /**
  * A time-zone ID, such as {@code Europe/Paris}.
  * !(p)
@@ -136,7 +138,7 @@ import hunt.util.Serialize;
  *
  * @since 1.8
  */
-public abstract class ZoneId : Serializable {
+abstract class ZoneId : Serializable {
 
     /**
      * A map of zone overrides to enable the short time-zone names to be used.
@@ -182,14 +184,15 @@ public abstract class ZoneId : Serializable {
      * </ul>
      * The map is unmodifiable.
      */
-    public __gshared Map!(string, string) _SHORT_IDS;
+    
     
 
-    public static ref Map!(string, string) SHORT_IDS()
+    static Map!(string, string) SHORT_IDS()
     {
-        if(_SHORT_IDS is null)
-        {
-            _SHORT_IDS = new HashMap!(string, string);
+        __gshared Map!(string, string) inst;
+        
+        return initOnce!inst({
+            HashMap!(string, string) _SHORT_IDS = new HashMap!(string, string);
             _SHORT_IDS.put("ACT", "Australia/Darwin");
             _SHORT_IDS.put("AET", "Australia/Sydney");
             _SHORT_IDS.put("AGT", "America/Argentina/Buenos_Aires");
@@ -218,47 +221,14 @@ public abstract class ZoneId : Serializable {
             _SHORT_IDS.put("EST", "-05:00");
             _SHORT_IDS.put("MST", "-07:00");
             _SHORT_IDS.put("HST", "-10:00");
-        }
-        return _SHORT_IDS;
+            return _SHORT_IDS;
+        }());
     }
 
-    // shared static this()
-    // {
-    //     SHORT_IDS = new HashMap!(string, string);
-    //         SHORT_IDS.put("ACT", "Australia/Darwin");
-    //         SHORT_IDS.put("AET", "Australia/Sydney");
-    //         SHORT_IDS.put("AGT", "America/Argentina/Buenos_Aires");
-    //         SHORT_IDS.put("ART", "Africa/Cairo");
-    //         SHORT_IDS.put("AST", "America/Anchorage");
-    //         SHORT_IDS.put("BET", "America/Sao_Paulo");
-    //         SHORT_IDS.put("BST", "Asia/Dhaka");
-    //         SHORT_IDS.put("CAT", "Africa/Harare");
-    //         SHORT_IDS.put("CNT", "America/St_Johns");
-    //         SHORT_IDS.put("CST", "America/Chicago");
-    //         SHORT_IDS.put("CTT", "Asia/Shanghai");
-    //         SHORT_IDS.put("EAT", "Africa/Addis_Ababa");
-    //         SHORT_IDS.put("ECT", "Europe/Paris");
-    //         SHORT_IDS.put("IET", "America/Indiana/Indianapolis");
-    //         SHORT_IDS.put("IST", "Asia/Kolkata");
-    //         SHORT_IDS.put("JST", "Asia/Tokyo");
-    //         SHORT_IDS.put("MIT", "Pacific/Apia");
-    //         SHORT_IDS.put("NET", "Asia/Yerevan");
-    //         SHORT_IDS.put("NST", "Pacific/Auckland");
-    //         SHORT_IDS.put("PLT", "Asia/Karachi");
-    //         SHORT_IDS.put("PNT", "America/Phoenix");
-    //         SHORT_IDS.put("PRT", "America/Puerto_Rico");
-    //         SHORT_IDS.put("PST", "America/Los_Angeles");
-    //         SHORT_IDS.put("SST", "Pacific/Guadalcanal");
-    //         SHORT_IDS.put("VST", "Asia/Ho_Chi_Minh");
-    //         SHORT_IDS.put("EST", "-05:00");
-    //         SHORT_IDS.put("MST", "-07:00");
-    //         SHORT_IDS.put("HST", "-10:00");
-        
-    // }
     //-----------------------------------------------------------------------
  
     deprecated("Using ZoneRegion.systemDefault instead.")
-    public static ZoneId systemDefault() {
+    static ZoneId systemDefault() {
         throw new Exception("Using ZoneRegion.systemDefault instead.");
     }
 
@@ -274,19 +244,19 @@ public abstract class ZoneId : Serializable {
      *
      * @return a modifiable copy of the set of zone IDs, not null
      */
-    // public static Set!(string) getAvailableZoneIds() {
+    // static Set!(string) getAvailableZoneIds() {
     //     return new HashSet!(string)(ZoneRulesProvider.getAvailableZoneIds());
     // }
 
     
     deprecated("Using ZoneRegion.of instead.")
-    public static ZoneId of(string zoneId, Map!(string, string) aliasMap) {
+    static ZoneId of(string zoneId, Map!(string, string) aliasMap) {
         throw new Exception("Using ZoneRegion.of instead.");
     }
 
    
     deprecated("Using ZoneRegion.of instead.")
-    public static ZoneId of(string zoneId) {
+    static ZoneId of(string zoneId) {
         throw new Exception("Using ZoneRegion.of instead.");
     }
 
@@ -305,7 +275,7 @@ public abstract class ZoneId : Serializable {
      */
 
     deprecated("Using ZoneRegion.ofOffset instead.")
-    public static ZoneId ofOffset(string prefix, ZoneOffset offset) {
+    static ZoneId ofOffset(string prefix, ZoneOffset offset) {
         throw new Exception("Using ZoneRegion.ofOffset instead.");
         // assert(prefix, "prefix");
         // assert(offset, "offset");
@@ -395,7 +365,7 @@ public abstract class ZoneId : Serializable {
      * @return the zone ID, not null
      * @throws DateTimeException if unable to convert to a {@code ZoneId}
      */
-    public static ZoneId from(TemporalAccessor temporal) {
+    static ZoneId from(TemporalAccessor temporal) {
         ZoneId obj =QueryHelper.query!ZoneId(temporal,TemporalQueries.zone());
         if (obj is null) {
             throw new DateTimeException("Unable to obtain ZoneId from TemporalAccessor: " ~
@@ -423,7 +393,7 @@ public abstract class ZoneId : Serializable {
      *
      * @return the time-zone unique ID, not null
      */
-    public abstract string getId();
+    abstract string getId();
 
     //-----------------------------------------------------------------------
     /**
@@ -440,7 +410,7 @@ public abstract class ZoneId : Serializable {
      * @param locale  the locale to use, not null
      * @return the text value of the zone, not null
      */
-    // public string getDisplayName(TextStyle style, Locale locale) {
+    // string getDisplayName(TextStyle style, Locale locale) {
     //     return new DateTimeFormatterBuilder().appendZoneText(style).toFormatter(locale).format(toTemporal());
     // }
 
@@ -481,7 +451,7 @@ public abstract class ZoneId : Serializable {
      * @return the rules, not null
      * @throws ZoneRulesException if no rules are available for this ID
      */
-    public abstract ZoneRules getRules();
+    abstract ZoneRules getRules();
 
     /**
      * Normalizes the time-zone ID, returning a {@code ZoneOffset} where possible.
@@ -496,7 +466,7 @@ public abstract class ZoneId : Serializable {
      *
      * @return the time-zone unique ID, not null
      */
-    public ZoneId normalized() {
+    ZoneId normalized() {
         try {
             ZoneRules rules = getRules();
             if (rules.isFixedOffset()) {
@@ -518,7 +488,7 @@ public abstract class ZoneId : Serializable {
      * @return true if this is equal to the other time-zone ID
      */
     override
-    public bool opEquals(Object obj) {
+    bool opEquals(Object obj) {
         if (this is obj) {
            return true;
         }
@@ -535,7 +505,7 @@ public abstract class ZoneId : Serializable {
      * @return a suitable hash code
      */
     override
-    public size_t toHash() @trusted nothrow {
+    size_t toHash() @trusted nothrow {
         try
         {
             return hashOf(getId());
@@ -562,7 +532,7 @@ public abstract class ZoneId : Serializable {
      * @return a string representation of this time-zone ID, not null
      */
     override
-    public string toString() {
+    string toString() {
         return getId();
     }
 

@@ -11,30 +11,28 @@
 
 module hunt.time.util.Common;
 
-import std.datetime;
-import core.stdc.errno;
 public import std.traits;
 public import std.array;
 
-import hunt.util.DateTime;
+// import hunt.util.DateTime;
 
-class System
-{
-    static long currentTimeMillis()
-    {
-        return DateTimeHelper.currentTimeMillis();
-    }
+// class System
+// {
+//     static long currentTimeMillis()
+//     {
+//         return DateTimeHelper.currentTimeMillis();
+//     }
 
-    static long currentTimeNsecs()
-    {
-        return convert!("hnsecs", "nsecs")(Clock.currStdTime() - (Date(1970, 1, 1) - Date.init).total!"hnsecs");
-    }
+//     static long currentTimeNsecs()
+//     {
+//         return convert!("hnsecs", "nsecs")(Clock.currStdTime() - (Date(1970, 1, 1) - Date.init).total!"hnsecs");
+//     }
 
-    // static string getSystemTimeZone()
-    // {
-    //     return DateTimeHelper.getSystemTimeZoneId();
-    // }
-}
+//     // static string getSystemTimeZone()
+//     // {
+//     //     return DateTimeHelper.getSystemTimeZoneId();
+//     // }
+// }
 
 
 string MakeGlobalVar(T)(string var, string init = null)
