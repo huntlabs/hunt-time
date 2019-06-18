@@ -71,7 +71,7 @@ final class TzdbZoneRulesProvider : ZoneRulesProvider {
         try {
             string resourcePath = dirName(thisExePath()) ~ "/resources";
             string resourceName = buildPath(resourcePath, "tzdb.dat");
-            version(HUNT_DEBUG) tracef("loading timezone database: %s", resourceName);
+            version(HUNT_DEBUG) infof("loading timezone from: %s", resourceName);
             if(!exists(resourceName)) {
                 version(HUNT_DEBUG) warningf("File does not exist: %s", resourceName);
             } else {
