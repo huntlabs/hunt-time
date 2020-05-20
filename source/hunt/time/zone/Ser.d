@@ -11,13 +11,13 @@
 
 module hunt.time.zone.Ser;
 
-import hunt.io.DataInput;
-import hunt.io.DataOutput;
-import hunt.io.Externalizable;
+import hunt.stream.DataInput;
+import hunt.stream.DataOutput;
+import hunt.stream.Externalizable;
 import hunt.Exceptions;
 // import hunt.io.InvalidClassException;
-import hunt.io.ObjectInput;
-import hunt.io.ObjectOutput;
+import hunt.stream.ObjectInput;
+import hunt.stream.ObjectOutput;
 // import hunt.io.StreamCorruptedException;
 import hunt.time.ZoneOffset;
 import hunt.time.zone.ZoneRules;

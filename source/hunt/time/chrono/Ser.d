@@ -11,11 +11,11 @@
 
 module hunt.time.chrono.Ser;
 
-import hunt.io.Externalizable;
+import hunt.stream.Externalizable;
 import hunt.Exceptions;
 // import hunt.io.InvalidClassException;
-import hunt.io.ObjectInput;
-import hunt.io.ObjectOutput;
+import hunt.stream.ObjectInput;
+import hunt.stream.ObjectOutput;
 // import hunt.io.StreamCorruptedException;
 import hunt.time.LocalDate;
 import hunt.time.LocalDateTime;

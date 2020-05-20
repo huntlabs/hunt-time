@@ -51,7 +51,7 @@ void testStdTime() {
 	long unixTime = st.toUnixTime();
 	trace("local time: ", st.toString());
 	trace("unix timestamp(seconds): ", unixTime);
-	trace("Unix timestamp(milliseconds): ", DateTimeHelper.currentTimeMillis());
+	trace("Unix timestamp(milliseconds): ", DateTime.currentTimeMillis());
 	// trace(SysTime(63690574746246*10000).toString());
 
 	import core.stdc.time;

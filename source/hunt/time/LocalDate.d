@@ -13,11 +13,11 @@ module hunt.time.LocalDate;
 
 import hunt.time.LocalTime;
 
-import hunt.io.DataInput;
-import hunt.io.DataOutput;
+import hunt.stream.DataInput;
+import hunt.stream.DataOutput;
 import hunt.Exceptions;
 import hunt.Long;
-import hunt.io.Common;
+import hunt.stream.Common;
 import hunt.time.chrono.ChronoLocalDate;
 import hunt.time.chrono.IsoEra;
 import hunt.time.chrono.IsoChronology;

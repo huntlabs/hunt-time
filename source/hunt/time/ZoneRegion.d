@@ -14,9 +14,9 @@ module hunt.time.ZoneRegion;
 import hunt.collection.HashMap;
 import hunt.collection.Map;
 import hunt.Exceptions;
-import hunt.io.Common;
-import hunt.io.DataInput;
-import hunt.io.DataOutput;
+import hunt.stream.Common;
+import hunt.stream.DataInput;
+import hunt.stream.DataOutput;
 
 import hunt.text.Common;
 

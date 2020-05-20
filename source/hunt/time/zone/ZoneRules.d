@@ -11,12 +11,12 @@
 
 module hunt.time.zone.ZoneRules;
 
-import hunt.io.DataInput;
-import hunt.io.DataOutput;
+import hunt.stream.DataInput;
+import hunt.stream.DataOutput;
 import hunt.Exceptions;
 
 //import hunt.io.ObjectInputStream;
-import hunt.io.Common;
+import hunt.stream.Common;
 // import hunt.time.Duration;
 import hunt.time.Instant;
 import hunt.time.LocalDate;

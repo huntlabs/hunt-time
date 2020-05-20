@@ -12,7 +12,7 @@
 module hunt.time.util.Calendar;
 
 import hunt.Exceptions;
-// import hunt.io.Common;
+// import hunt.stream.Common;
 // import java.security.AccessControlContext;
 // import java.security.AccessController;
 // import java.security.PermissionCollection;
@@ -292,7 +292,7 @@ import std.datetime;
  * @since 1.1
  */
 
-import hunt.io.Common;
+import hunt.stream.Common;
 import hunt.Functions;
 import hunt.util.Common;
 import std.datetime : TimeZone ;

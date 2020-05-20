@@ -14,12 +14,12 @@ module hunt.time.chrono.ThaiBuddhistDate;
 // import hunt.time.chrono.ThaiBuddhistChronology;
 // import hunt.time.temporal.ChronoField;
 
-// import hunt.io.DataInput;
-// import hunt.io.DataOutput;
+// import hunt.stream.DataInput;
+// import hunt.stream.DataOutput;
 // import hunt.Exceptions;
 
 // //import hunt.io.ObjectInputStream;
-// import hunt.io.Common;
+// import hunt.stream.Common;
 // import hunt.time.Clock;
 // import hunt.time.Exceptions;
 // import hunt.time.LocalDate;

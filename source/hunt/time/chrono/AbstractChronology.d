@@ -15,12 +15,12 @@ import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;
 import hunt.time.temporal.TemporalAdjusters;
 
-import hunt.io.DataInput;
-import hunt.io.DataOutput;
+import hunt.stream.DataInput;
+import hunt.stream.DataOutput;
 
 //import hunt.io.ObjectInputStream;
 // import hunt.io.ObjectStreamException;
-import hunt.io.Common;
+import hunt.stream.Common;
 import hunt.time.Exceptions;
 import hunt.time.DayOfWeek;
 import hunt.time.format.ResolverStyle;

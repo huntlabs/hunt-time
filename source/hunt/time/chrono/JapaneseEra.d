@@ -14,13 +14,13 @@ module hunt.time.chrono.JapaneseEra;
 // import hunt.time.chrono.JapaneseDate;
 // import hunt.time.temporal.ChronoField;
 
-// import hunt.io.DataInput;
-// import hunt.io.DataOutput;
+// import hunt.stream.DataInput;
+// import hunt.stream.DataOutput;
 // import hunt.Exceptions;
 
 // //import hunt.io.ObjectInputStream;
 // // import hunt.io.ObjectStreamException;
-// import hunt.io.Common;
+// import hunt.stream.Common;
 // import hunt.time.Exceptions;
 // import hunt.time.LocalDate;
 // import hunt.time.format.DateTimeFormatterBuilder;

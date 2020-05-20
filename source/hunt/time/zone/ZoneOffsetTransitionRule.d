@@ -13,12 +13,12 @@ module hunt.time.zone.ZoneOffsetTransitionRule;
 
 import hunt.time.temporal.TemporalAdjusters;
 
-import hunt.io.DataInput;
-import hunt.io.DataOutput;
+import hunt.stream.DataInput;
+import hunt.stream.DataOutput;
 import hunt.Exceptions;
 
 import hunt.time.zone.Ser;
-import hunt.io.Common;
+import hunt.stream.Common;
 import hunt.time.DayOfWeek;
 import hunt.time.LocalDate;
 import hunt.time.LocalDateTime;

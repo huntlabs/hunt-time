@@ -14,12 +14,12 @@ module hunt.time.YearMonth;
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;
 
-import hunt.io.DataInput;
-import hunt.io.DataOutput;
+import hunt.stream.DataInput;
+import hunt.stream.DataOutput;
 import hunt.Exceptions;
 
 //import hunt.io.ObjectInputStream;
-import hunt.io.Common;
+import hunt.stream.Common;
 import hunt.time.chrono.Chronology;
 import hunt.time.chrono.IsoChronology;
 // import hunt.time.format.DateTimeFormatter;

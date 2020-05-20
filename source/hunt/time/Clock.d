@@ -11,7 +11,7 @@
 
 module hunt.time.Clock;
 
-import hunt.io.Common;
+import hunt.stream.Common;
 import hunt.Exceptions;
 import hunt.math.Helper;
 import hunt.time.Constants;
@@ -441,10 +441,10 @@ abstract class Clock {
 
         static long OFFSET_SEED() {
             __gshared long _o;
-            // return initOnce!(_o)(DateTimeHelper.currentTimeMillis()/1000);
+            // return initOnce!(_o)(DateTime.currentTimeMillis()/1000);
             // FIXME: Needing refactor or cleanup -@zhangxueping at 4/15/2019, 1:15:39 PM
             // 
-            return initOnce!(_o)(DateTimeHelper.currentTimeMillis()/1000 - 1024);
+            return initOnce!(_o)(DateTime.currentTimeMillis()/1000 - 1024);
         }
         
         static SystemClock UTC() {
@@ -493,7 +493,7 @@ abstract class Clock {
             // So we take the faster path and call System.currentTimeMillis()
             // directly - _in order to avoid the performance penalty of
             // VM.getNanoTimeAdjustment(_offset) which is less efficient.
-            return DateTimeHelper.currentTimeMillis();
+            return DateTime.currentTimeMillis();
         }
 
         override
@@ -531,7 +531,7 @@ abstract class Clock {
             //         _offset = localOffset;
             //     }
             // }
-            long nsecs = DateTimeHelper.currentTimeNsecs();
+            long nsecs = DateTime.currentTimeNsecs();
             long localOffset = convert!("nsecs", "seconds")(nsecs);
             long adjustment = nsecs - localOffset * 1000_000_000L;
             // import hunt.logging;

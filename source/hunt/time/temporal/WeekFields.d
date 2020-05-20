@@ -33,7 +33,7 @@ import hunt.time.util.Common;
 import hunt.collection.HashMap;
 import hunt.collection.Map;
 import hunt.Exceptions;
-import hunt.io.Common;
+import hunt.stream.Common;
 import hunt.Long;
 import hunt.math.Helper;
 import hunt.util.Common;

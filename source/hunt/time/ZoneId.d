@@ -11,11 +11,11 @@
 
 module hunt.time.ZoneId;
 
-import hunt.io.DataOutput;
+import hunt.stream.DataOutput;
 import hunt.Exceptions;
 
 import std.conv;
-import hunt.io.Common;
+import hunt.stream.Common;
 // import hunt.time.format.DateTimeFormatterBuilder;
 import hunt.time.format.TextStyle;
 import hunt.time.temporal.TemporalAccessor;

@@ -14,13 +14,13 @@ module hunt.time.chrono.ChronoPeriodImpl;
 import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.ChronoUnit;
 
-import hunt.io.DataInput;
-import hunt.io.DataOutput;
+import hunt.stream.DataInput;
+import hunt.stream.DataOutput;
 import hunt.Exceptions;
 import hunt.collection;
 //import hunt.io.ObjectInputStream;
 // import hunt.io.ObjectStreamException;
-import hunt.io.Common;
+import hunt.stream.Common;
 import hunt.time.Exceptions;
 import hunt.time.temporal.ChronoUnit;
 import hunt.time.temporal.Temporal;

@@ -11,13 +11,12 @@
 
 module hunt.time.zone.TzdbZoneRulesProvider;
 
-// import jdk.internal.util.StaticProperty;
 
-import hunt.io.ByteArrayInputStream;
-import hunt.io.BufferedInputStream;
-import hunt.io.DataInputStream;
+import hunt.stream.ByteArrayInputStream;
+import hunt.stream.BufferedInputStream;
+import hunt.stream.DataInputStream;
 import hunt.String;
-import hunt.io.FileInputStream;
+import hunt.stream.FileInputStream;
 // import hunt.io.StreamCorruptedException;
 import hunt.time.zone.ZoneRulesException;
 import hunt.collection;

@@ -13,7 +13,7 @@ module hunt.time.chrono.ChronoLocalDateImpl;
 
 import hunt.time.temporal.ChronoField;
 import hunt.Exceptions;
-import hunt.io.Common;
+import hunt.stream.Common;
 import hunt.time.Exceptions;
 import hunt.time.temporal.ChronoUnit;
 import hunt.time.temporal.Temporal;

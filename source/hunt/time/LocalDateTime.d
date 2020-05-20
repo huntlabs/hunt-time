@@ -48,9 +48,9 @@ import hunt.time.ZoneRegion;
 import hunt.time.zone.ZoneRules;
 
 import hunt.Exceptions;
-import hunt.io.DataInput;
-import hunt.io.DataOutput;
-import hunt.io.Common;
+import hunt.stream.DataInput;
+import hunt.stream.DataOutput;
+import hunt.stream.Common;
 import hunt.Long;
 import hunt.math.Helper;
 

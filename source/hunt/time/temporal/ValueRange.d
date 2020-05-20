@@ -15,7 +15,7 @@ import hunt.Exceptions;
 import std.conv;
 import hunt.Integer;
 import hunt.text.StringBuilder;
-import hunt.io.Common;
+import hunt.stream.Common;
 import hunt.time.Exceptions;
 import hunt.time.temporal.TemporalField;
 import hunt.util.Common;

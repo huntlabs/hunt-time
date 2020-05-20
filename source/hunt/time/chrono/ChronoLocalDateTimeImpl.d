@@ -14,10 +14,10 @@ module hunt.time.chrono.ChronoLocalDateTimeImpl;
 import hunt.time.temporal.ChronoField;
 
 import hunt.Exceptions;
-import hunt.io.ObjectInput;
+import hunt.stream.ObjectInput;
 //import hunt.io.ObjectInputStream;
-import hunt.io.ObjectOutput;
-import hunt.io.Common;
+import hunt.stream.ObjectOutput;
+import hunt.stream.Common;
 import hunt.time.LocalTime;
 import hunt.time.ZoneId;
 import hunt.time.temporal.ChronoField;
