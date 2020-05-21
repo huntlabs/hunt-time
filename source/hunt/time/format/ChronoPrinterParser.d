@@ -11,7 +11,7 @@ import hunt.time.temporal.TemporalField;
 import hunt.time.temporal.TemporalQueries;
 
 import hunt.collection.Set;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.Exceptions;
 import hunt.util.Locale;
 

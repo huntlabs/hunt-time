@@ -43,7 +43,7 @@ import hunt.time.LocalDate;
 import hunt.time.OffsetTime;
 import hunt.time.ZoneOffset;
 import hunt.time.Exceptions;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.time.Ser;
 import hunt.time.Duration;
 import std.conv;

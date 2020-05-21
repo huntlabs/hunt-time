@@ -16,7 +16,7 @@ import hunt.time.temporal.ChronoField;
 import hunt.time.temporal.TemporalField;
 import hunt.time.temporal.TemporalQueries;
 import hunt.time.util.QueryHelper;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 
 import hunt.collection.List;
 import hunt.collection.Map;

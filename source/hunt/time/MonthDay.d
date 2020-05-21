@@ -44,7 +44,7 @@ import hunt.time.Ser;
 import hunt.time.util.Common;
 import hunt.math.Helper;
 import hunt.Functions;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.util.Common;
 
 import std.conv;

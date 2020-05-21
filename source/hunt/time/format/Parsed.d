@@ -36,7 +36,7 @@ import hunt.collection.HashMap;
 import hunt.collection.Iterator;
 import hunt.collection.Map;
 import std.conv;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.collection.Set;
 import hunt.Long;
 import hunt.math.Helper;

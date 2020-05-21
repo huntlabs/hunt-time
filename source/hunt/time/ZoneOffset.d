@@ -37,7 +37,7 @@ import hunt.collection;
 import hunt.text.Common;
 import hunt.util.Common;
 import hunt.time.Exceptions;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.time.Ser;
 import hunt.time.util.QueryHelper;
 import hunt.time.util.Common;

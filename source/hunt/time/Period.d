@@ -43,7 +43,7 @@ import hunt.time.Ser;
 import hunt.text.Common;
 import std.conv;
 import std.regex;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.time.util.QueryHelper;
 import hunt.time.util.Common;
 // import hunt.util.regex.Matcher;

@@ -67,7 +67,7 @@ import hunt.collection.Set;
 import hunt.Exceptions;
 import hunt.Long;
 import hunt.text.Common;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.util.Common;
 import hunt.util.Comparator;
 import hunt.util.Locale;

@@ -14,7 +14,7 @@ module hunt.time.temporal.ValueRange;
 import hunt.Exceptions;
 import std.conv;
 import hunt.Integer;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.stream.Common;
 import hunt.time.Exceptions;
 import hunt.time.temporal.TemporalField;

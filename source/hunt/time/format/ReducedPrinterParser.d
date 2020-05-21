@@ -13,7 +13,7 @@ import hunt.time.format.NumberPrinterParser;
 import hunt.time.format.SignStyle;
 import hunt.time.temporal.TemporalField;
 import hunt.time.util.Common;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 
 import hunt.Exceptions;
 import hunt.Integer;

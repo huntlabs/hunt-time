@@ -5,7 +5,7 @@ import hunt.time.text.ParsePosition;
 
 import hunt.collection.Set;
 import hunt.text.Common;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 
 import std.string;
 

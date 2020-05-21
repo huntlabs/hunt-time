@@ -1,5 +1,5 @@
 # Visual Studio Code
-.vscode/
+#.vscode/
 
 # Compiled Object files
 *.o
@@ -16,16 +16,22 @@
 
 # Executables
 *.exe
+*-test-*
 
 # DUB
 .dub
-dub.selections.json
+dub.*.json
 docs.json
 __dummy.html
 
 # Code coverage
 *.lst
 
-# Examples
+# Idea
+*.iml
 
-*-test-library
+# crash file
+core
+
+# others
+*.tar.gz

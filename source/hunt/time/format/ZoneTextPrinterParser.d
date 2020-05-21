@@ -26,7 +26,7 @@ import hunt.collection.HashSet;
 import hunt.collection.Map;
 import hunt.collection.Set;
 import hunt.Integer;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.util.Locale;
 
 //-----------------------------------------------------------------------

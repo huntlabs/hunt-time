@@ -27,7 +27,7 @@ import hunt.time.Month;
 import hunt.time.ZoneOffset;
 import hunt.time.chrono.IsoChronology;
 import hunt.time.zone.ZoneOffsetTransition;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.time.util.Common;
 
 import hunt.util.Common;

@@ -9,7 +9,7 @@ import hunt.time.format.TextStyle;
 import hunt.time.temporal.TemporalField;
 
 import hunt.text.Common;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 
 import hunt.Exceptions;
 import hunt.Long;

@@ -9,7 +9,7 @@ import hunt.time.format.SignStyle;
 import hunt.time.temporal.TemporalField;
 import hunt.time.temporal.WeekFields;
 
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 
 import hunt.Exceptions;
 import hunt.util.Locale;

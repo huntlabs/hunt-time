@@ -49,7 +49,7 @@ import hunt.time.Exceptions;
 import hunt.time.Year;
 import hunt.util.Common;
 import hunt.time.Ser;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 /**
  * A year-month _in the ISO-8601 calendar system, such as {@code 2007-12}.
  * !(p)

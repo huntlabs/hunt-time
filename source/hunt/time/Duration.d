@@ -36,7 +36,7 @@ import hunt.Functions;
 import hunt.Long;
 import hunt.math.Helper;
 import hunt.text.Common;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.util.Common;
 import hunt.util.Comparator;
 import hunt.util.Serialize;

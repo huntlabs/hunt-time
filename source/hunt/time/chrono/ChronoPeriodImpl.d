@@ -35,7 +35,7 @@ import hunt.time.chrono.Chronology;
 import hunt.time.chrono.ChronoPeriod;
 import hunt.Integer;
 import hunt.math.Helper;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 import hunt.time.chrono.Ser;
 import hunt.time.util.QueryHelper;
 

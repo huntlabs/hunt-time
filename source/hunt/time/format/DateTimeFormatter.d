@@ -43,9 +43,10 @@ import hunt.time.util.QueryHelper;
 import hunt.Boolean;
 import hunt.Long;
 import hunt.collection;
-import hunt.text.StringBuilder;
+import hunt.util.Appendable;
 import hunt.util.Common;
 import hunt.util.Locale;
+import hunt.util.StringBuilder;
 
 import std.algorithm.searching;
 import std.conv;

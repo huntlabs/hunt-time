@@ -28,7 +28,7 @@ import hunt.Functions;
 import hunt.Integer;
 import hunt.util.Comparator;
 import hunt.util.Common;
-import hunt.text.StringBuilder;
+import hunt.util.StringBuilder;
 /**
  * A transition between two offsets caused by a discontinuity _in the local time-line.
  * !(p)
