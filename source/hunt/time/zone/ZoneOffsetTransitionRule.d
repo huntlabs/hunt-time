@@ -31,7 +31,7 @@ import hunt.util.StringBuilder;
 import hunt.time.util.Common;
 
 import hunt.util.Common;
-import hunt.util.Serialize;
+// import hunt.serialization.JsonSerializer;
 
 
 /**
@@ -52,7 +52,7 @@ import hunt.util.Serialize;
  *
  * @since 1.8
  */
-public final class ZoneOffsetTransitionRule : Serializable {
+public final class ZoneOffsetTransitionRule { //  : Serializable
 
 
     /**
@@ -625,6 +625,6 @@ public final class ZoneOffsetTransitionRule : Serializable {
         }
     }
 
-    mixin SerializationMember!(typeof(this));
+    // mixin SerializationMember!(typeof(this));
 
 }

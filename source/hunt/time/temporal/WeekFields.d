@@ -39,7 +39,7 @@ import hunt.math.Helper;
 import hunt.util.Common;
 import hunt.util.Comparator;
 import hunt.util.Locale;
-import hunt.util.Serialize;
+// import hunt.serialization.JsonSerializer;
 
 import std.conv;
 
@@ -140,7 +140,7 @@ import std.conv;
  *
  * @since 1.8
  */
-public final class WeekFields : Serializable
+public final class WeekFields // : Serializable
 {
     // implementation notes
     // querying week-of-month or week-of-year should return the week value bound within the month/year
@@ -687,7 +687,7 @@ public final class WeekFields : Serializable
         return "WeekFields[" ~ firstDayOfWeek.toString ~ ',' ~ minimalDays.to!string ~ ']';
     }
 
-    mixin SerializationMember!(typeof(this));
+    // mixin SerializationMember!(typeof(this));
 
     //-----------------------------------------------------------------------
     /**

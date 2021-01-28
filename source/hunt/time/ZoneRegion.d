@@ -30,7 +30,7 @@ import hunt.time.Ser;
 import hunt.time.util.Common;
 
 import hunt.util.Common;
-import hunt.util.Serialize;
+// import hunt.serialization.JsonSerializer;
 
 import std.string;
 
@@ -54,7 +54,7 @@ import std.string;
  *
  * @since 1.8
  */
-final class ZoneRegion : ZoneId , Serializable {
+final class ZoneRegion : ZoneId { //  , Serializable
 
     /**
      * The time-zone ID, not null.
@@ -348,5 +348,5 @@ final class ZoneRegion : ZoneId , Serializable {
         }
     }
 
-        mixin SerializationMember!(typeof(this));
+        // mixin SerializationMember!(typeof(this));
 }

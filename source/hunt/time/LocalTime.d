@@ -52,7 +52,7 @@ import hunt.time.util.QueryHelper;
 import hunt.time.util.Common;
 import hunt.util.Common;
 import hunt.util.Comparator;
-import hunt.util.Serialize;
+// import hunt.serialization.JsonSerializer;
 
 import std.concurrency : initOnce;
 
@@ -87,7 +87,7 @@ import std.concurrency : initOnce;
  * @since 1.8
  */
 public final class LocalTime
-        : Temporal, TemporalAdjuster, Comparable!(LocalTime), Serializable {
+        : Temporal, TemporalAdjuster, Comparable!(LocalTime) { // , Serializable
 
     /**
      * The minimum supported {@code LocalTime}, '00:00'.
@@ -1779,5 +1779,5 @@ public final class LocalTime
     }
 
 
-    mixin SerializationMember!(typeof(this));
+    // mixin SerializationMember!(typeof(this));
 }

@@ -19,7 +19,7 @@ import hunt.stream.Common;
 import hunt.time.Exceptions;
 import hunt.time.temporal.TemporalField;
 import hunt.util.Common;
-import hunt.util.Serialize;
+// import hunt.serialization.JsonSerializer;
 
 /**
  * The range of valid values for a date-time field.
@@ -41,7 +41,7 @@ import hunt.util.Serialize;
  *
  * @since 1.8
  */
-public final class ValueRange : Serializable {
+public final class ValueRange  { // : Serializable
 
 
     /**
@@ -379,5 +379,5 @@ public final class ValueRange : Serializable {
         return buf.toString();
     }
 
-    mixin SerializationMember!(typeof(this));
+    // mixin SerializationMember!(typeof(this));
 }

@@ -44,7 +44,7 @@ import hunt.time.util.QueryHelper;
 import hunt.time.util.Common;
 
 import hunt.util.Common;
-import hunt.util.Serialize;
+// import hunt.serialization.JsonSerializer;
 
 import std.concurrency : initOnce;
 
@@ -559,6 +559,6 @@ abstract class ZoneId : Serializable {
 
     // abstract void write(DataOutput _out) /*throws IOException*/;
     
-    mixin SerializationMember!(typeof(this));
+    // mixin SerializationMember!(typeof(this));
 
 }

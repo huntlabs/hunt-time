@@ -40,7 +40,7 @@ import hunt.time.chrono.Ser;
 import hunt.time.util.QueryHelper;
 
 import hunt.util.Common;
-import hunt.util.Serialize;
+// import hunt.serialization.JsonSerializer;
 
 
 /**
@@ -382,5 +382,5 @@ final class ChronoPeriodImpl
         return new ChronoPeriodImpl(chrono, years, months, days);
     }
 
-    mixin SerializationMember!(typeof(this));
+    // mixin SerializationMember!(typeof(this));
 }

@@ -64,7 +64,7 @@ import hunt.logging;
 // import hunt.util.stream.Stream;
 
 import hunt.util.Common;
-import hunt.util.Serialize;
+// import hunt.serialization.JsonSerializer;
 
 import std.algorithm.comparison;
 import std.conv;
@@ -106,7 +106,7 @@ import std.concurrency : initOnce;
 
 
 public  class LocalDate
-        : Temporal, TemporalAdjuster, ChronoLocalDate, Serializable {
+        : Temporal, TemporalAdjuster, ChronoLocalDate { // , Serializable
 
     /**
      * The minimum supported {@code LocalDate}, '-999999999-01-01'.
@@ -2302,6 +2302,6 @@ public  class LocalDate
         return LocalDate.of(year, month, dayOfMonth);
     }
     
-    mixin SerializationMember!(typeof(this));
+    // mixin SerializationMember!(typeof(this));
 
 }

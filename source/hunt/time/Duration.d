@@ -39,7 +39,7 @@ import hunt.text.Common;
 import hunt.util.StringBuilder;
 import hunt.util.Common;
 import hunt.util.Comparator;
-import hunt.util.Serialize;
+// import hunt.serialization.JsonSerializer;
 
 import std.conv;
 import std.concurrency : initOnce;
@@ -84,7 +84,7 @@ import std.string;
  * @since 1.8
  */
 final class Duration
-        : TemporalAmount, Comparable!(Duration), Serializable { 
+        : TemporalAmount, Comparable!(Duration) { // , Serializable
 
     /**
      * Constant for a duration of zero.
@@ -1522,5 +1522,5 @@ final class Duration
     }
 
 
-    mixin SerializationMember!(typeof(this));
+    // mixin SerializationMember!(typeof(this));
 }
